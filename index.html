@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Callistra | High-end Identities</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Young+Serif&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --c-black: #050505;
+            --c-white: #fcfcfc;
+            --c-gradient: linear-gradient(135deg, #5c43f6 0%, #a06bf3 100%);
+        }
+
+        /* Reset & Base Setup */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            font-family: 'Young Serif', serif;
+            background-color: var(--c-black);
+            color: var(--c-white);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- Fullscreen Texture Overlay --- */
+        .texture-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            
+            /* 👇 PASTE YOUR IMAGE LINK BETWEEN THE QUOTES BELOW 👇 */
+            background-image: url('background.jpg'); 
+            
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            mix-blend-mode: difference;
+        }
+
+        /* --- Hero Video-Loop Section --- */
+        #hero-loop {
+            height: 100dvh; /* Fixed: Changed from 100vh to 100dvh to prevent mobile browser UI overlap */
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: background 0.2s ease;
+            position: relative;
+        }
+
+        #loop-text {
+            font-size: clamp(3rem, 10vw, 8rem);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            padding: 0 1rem;
+            transition: color 0.2s ease;
+        }
+
+        /* Background & Text Color States for the Loop */
+        .bg-black { background: var(--c-black); }
+        .bg-white { background: var(--c-white); }
+        .bg-gradient { background: var(--c-gradient); }
+
+        .text-black { color: var(--c-black); }
+        .text-white { color: var(--c-white); }
+        .text-gradient {
+            background: var(--c-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Scroll Indicator */
+        .scroll-down {
+            position: absolute;
+            bottom: 2rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            opacity: 0.5;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: translateY(0); }
+            50% { opacity: 0.8; transform: translateY(5px); }
+        }
+
+        /* --- Cinematic About Section --- */
+        #about {
+            padding: 15vh 5vw;
+            background-color: var(--c-black);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .cinematic-text {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .cinematic-text h2 {
+            font-size: clamp(2rem, 5vw, 4rem);
+            margin-bottom: 1rem;
+            background: var(--c-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cinematic-text h3 {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-weight: normal;
+            margin-bottom: 4rem;
+            color: #888;
+        }
+
+        .statement {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            line-height: 1.4;
+            margin-bottom: 4rem;
+        }
+
+        .statement span {
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        /* --- Services Grid --- */
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            margin: 5rem 0;
+            text-align: left;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 4rem 0;
+        }
+
+        .service-item h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--c-white);
+        }
+
+        .service-item p {
+            font-size: 1.1rem;
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        .outro {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            margin-top: 5rem;
+            margin-bottom: 5rem;
+        }
+
+        /* --- Footer / Links --- */
+        footer {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: var(--c-white);
+            color: var(--c-black);
+        }
+
+        .dribbble-link {
+            display: inline-block;
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            color: var(--c-black);
+            text-decoration: none;
+            border-bottom: 4px solid var(--c-black);
+            padding-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .dribbble-link:hover {
+            color: #5c43f6;
+            border-bottom-color: #5c43f6;
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="texture-overlay"></div>
+
+    <section id="hero-loop" class="bg-gradient text-white">
+        <div id="loop-text">Welcome</div>
+        <div class="scroll-down text-white" id="scroll-hint">Scroll to Discover</div>
+    </section>
+
+    <section id="about">
+        <div class="cinematic-text">
+            <h2>Callistra.</h2>
+            <h3>High-end Identities</h3>
+
+            <div class="statement">
+                <span>I don't just design logos.</span>
+                <span>I build cohesive visual ecosystems.</span>
+            </div>
+
+            <div class="statement" style="color: #ccc; font-size: clamp(1.2rem, 3vw, 2.2rem);">
+                <span>By blending cinematic atmosphere</span>
+                <span>with functional, bold design,</span>
+                <span>I craft identities that leave a lasting impact.</span>
+            </div>
+
+            <div class="services">
+                <div class="service-item">
+                    <h4>Comprehensive Branding</h4>
+                    <p>Crafting a complete visual language, not just a mark.</p>
+                </div>
+                <div class="service-item">
+                    <h4>Visual Storytelling</h4>
+                    <p>Using resonating typography and intentional art direction.</p>
+                </div>
+                <div class="service-item">
+                    <h4>Minimalist Design</h4>
+                    <p>Stripping away the noise so your brand's core essence shines.</p>
+                </div>
+            </div>
+
+            <div class="outro">
+                Let’s turn your vision into an iconic reality.
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p style="margin-bottom: 1rem; font-size: 1.2rem; color: #666;">Explore my portfolio</p>
+        <a href="https://dribbble.com/callistra" target="_blank" class="dribbble-link">dribbble.com/callistra</a>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const heroLoop = document.getElementById("hero-loop");
+            const loopText = document.getElementById("loop-text");
+            const scrollHint = document.getElementById("scroll-hint");
+
+            // Fixed: Added custom 'duration' in milliseconds to control the reading rhythm
+            const frames = [
+                { text: "Welcome", bg: "bg-gradient", color: "text-white", duration: 900 },
+                { text: "to", bg: "bg-gradient", color: "text-white", duration: 400 },
+                { text: "Callistra.", bg: "bg-white", color: "text-gradient", duration: 1600 },
+                { text: "I", bg: "bg-gradient", color: "text-white", duration: 500 },
+                { text: "believe", bg: "bg-gradient", color: "text-white", duration: 900 },
+                { text: "brands", bg: "bg-gradient", color: "text-white", duration: 800 },
+                { text: "don't", bg: "bg-gradient", color: "text-white", duration: 800 },
+                { text: "shout.", bg: "bg-black", color: "text-gradient", duration: 1400 },
+                { text: "They", bg: "bg-gradient", color: "text-white", duration: 800 },
+                { text: "resonate.", bg: "bg-white", color: "text-gradient", duration: 1800 }
+            ];
+
+            let currentFrame = 0;
+            let lastBgClass = "bg-gradient";
+            let lastColorClass = "text-white";
+
+            // Fixed: Changed from setInterval to a self-calling setTimeout function to handle variable durations
+            function loopSequence() {
+                const frame = frames[currentFrame];
+                
+                // Update text
+                loopText.textContent = frame.text;
+
+                // Remove old classes
+                heroLoop.classList.remove(lastBgClass);
+                loopText.classList.remove(lastColorClass);
+
+                // Add new classes
+                heroLoop.classList.add(frame.bg);
+                loopText.classList.add(frame.color);
+
+                // Handle scroll hint visibility dynamically based on background
+                if(frame.bg === "bg-white") {
+                    scrollHint.classList.remove("text-white");
+                    scrollHint.classList.add("text-black");
+                } else {
+                    scrollHint.classList.remove("text-black");
+                    scrollHint.classList.add("text-white");
+                }
+
+                // Update trackers
+                lastBgClass = frame.bg;
+                lastColorClass = frame.color;
+
+                // Move to next frame in the sequence
+                currentFrame = (currentFrame + 1) % frames.length;
+                
+                // Trigger the next loop after this frame's specific duration
+                setTimeout(loopSequence, frame.duration);
+            }
+
+            // Start the loop
+            loopSequence();
+        });
+    </script>
+</body>
+</html>
