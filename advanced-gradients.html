@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Callistra | Advanced Gradients</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: #000;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Anton', sans-serif;
+            letter-spacing: 0.02em;
+        }
+
+        /* Global Hub Header - Horizontal Tab Switcher */
+        .hub-navigation {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10000; /* Stays securely above all background canvas apps */
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 6px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            max-width: 95%;
+            
+            /* Core scrolling logic */
+            overflow-x: auto;
+            scrollbar-width: none; /* Hide default scrollbars for Firefox */
+            scroll-behavior: smooth;
+        }
+
+        /* Hide default scrollbars for Chrome, Safari, and Opera */
+        .hub-navigation::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Tab Layout Styling */
+        .hub-tab {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-family: 'Anton', sans-serif;
+            font-size: 13px;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            white-space: nowrap; /* Ensures buttons don't wrap to a new line */
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+
+            /* Force removes default browser focus box/rectangles */
+            outline: none !important;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        /* Explicitly targets the clicked/active state to ensure no layout box appears */
+        .hub-tab:focus, 
+        .hub-tab:active,
+        .hub-tab:focus-visible {
+            outline: none !important;
+            box-shadow: none;
+        }
+
+        /* Hover Feedback */
+        .hub-tab:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Active Visual State (Restores custom box-shadow styling ONLY when the tab is explicitly active) */
+        .hub-tab.active {
+            background: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(255,255,255,0.2);
+            outline: none !important;
+        }
+
+        /* Canvas fills screen, maintains vertical aspect dynamically via JS */
+        #glCanvas {
+            position: fixed;
+            z-index: 1;
+            box-shadow: 0 0 40px rgba(0,0,0,0.6);
+        }
+
+        /* PREV / NEXT — same glass style as make button */
+        .nav-container {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 18px;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .nav-btn {
+            pointer-events: auto;
+            width: 56px;
+            height: 56px;
+            border-radius: 60px;
+            background: rgba(255, 255, 255, 0.28);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: #1a1a1e;
+            font-size: 32px;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            font-family: 'Anton', sans-serif;
+            line-height: 1;
+            text-align: center;
+        }
+
+        .nav-btn:active {
+            transform: scale(0.96);
+            background: rgba(255, 255, 255, 0.45);
+        }
+
+        .nav-btn.disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* BOTTOM ACTION BUTTONS — all identical glass style */
+        .action-bar {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 16px;
+            z-index: 30;
+            width: auto;
+            max-width: 90%;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .glass-btn {
+            pointer-events: auto;
+            background: rgba(255, 255, 255, 0.28);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 60px;
+            padding: 14px 28px;
+            font-size: 20px;
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            color: #1a1a1e;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            white-space: nowrap;
+            font-family: 'Anton', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .glass-btn:active {
+            transform: scale(0.96);
+            background: rgba(255, 255, 255, 0.45);
+        }
+
+        @media (max-width: 600px) {
+            .hub-navigation {
+                top: 12px;
+                padding: 4px;
+            }
+            .hub-tab {
+                padding: 6px 12px;
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .glass-btn {
+                padding: 12px 20px;
+                font-size: 17px;
+            }
+            .nav-btn {
+                width: 48px;
+                height: 48px;
+                font-size: 28px;
+            }
+            .action-bar {
+                gap: 12px;
+                bottom: 24px;
+            }
+        }
+
+        #exportCanvas {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="hub-navigation">
+        <button class="hub-tab" onclick="navigateStudio('index.html')">1. Vibrant Gradients</button>
+        <button class="hub-tab" onclick="navigateStudio('abstract-bars.html')">2. Abstract Bars</button>
+        <button class="hub-tab" onclick="navigateStudio('gradient-blob.html')">3. Gradient Blob</button>
+        <button class="hub-tab" onclick="navigateStudio('biostyle-blobs.html')">4. Biostyle Blobs</button>
+        <button class="hub-tab" onclick="navigateStudio('vertical-overlays.html')">5. Vertical Overlays</button>
+        <button class="hub-tab" onclick="navigateStudio('abstract-smokes.html')">6. Abstract Smokes</button>
+        <button class="hub-tab" onclick="navigateStudio('glass-dots.html')">7. Glass Dots</button>
+        <button class="hub-tab active" onclick="navigateStudio('advanced-gradients.html')">8. Advanced Gradients</button>
+    </div>
+
+    <canvas id="glCanvas"></canvas>
+    <canvas id="exportCanvas"></canvas>
+
+    <div class="nav-container">
+        <button class="nav-btn" id="prevBtn">&lt;</button>
+        <button class="nav-btn" id="nextBtn">&gt;</button>
+    </div>
+
+    <div class="action-bar">
+        <button class="glass-btn" id="makeBtn">/ MAKE</button>
+        <button class="glass-btn" id="downloadBtn">↓ DOWNLOAD</button>
+    </div>
+
+    <script>
+        // ---------- Web Audio API Setup ----------
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playClickSound(mode = 'standard') {
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                const now = ctx.currentTime;
+                
+                if (mode === 'standard') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now); // C5 note
+                    osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.06); // Sweep up to C6
+                    
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+                    
+                    osc.start(now);
+                    osc.stop(now + 0.06);
+                } else if (mode === 'random') {
+                    const waveTypes = ['sine', 'triangle', 'square', 'sawtooth'];
+                    osc.type = waveTypes[Math.floor(Math.random() * waveTypes.length)];
+                    
+                    const startFreq = 180 + Math.random() * 750;
+                    const endFreq = 200 + Math.random() * 1200;
+                    const duration = 0.06 + Math.random() * 0.16;
+                    
+                    osc.frequency.setValueAtTime(startFreq, now);
+                    osc.frequency.exponentialRampToValueAtTime(endFreq, now + duration);
+                    
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+                    
+                    osc.start(now);
+                    osc.stop(now + duration);
+                }
+            } catch (e) {
+                console.warn("Audio Context could not initialize safely:", e);
+            }
+        }
+
+        function navigateStudio(url) {
+            playClickSound('standard');
+            setTimeout(() => {
+                window.location.href = url;
+            }, 70);
+        }
+
+        // ---------- WebGL Global Cache ----------
+        let gl = null;
+        let program = null;
+        
+        let uniformResLoc = null;
+        let uniformSeedLoc = null;
+        let uniformMainColorLoc = null;
+        let uniformMiddleColorLoc = null;
+        let uniformWhiteColorLoc = null;
+        let uniformBaselinesLoc = null;
+        
+        let uniformParams1Loc, uniformPhases1Loc;
+        let uniformParams2Loc, uniformPhases2Loc;
+        let uniformParams3Loc, uniformPhases3Loc;
+        
+        let currentComposition = null;
+        let historyStack = [];
+        let historyIndex = -1;
+        const MAX_HISTORY = 12;
+        
+        // ---------- Color Utilities ----------
+        function hslToRgb(h, s, l) {
+            let c = (1 - Math.abs(2 * l - 1)) * s;
+            let x = c * (1 - Math.abs((h / 60) % 2 - 1));
+            let m = l - c / 2;
+            let r1, g1, b1;
+            if (h < 60) { r1 = c; g1 = x; b1 = 0; }
+            else if (h < 120) { r1 = x; g1 = c; b1 = 0; }
+            else if (h < 180) { r1 = 0; g1 = c; b1 = x; }
+            else if (h < 240) { r1 = 0; g1 = x; b1 = c; }
+            else if (h < 300) { r1 = x; g1 = 0; b1 = c; }
+            else { r1 = c; g1 = 0; b1 = x; }
+            return [r1 + m, g1 + m, b1 + m];
+        }
+        
+        function generateWaveColors() {
+            const h = Math.random() * 360; 
+            const s = 0.90 + Math.random() * 0.10; 
+            const l = 0.45 + Math.random() * 0.10; 
+            const mainColor = hslToRgb(h, s, l);
+            
+            const middleS = s * (0.35 + Math.random() * 0.20); 
+            const middleL = Math.min(l + 0.25 + Math.random() * 0.10, 0.90);
+            const middleColor = hslToRgb(h, middleS, middleL);
+            
+            return { mainColor, middleColor };
+        }
+        
+        function generateWavePositions() {
+            const base1 = 0.25 + Math.random() * 0.15; 
+            const gap1 = 0.10 + Math.random() * 0.12;  
+            const gap2 = 0.10 + Math.random() * 0.12;  
+            
+            return [base1, base1 + gap1, base1 + gap1 + gap2];
+        }
+        
+        function generateWaveParams() {
+            const freq1 = 2.0 + Math.random() * 2.5; 
+            const freq2 = 3.5 + Math.random() * 3.0; 
+            
+            const amp1 = 0.06 + Math.random() * 0.08;
+            const amp2 = 0.02 + Math.random() * 0.04;
+            
+            const phase1 = Math.random() * Math.PI * 2;
+            const phase2 = Math.random() * Math.PI * 2;
+            
+            return [freq1, freq2, amp1, amp2, phase1, phase2];
+        }
+        
+        function generateComposition() {
+            const { mainColor, middleColor } = generateWaveColors();
+            const baselines = generateWavePositions();
+            const params1 = generateWaveParams();
+            const params2 = generateWaveParams();
+            const params3 = generateWaveParams();
+            const shaderSeed = Math.random() * 600.0;
+            
+            return {
+                mainColor,
+                middleColor,
+                baselines,
+                params1,
+                params2,
+                params3,
+                shaderSeed,
+                timestamp: Date.now()
+            };
+        }
+        
+        // ---------- WebGL Vector Shading Pipelines ----------
+        const vsSource = `
+            attribute vec2 position;
+            varying vec2 vUv;
+            void main() {
+                vUv = position * 0.5 + 0.5;
+                vUv.y = 1.0 - vUv.y;
+                gl_Position = vec4(position, 0.0, 1.0);
+            }
+        `;
+        
+        const fsSource = `
+            precision highp float;
+            varying vec2 vUv;
+            uniform vec2 u_resolution;
+            uniform float u_seed;
+            
+            uniform vec3 u_mainColor;
+            uniform vec3 u_middleColor;
+            uniform vec3 u_whiteColor;
+            uniform vec3 u_baselines;
+            
+            uniform vec4 u_params1; vec2 u_phases1;
+            uniform vec4 u_params2; vec2 u_phases2;
+            uniform vec4 u_params3; vec2 u_phases3;
+            
+            float gaussianNoise(vec2 uv, float seed) {
+                float r1 = fract(sin(dot(uv * 12.9898 + vec2(seed, 47.2943), vec2(37.719, 78.233))) * 43758.5453);
+                float r2 = fract(sin(dot(uv * 31.3498 + vec2(seed * 1.234, 983.212), vec2(17.982, 47.123))) * 28734.8912);
+                r1 = clamp(r1, 0.0001, 0.9999);
+                float gauss = sqrt(-2.0 * log(r1)) * cos(6.28318 * r2);
+                return gauss * 0.06;
+            }
+            
+            float evalWave(float x, float base, vec4 params, vec2 phases) {
+                return base + sin(x * params.x + phases.x) * params.z + cos(x * params.y + phases.y) * params.w;
+            }
+            
+            void main() {
+                float xVal = vUv.x;
+                
+                float y1 = evalWave(xVal, u_baselines.x, u_params1, vec2(u_params1.z, u_params1.w));
+                float y2 = evalWave(xVal, u_baselines.y, u_params2, vec2(u_params2.z, u_params2.w));
+                float y3 = evalWave(xVal, u_baselines.z, u_params3, vec2(u_params3.z, u_params3.w));
+                
+                float blurWidth = 0.45; 
+                
+                float mask1 = smoothstep(y1 - blurWidth, y1 + blurWidth, vUv.y);
+                float mask2 = smoothstep(y2 - blurWidth, y2 + blurWidth, vUv.y);
+                float mask3 = smoothstep(y3 - blurWidth, y3 + blurWidth, vUv.y);
+                
+                vec3 finalColor = vec3(0.0);
+                finalColor = mix(finalColor, u_mainColor, mask1);
+                finalColor = mix(finalColor, u_middleColor, mask2);
+                finalColor = mix(finalColor, u_whiteColor, mask3);
+                
+                vec2 vignetteUV = vUv * 1.8 - 0.4;
+                float vignette = 1.0 - smoothstep(0.2, 1.0, length(vignetteUV)) * 0.48;
+                finalColor *= vignette;
+                
+                float noiseVal = gaussianNoise(vUv, u_seed);
+                finalColor.rgb += vec3(noiseVal);
+                
+                gl_FragColor = vec4(clamp(finalColor, 0.0, 1.0), 1.0);
+            }
+        `;
+        
+        function initWebGL() {
+            const canvas = document.getElementById("glCanvas");
+            gl = canvas.getContext('webgl', { antialias: true, preserveDrawingBuffer: true, powerPreference: "high-performance" });
+            if (!gl) return false;
+            
+            const vs = gl.createShader(gl.VERTEX_SHADER);
+            gl.shaderSource(vs, vsSource);
+            gl.compileShader(vs);
+            const fs = gl.createShader(gl.FRAGMENT_SHADER);
+            gl.shaderSource(fs, fsSource);
+            gl.compileShader(fs);
+            
+            program = gl.createProgram();
+            gl.attachShader(program, vs);
+            gl.attachShader(program, fs);
+            gl.linkProgram(program);
+            gl.useProgram(program);
+            
+            const vertices = new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]);
+            const buffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+            gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+            const posLoc = gl.getAttribLocation(program, "position");
+            gl.enableVertexAttribArray(posLoc);
+            gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+            
+            uniformResLoc = gl.getUniformLocation(program, "u_resolution");
+            uniformSeedLoc = gl.getUniformLocation(program, "u_seed");
+            uniformMainColorLoc = gl.getUniformLocation(program, "u_mainColor");
+            uniformMiddleColorLoc = gl.getUniformLocation(program, "u_middleColor");
+            uniformWhiteColorLoc = gl.getUniformLocation(program, "u_whiteColor");
+            uniformBaselinesLoc = gl.getUniformLocation(program, "u_baselines");
+            
+            uniformParams1Loc = gl.getUniformLocation(program, "u_params1");
+            uniformParams2Loc = gl.getUniformLocation(program, "u_params2");
+            uniformParams3Loc = gl.getUniformLocation(program, "u_params3");
+            
+            return true;
+        }
+        
+        function applyAndDraw(composition) {
+            if (!gl || !program || !composition) return;
+            const w = gl.canvas.width, h = gl.canvas.height;
+            if (w === 0 || h === 0) return;
+            gl.viewport(0, 0, w, h);
+            gl.uniform2f(uniformResLoc, w, h);
+            
+            gl.uniform1f(uniformSeedLoc, composition.shaderSeed);
+            gl.uniform3fv(uniformMainColorLoc, composition.mainColor);
+            gl.uniform3fv(uniformMiddleColorLoc, composition.middleColor);
+            gl.uniform3f(uniformWhiteColorLoc, 1.0, 1.0, 1.0);
+            gl.uniform3fv(uniformBaselinesLoc, composition.baselines);
+            
+            gl.uniform4f(uniformParams1Loc, composition.params1[0], composition.params1[1], composition.params1[2], composition.params1[3]);
+            gl.uniform4f(uniformParams2Loc, composition.params2[0], composition.params2[1], composition.params2[2], composition.params2[3]);
+            gl.uniform4f(uniformParams3Loc, composition.params3[0], composition.params3[1], composition.params3[2], composition.params3[3]);
+            
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
+        }
+        
+        // ---------- Aspect Ratio Scaling Logic (9:16 Lock) ----------
+        function getStrictVerticalDimensions() {
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            const verticalAspectBound = 9 / 16;
+            let finalRenderWidth, finalRenderHeight;
+            if ((windowWidth / windowHeight) > verticalAspectBound) {
+                finalRenderHeight = windowHeight;
+                finalRenderWidth = finalRenderHeight * verticalAspectBound;
+            } else {
+                finalRenderWidth = windowWidth;
+                finalRenderHeight = finalRenderWidth / verticalAspectBound;
+            }
+            return { width: finalRenderWidth, height: finalRenderHeight };
+        }
+        
+        function resizeCanvasAndRedraw() {
+            if (!gl || !currentComposition) return;
+            const canvas = document.getElementById("glCanvas");
+            const bounds = getStrictVerticalDimensions();
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            
+            canvas.style.width = bounds.width + "px";
+            canvas.style.height = bounds.height + "px";
+            canvas.style.top = ((window.innerHeight - bounds.height) / 2) + "px";
+            canvas.style.left = ((window.innerWidth - bounds.width) / 2) + "px";
+            
+            const newWidth = Math.floor(bounds.width * dpr);
+            const newHeight = Math.floor(bounds.height * dpr);
+            if (canvas.width !== newWidth || canvas.height !== newHeight) {
+                canvas.width = newWidth;
+                canvas.height = newHeight;
+            }
+            
+            applyAndDraw(currentComposition);
+        }
+        
+        // ---------- Composition History Pipeline ----------
+        function updateNavButtons() {
+            const prevBtn = document.getElementById("prevBtn");
+            const nextBtn = document.getElementById("nextBtn");
+            if (prevBtn) prevBtn.classList.toggle("disabled", historyIndex <= 0);
+            if (nextBtn) nextBtn.classList.toggle("disabled", historyIndex >= historyStack.length - 1);
+        }
+        
+        function pushToHistory(composition, isNew = true) {
+            const clone = JSON.parse(JSON.stringify(composition));
+            if (isNew && historyIndex < historyStack.length - 1) {
+                historyStack = historyStack.slice(0, historyIndex + 1);
+            }
+            historyStack.push(clone);
+            if (historyStack.length > MAX_HISTORY) historyStack.shift();
+            historyIndex = historyStack.length - 1;
+            currentComposition = JSON.parse(JSON.stringify(clone));
+            applyAndDraw(currentComposition);
+            updateNavButtons();
+        }
+        
+        function goPrev() {
+            if (historyIndex > 0) {
+                historyIndex--;
+                currentComposition = JSON.parse(JSON.stringify(historyStack[historyIndex]));
+                applyAndDraw(currentComposition);
+                updateNavButtons();
+            }
+        }
+        
+        function goNext() {
+            if (historyIndex < historyStack.length - 1) {
+                historyIndex++;
+                currentComposition = JSON.parse(JSON.stringify(historyStack[historyIndex]));
+                applyAndDraw(currentComposition);
+                updateNavButtons();
+            }
+        }
+        
+        function generateAndPushNew() {
+            const newComp = generateComposition();
+            pushToHistory(newComp, true);
+        }
+        
+        // ---------- Print-Ready Export Setup (1440x2560) ----------
+        function exportHighRes() {
+            if (!currentComposition) return;
+            const downloadBtn = document.getElementById("downloadBtn");
+            if (downloadBtn) downloadBtn.innerText = "•••";
+
+            setTimeout(() => {
+                const exportCanvas = document.getElementById("exportCanvas");
+                const targetW = 1440; const targetH = 2560;
+                exportCanvas.width = targetW; exportCanvas.height = targetH;
+                
+                const exportGl = exportCanvas.getContext('webgl', { preserveDrawingBuffer: true, antialias: false });
+                if (!exportGl) {
+                    if (downloadBtn) downloadBtn.innerText = "↓ DOWNLOAD";
+                    return;
+                }
+                
+                const vs = exportGl.createShader(exportGl.VERTEX_SHADER);
+                exportGl.shaderSource(vs, vsSource);
+                exportGl.compileShader(vs);
+                const fs = exportGl.createShader(exportGl.FRAGMENT_SHADER);
+                exportGl.shaderSource(fs, fsSource);
+                exportGl.compileShader(fs);
+                const prog = exportGl.createProgram();
+                exportGl.attachShader(prog, vs); exportGl.attachShader(prog, fs);
+                exportGl.linkProgram(prog); exportGl.useProgram(prog);
+                
+                const verts = new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]);
+                const buf = exportGl.createBuffer();
+                exportGl.bindBuffer(exportGl.ARRAY_BUFFER, buf);
+                exportGl.bufferData(exportGl.ARRAY_BUFFER, verts, exportGl.STATIC_DRAW);
+                const posLoc = exportGl.getAttribLocation(prog, "position");
+                exportGl.enableVertexAttribArray(posLoc);
+                exportGl.vertexAttribPointer(posLoc, 2, exportGl.FLOAT, false, 0, 0);
+                
+                exportGl.viewport(0, 0, targetW, targetH);
+                exportGl.uniform2f(exportGl.getUniformLocation(prog, "u_resolution"), targetW, targetH);
+                exportGl.uniform1f(exportGl.getUniformLocation(prog, "u_seed"), currentComposition.shaderSeed);
+                exportGl.uniform3fv(exportGl.getUniformLocation(prog, "u_mainColor"), currentComposition.mainColor);
+                exportGl.uniform3fv(exportGl.getUniformLocation(prog, "u_middleColor"), currentComposition.middleColor);
+                exportGl.uniform3f(exportGl.getUniformLocation(prog, "u_whiteColor"), 1.0, 1.0, 1.0);
+                exportGl.uniform3fv(exportGl.getUniformLocation(prog, "u_baselines"), currentComposition.baselines);
+                
+                exportGl.uniform4f(exportGl.getUniformLocation(prog, "u_params1"), currentComposition.params1[0], currentComposition.params1[1], currentComposition.params1[2], currentComposition.params1[3]);
+                exportGl.uniform4f(exportGl.getUniformLocation(prog, "u_params2"), currentComposition.params2[0], currentComposition.params2[1], currentComposition.params2[2], currentComposition.params2[3]);
+                exportGl.uniform4f(exportGl.getUniformLocation(prog, "u_params3"), currentComposition.params3[0], currentComposition.params3[1], currentComposition.params3[2], currentComposition.params3[3]);
+                
+                exportGl.drawArrays(exportGl.TRIANGLES, 0, 6);
+                
+                const link = document.createElement('a');
+                link.download = `advanced_gradients_${Date.now()}.jpg`;
+                link.href = exportCanvas.toDataURL('image/jpeg', 0.95);
+                link.click();
+                exportGl.deleteProgram(prog);
+
+                if (downloadBtn) downloadBtn.innerText = "↓ DOWNLOAD";
+            }, 50);
+        }
+        
+        // ---------- Lifecycle Initialization ----------
+        function init() {
+            if (!initWebGL()) return;
+            
+            const initialComp = generateComposition();
+            historyStack = [JSON.parse(JSON.stringify(initialComp))];
+            historyIndex = 0;
+            currentComposition = JSON.parse(JSON.stringify(initialComp));
+            
+            resizeCanvasAndRedraw();
+            updateNavButtons();
+            
+            document.getElementById("makeBtn")?.addEventListener('click', () => {
+                playClickSound('standard');
+                generateAndPushNew();
+            });
+            document.getElementById("downloadBtn")?.addEventListener('click', () => {
+                playClickSound('standard');
+                exportHighRes();
+            });
+            document.getElementById("prevBtn")?.addEventListener('click', () => {
+                playClickSound('standard');
+                goPrev();
+            });
+            document.getElementById("nextBtn")?.addEventListener('click', () => {
+                playClickSound('standard');
+                goNext();
+            });
+            
+            window.addEventListener('resize', resizeCanvasAndRedraw);
+            window.addEventListener('orientationchange', () => setTimeout(resizeCanvasAndRedraw, 40));
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden && currentComposition) applyAndDraw(currentComposition);
+            });
+
+            // Automatically auto-scrolls the active tab component directly to the horizontal center alignment context window
+            const activeTab = document.querySelector(".hub-tab.active");
+            if (activeTab) {
+                activeTab.scrollIntoView({ behavior: "auto", inline: "center", block: "nearest" });
+            }
+        }
+        
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
