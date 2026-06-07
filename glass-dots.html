@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Callistra | Glass Dots</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: #000;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Anton', sans-serif;
+            letter-spacing: 0.02em;
+        }
+
+        /* Global Hub Header - Horizontal Tab Switcher */
+        .hub-navigation {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10000; /* Stays securely above all background canvas apps */
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 6px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            max-width: 95%;
+            
+            /* Core scrolling logic */
+            overflow-x: auto;
+            scrollbar-width: none; /* Hide default scrollbars for Firefox */
+            scroll-behavior: smooth;
+        }
+
+        /* Hide default scrollbars for Chrome, Safari, and Opera */
+        .hub-navigation::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Tab Layout Styling */
+        .hub-tab {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-family: 'Anton', sans-serif;
+            font-size: 13px;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            white-space: nowrap; /* Ensures buttons don't wrap to a new line */
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+
+            /* Force removes default browser focus box/rectangles */
+            outline: none !important;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        /* Explicitly targets the clicked/active state to ensure no layout box appears */
+        .hub-tab:focus, 
+        .hub-tab:active,
+        .hub-tab:focus-visible {
+            outline: none !important;
+            box-shadow: none;
+        }
+
+        /* Hover Feedback */
+        .hub-tab:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Active Visual State (Restores custom box-shadow styling ONLY when the tab is explicitly active) */
+        .hub-tab.active {
+            background: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(255,255,255,0.2);
+            outline: none !important;
+        }
+
+        /* Canvas fills screen, maintains vertical aspect dynamically via JS */
+        #glCanvas {
+            position: fixed;
+            z-index: 1;
+            box-shadow: 0 0 40px rgba(0,0,0,0.6);
+        }
+
+        /* PREV / NEXT — same glass style as make button */
+        .nav-container {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 18px;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .nav-btn {
+            pointer-events: auto;
+            width: 56px;
+            height: 56px;
+            border-radius: 60px;
+            background: rgba(255, 255, 255, 0.28);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: #1a1a1e;
+            font-size: 32px;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            font-family: 'Anton', sans-serif;
+            line-height: 1;
+            text-align: center;
+        }
+
+        .nav-btn:active {
+            transform: scale(0.96);
+            background: rgba(255, 255, 255, 0.45);
+        }
+
+        .nav-btn.disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* BOTTOM ACTION BUTTONS — all identical glass style */
+        .action-bar {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 16px;
+            z-index: 30;
+            width: auto;
+            max-width: 90%;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .glass-btn {
+            pointer-events: auto;
+            background: rgba(255, 255, 255, 0.28);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 60px;
+            padding: 14px 28px;
+            font-size: 20px;
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            color: #1a1a1e;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            white-space: nowrap;
+            font-family: 'Anton', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .glass-btn:active {
+            transform: scale(0.96);
+            background: rgba(255, 255, 255, 0.45);
+        }
+
+        @media (max-width: 600px) {
+            .hub-navigation {
+                top: 12px;
+                padding: 4px;
+            }
+            .hub-tab {
+                padding: 6px 12px;
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .glass-btn {
+                padding: 12px 20px;
+                font-size: 17px;
+            }
+            .nav-btn {
+                width: 48px;
+                height: 48px;
+                font-size: 28px;
+            }
+            .action-bar {
+                gap: 12px;
+                bottom: 24px;
+            }
+        }
+
+        #exportCanvas {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="hub-navigation">
+        <button class="hub-tab" onclick="navigateStudio('index.html')">1. Vibrant Gradients</button>
+        <button class="hub-tab" onclick="navigateStudio('abstract-bars.html')">2. Abstract Bars</button>
+        <button class="hub-tab" onclick="navigateStudio('gradient-blob.html')">3. Gradient Blob</button>
+        <button class="hub-tab" onclick="navigateStudio('biostyle-blobs.html')">4. Biostyle Blobs</button>
+        <button class="hub-tab" onclick="navigateStudio('vertical-overlays.html')">5. Vertical Overlays</button>
+        <button class="hub-tab" onclick="navigateStudio('abstract-smokes.html')">6. Abstract Smokes</button>
+        <button class="hub-tab active" onclick="navigateStudio('glass-dots.html')">7. Glass Dots</button>
+        <button class="hub-tab" onclick="navigateStudio('advanced-gradients.html')">8. Advanced Gradients</button>
+    </div>
+
+    <canvas id="glCanvas"></canvas>
+    <canvas id="exportCanvas"></canvas>
+
+    <div class="nav-container">
+        <button class="nav-btn" id="prevBtn">&lt;</button>
+        <button class="nav-btn" id="nextBtn">&gt;</button>
+    </div>
+
+    <div class="action-bar">
+        <button class="glass-btn" id="makeBtn">/ MAKE</button>
+        <button class="glass-btn" id="downloadBtn">↓ DOWNLOAD</button>
+    </div>
+
+    <script>
+        // ---------- Web Audio API Setup ----------
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playClickSound(mode = 'standard') {
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                const now = ctx.currentTime;
+                
+                if (mode === 'standard') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now); // C5 note
+                    osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.06); // Sweep up to C6
+                    
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+                    
+                    osc.start(now);
+                    osc.stop(now + 0.06);
+                } else if (mode === 'random') {
+                    const waveTypes = ['sine', 'triangle', 'square', 'sawtooth'];
+                    osc.type = waveTypes[Math.floor(Math.random() * waveTypes.length)];
+                    
+                    const startFreq = 180 + Math.random() * 750;
+                    const endFreq = 200 + Math.random() * 1200;
+                    const duration = 0.06 + Math.random() * 0.16;
+                    
+                    osc.frequency.setValueAtTime(startFreq, now);
+                    osc.frequency.exponentialRampToValueAtTime(endFreq, now + duration);
+                    
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+                    
+                    osc.start(now);
+                    osc.stop(now + duration);
+                }
+            } catch (e) {
+                console.warn("Audio Context could not initialize safely:", e);
+            }
+        }
+
+        function navigateStudio(url) {
+            playClickSound('standard');
+            setTimeout(() => {
+                window.location.href = url;
+            }, 70);
+        }
+
+        // ---------- WebGL Globals ----------
+        let gl = null;
+        let program = null;
+        let uniformResLoc = null;
+        let uniformGlassDistortionLoc = null;
+        let uniformGridDensityLoc = null;
+        let uniformPos = [], uniformRadii = [], uniformColor = [];
+        const BLOB_COUNT = 7;
+        
+        let currentComposition = null;
+        let historyStack = [];
+        let historyIndex = -1;
+        const MAX_HISTORY = 12;
+        
+        // ---------- HSL Utils ----------
+        function hslToRgb(h, s, l) {
+            let c = (1 - Math.abs(2 * l - 1)) * s;
+            let x = c * (1 - Math.abs((h / 60) % 2 - 1));
+            let m = l - c / 2;
+            let r1, g1, b1;
+            if (h < 60) { r1 = c; g1 = x; b1 = 0; }
+            else if (h < 120) { r1 = x; g1 = c; b1 = 0; }
+            else if (h < 180) { r1 = 0; g1 = c; b1 = x; }
+            else if (h < 240) { r1 = 0; g1 = x; b1 = c; }
+            else if (h < 300) { r1 = x; g1 = 0; b1 = c; }
+            else { r1 = c; g1 = 0; b1 = x; }
+            return [r1 + m, m + m, b1 + m];
+        }
+        
+        function generateVibrantColors() {
+            const scheme = Math.floor(Math.random() * 4);
+            const baseHue = Math.random() * 360;
+            let hues = [];
+            switch(scheme) {
+                case 0:
+                    hues = [baseHue, (baseHue + 150) % 360, (baseHue + 210) % 360];
+                    hues.push((baseHue + 30) % 360, (baseHue - 30 + 360) % 360);
+                    hues.push((baseHue + 90) % 360, (baseHue - 90 + 360) % 360);
+                    break;
+                case 1:
+                    hues = [baseHue, (baseHue + 120) % 360, (baseHue + 240) % 360];
+                    hues.push((baseHue + 60) % 360, (baseHue + 300) % 360);
+                    hues.push((baseHue + 180) % 360, (baseHue + 30) % 360);
+                    break;
+                case 2:
+                    hues = [baseHue, (baseHue + 28) % 360, (baseHue + 56) % 360];
+                    hues.push((baseHue - 28 + 360) % 360, (baseHue + 84) % 360);
+                    hues.push((baseHue + 112) % 360, (baseHue - 56 + 360) % 360);
+                    break;
+                default:
+                    hues = [baseHue, (baseHue + 90) % 360, (baseHue + 180) % 360, (baseHue + 270) % 360];
+                    hues.push((baseHue + 45) % 360, (baseHue + 135) % 360, (baseHue + 225) % 360);
+                    break;
+            }
+            while(hues.length < BLOB_COUNT) hues.push((hues[0] + 45 * hues.length) % 360);
+            hues = hues.slice(0, BLOB_COUNT);
+            
+            const colorsRgb = [];
+            for (let i = 0; i < BLOB_COUNT; i++) {
+                let sat = 0.92 + Math.random() * 0.08;
+                let lit = 0.48 + Math.random() * 0.12;
+                colorsRgb.push(hslToRgb(hues[i], sat, lit));
+            }
+            return colorsRgb;
+        }
+        
+        function generateBlobGeometries() {
+            const zones = [
+                { xMin: 0.02, xMax: 0.32, yMin: 0.30, yMax: 0.68 },
+                { xMin: 0.42, xMax: 0.72, yMin: 0.48, yMax: 0.82 },
+                { xMin: 0.25, xMax: 0.60, yMin: 0.15, yMax: 0.42 },
+                { xMin: 0.62, xMax: 0.95, yMin: 0.18, yMax: 0.52 },
+                { xMin: 0.12, xMax: 0.52, yMin: 0.58, yMax: 0.92 },
+                { xMin: 0.38, xMax: 0.78, yMin: 0.68, yMax: 0.96 },
+                { xMin: 0.05, xMax: 0.45, yMin: 0.05, yMax: 0.35 }
+            ];
+            const positions = [];
+            const radii = [];
+            for (let i = 0; i < BLOB_COUNT; i++) {
+                const zone = zones[i % zones.length];
+                let x = zone.xMin + Math.random() * (zone.xMax - zone.xMin);
+                let y = zone.yMin + Math.random() * (zone.yMax - zone.yMin);
+                if (Math.random() < 0.25 && i === 0) x = -0.12 + Math.random() * 0.22;
+                if (Math.random() < 0.25 && i === 3) x = 0.90 + Math.random() * 0.12;
+                if (Math.random() < 0.25 && i === 6) y = 0.02 + Math.random() * 0.15;
+                
+                let rx = 0.28 + Math.random() * 0.32;
+                let ry = 0.26 + Math.random() * 0.34;
+                if (i === 0 || i === 1 || i === 5) { rx *= 1.2; ry *= 1.2; }
+                positions.push([x, y]);
+                radii.push([rx, ry]);
+            }
+            return { positions, radii };
+        }
+        
+        function generateComposition() {
+            const colors = generateVibrantColors();
+            const { positions, radii } = generateBlobGeometries();
+            const shaderSeed = Math.random() * 600.0;
+            return { colors, positions, radii, shaderSeed, timestamp: Date.now() };
+        }
+        
+        // ---------- WebGL Shaders (Procedural Glass Distortion Engine) ----------
+        const vsSource = `
+            attribute vec2 position;
+            varying vec2 vUv;
+            void main() {
+                vUv = position * 0.5 + 0.5;
+                vUv.y = 1.0 - vUv.y;
+                gl_Position = vec4(position, 0.0, 1.0);
+            }
+        `;
+        
+        const fsSource = `
+            precision highp float;
+            varying vec2 vUv;
+            uniform vec2 u_resolution;
+            uniform vec2 u_blobPos[7];
+            uniform vec2 u_blobRadii[7];
+            uniform vec3 u_blobColor[7];
+            uniform float u_seed;
+            
+            uniform float u_glassDistortion; 
+            uniform float u_gridDensity;     
+
+            float gaussianNoise(vec2 uv, float seed) {
+                float r1 = fract(sin(dot(uv * 12.9898 + vec2(seed, 47.2943), vec2(37.719, 78.233))) * 43758.5453);
+                float r2 = fract(sin(dot(uv * 31.3498 + vec2(seed * 1.234, 983.212), vec2(17.982, 47.123))) * 28734.8912);
+                r1 = clamp(r1, 0.0001, 0.9999);
+                float gauss = sqrt(-2.0 * log(r1)) * cos(6.28318 * r2);
+                return gauss * 0.06;
+            }
+            
+            void main() {
+                float aspect = u_resolution.x / u_resolution.y;
+                
+                vec2 gridSt = vUv;
+                gridSt.x *= aspect; 
+                
+                vec2 fractionalPart = fract(gridSt * u_gridDensity);
+                vec2 cellCenterOffset = fractionalPart - vec2(0.5);
+                float distanceToCenter = length(cellCenterOffset);
+                
+                vec2 refractionDirection = vec2(0.0);
+                float lightingHighlight = 0.0;
+                
+                if (distanceToCenter < 0.5) {
+                    float slopeIntensity = sin(distanceToCenter * 3.14159265);
+                    refractionDirection = normalize(cellCenterOffset) * slopeIntensity;
+                    refractionDirection.x /= aspect; 
+                    
+                    lightingHighlight = (cellCenterOffset.x + cellCenterOffset.y) * slopeIntensity * 0.16;
+                }
+                
+                vec2 distortedUv = vUv + (refractionDirection * u_glassDistortion);
+                
+                vec2 blobSt = distortedUv;
+                blobSt.x *= aspect;
+                
+                vec3 finalColor = vec3(0.0);
+                for (int i = 0; i < 7; i++) {
+                    vec2 center = u_blobPos[i];
+                    center.x *= aspect;
+                    vec2 delta = blobSt - center;
+                    vec2 ratio = delta / u_blobRadii[i];
+                    float dist = length(ratio);
+                    float intensity = pow(1.0 - smoothstep(0.0, 1.0, dist), 1.85);
+                    intensity = clamp(intensity * 1.05, 0.0, 1.0);
+                    
+                    finalColor = mix(finalColor, u_blobColor[i], intensity);
+                }
+                
+                finalColor += vec3(lightingHighlight);
+                
+                vec2 vignetteUV = vUv * 1.8 - 0.4;
+                float vignette = 1.0 - smoothstep(0.2, 1.0, length(vignetteUV)) * 0.48;
+                finalColor *= vignette;
+                
+                float noiseVal = gaussianNoise(vUv, u_seed);
+                finalColor.rgb += vec3(noiseVal);
+                
+                finalColor = clamp(finalColor, 0.0, 1.0);
+                gl_FragColor = vec4(finalColor, 1.0);
+            }
+        `;
+        
+        function initWebGL() {
+            const canvas = document.getElementById("glCanvas");
+            gl = canvas.getContext('webgl', { antialias: true, preserveDrawingBuffer: true, powerPreference: "high-performance" });
+            if (!gl) {
+                console.warn("WebGL not supported");
+                return false;
+            }
+            
+            const vs = gl.createShader(gl.VERTEX_SHADER);
+            gl.shaderSource(vs, vsSource);
+            gl.compileShader(vs);
+            const fs = gl.createShader(gl.FRAGMENT_SHADER);
+            gl.shaderSource(fs, fsSource);
+            gl.compileShader(fs);
+            program = gl.createProgram();
+            gl.attachShader(program, vs);
+            gl.attachShader(program, fs);
+            gl.linkProgram(program);
+            gl.useProgram(program);
+            
+            const vertices = new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]);
+            const buffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+            gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+            const posLoc = gl.getAttribLocation(program, "position");
+            gl.enableVertexAttribArray(posLoc);
+            gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+            
+            uniformResLoc = gl.getUniformLocation(program, "u_resolution");
+            uniformGlassDistortionLoc = gl.getUniformLocation(program, "u_glassDistortion");
+            uniformGridDensityLoc = gl.getUniformLocation(program, "u_gridDensity");
+            
+            for (let i = 0; i < BLOB_COUNT; i++) {
+                uniformPos.push(gl.getUniformLocation(program, `u_blobPos[${i}]`));
+                uniformRadii.push(gl.getUniformLocation(program, `u_blobRadii[${i}]`));
+                uniformColor.push(gl.getUniformLocation(program, `u_blobColor[${i}]`));
+            }
+            return true;
+        }
+        
+        function applyAndDraw(composition) {
+            if (!gl || !program || !composition) return;
+            const w = gl.canvas.width, h = gl.canvas.height;
+            if (w === 0 || h === 0) return;
+            gl.viewport(0, 0, w, h);
+            gl.uniform2f(uniformResLoc, w, h);
+            
+            gl.uniform1f(gl.getUniformLocation(program, "u_seed"), composition.shaderSeed);
+            
+            gl.uniform1f(uniformGlassDistortionLoc, 0.045); 
+            gl.uniform1f(uniformGridDensityLoc, 42.0);    
+            
+            for (let i = 0; i < BLOB_COUNT; i++) {
+                const pos = composition.positions[i];
+                const rad = composition.radii[i];
+                const col = composition.colors[i];
+                gl.uniform2f(uniformPos[i], pos[0], pos[1]);
+                gl.uniform2f(uniformRadii[i], rad[0], rad[1]);
+                gl.uniform3f(uniformColor[i], col[0], col[1], col[2]);
+            }
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
+        }
+        
+        function getStrictVerticalDimensions() {
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            const verticalAspectBound = 9 / 16;
+            let finalRenderWidth, finalRenderHeight;
+            if ((windowWidth / windowHeight) > verticalAspectBound) {
+                finalRenderHeight = windowHeight;
+                finalRenderWidth = finalRenderHeight * verticalAspectBound;
+            } else {
+                finalRenderWidth = windowWidth;
+                finalRenderHeight = finalRenderWidth / verticalAspectBound;
+            }
+            return { width: finalRenderWidth, height: finalRenderHeight };
+        }
+        
+        function resizeCanvasAndRedraw() {
+            if (!gl || !currentComposition) return;
+            const canvas = document.getElementById("glCanvas");
+            const bounds = getStrictVerticalDimensions();
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            
+            canvas.style.width = bounds.width + "px";
+            canvas.style.height = bounds.height + "px";
+            canvas.style.top = ((window.innerHeight - bounds.height) / 2) + "px";
+            canvas.style.left = ((window.innerWidth - bounds.width) / 2) + "px";
+            
+            const newWidth = Math.floor(bounds.width * dpr);
+            const newHeight = Math.floor(bounds.height * dpr);
+            if (canvas.width !== newWidth || canvas.height !== newHeight) {
+                canvas.width = newWidth;
+                canvas.height = newHeight;
+            }
+            
+            gl.viewport(0, 0, canvas.width, canvas.height);
+            gl.uniform2f(uniformResLoc, canvas.width, canvas.height);
+            applyAndDraw(currentComposition);
+        }
+        
+        // ---------- History Management ----------
+        function updateNavButtons() {
+            const prevBtn = document.getElementById("prevBtn");
+            const nextBtn = document.getElementById("nextBtn");
+            if (prevBtn) prevBtn.classList.toggle("disabled", historyIndex <= 0);
+            if (nextBtn) nextBtn.classList.toggle("disabled", historyIndex >= historyStack.length - 1);
+        }
+        
+        function pushToHistory(composition, isNew = true) {
+            const clone = JSON.parse(JSON.stringify(composition));
+            if (isNew && historyIndex < historyStack.length - 1) {
+                historyStack = historyStack.slice(0, historyIndex + 1);
+            }
+            historyStack.push(clone);
+            if (historyStack.length > MAX_HISTORY) historyStack.shift();
+            historyIndex = historyStack.length - 1;
+            currentComposition = JSON.parse(JSON.stringify(clone));
+            applyAndDraw(currentComposition);
+            updateNavButtons();
+        }
+        
+        function goPrev() {
+            if (historyIndex > 0) {
+                historyIndex--;
+                currentComposition = JSON.parse(JSON.stringify(historyStack[historyIndex]));
+                applyAndDraw(currentComposition);
+                updateNavButtons();
+            }
+        }
+        
+        function goNext() {
+            if (historyIndex < historyStack.length - 1) {
+                historyIndex++;
+                currentComposition = JSON.parse(JSON.stringify(historyStack[historyIndex]));
+                applyAndDraw(currentComposition);
+                updateNavButtons();
+            }
+        }
+        
+        function generateAndPushNew() {
+            const newComp = generateComposition();
+            pushToHistory(newComp, true);
+        }
+        
+        // ---------- High-Res Export (1440x2560) ----------
+        function exportHighRes() {
+            if (!currentComposition) return;
+            const downloadBtn = document.getElementById("downloadBtn");
+            if (downloadBtn) downloadBtn.innerText = "•••";
+
+            setTimeout(() => {
+                const exportCanvas = document.getElementById("exportCanvas");
+                const targetW = 1440;
+                const targetH = 2560;
+                exportCanvas.width = targetW;
+                exportCanvas.height = targetH;
+                
+                const exportGl = exportCanvas.getContext('webgl', { preserveDrawingBuffer: true, antialias: false });
+                if (!exportGl) return;
+                
+                const vs = exportGl.createShader(exportGl.VERTEX_SHADER);
+                exportGl.shaderSource(vs, vsSource);
+                exportGl.compileShader(vs);
+                const fs = exportGl.createShader(exportGl.FRAGMENT_SHADER);
+                exportGl.shaderSource(fs, fsSource);
+                exportGl.compileShader(fs);
+                const prog = exportGl.createProgram();
+                exportGl.attachShader(prog, vs);
+                exportGl.attachShader(prog, fs);
+                exportGl.linkProgram(prog);
+                exportGl.useProgram(prog);
+                
+                const verts = new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]);
+                const buf = exportGl.createBuffer();
+                exportGl.bindBuffer(exportGl.ARRAY_BUFFER, buf);
+                exportGl.bufferData(exportGl.ARRAY_BUFFER, verts, exportGl.STATIC_DRAW);
+                const posLoc = exportGl.getAttribLocation(prog, "position");
+                exportGl.enableVertexAttribArray(posLoc);
+                exportGl.vertexAttribPointer(posLoc, 2, exportGl.FLOAT, false, 0, 0);
+                
+                const resLoc = exportGl.getUniformLocation(prog, "u_resolution");
+                const glassDistLoc = exportGl.getUniformLocation(prog, "u_glassDistortion");
+                const gridDensLoc = exportGl.getUniformLocation(prog, "u_gridDensity");
+                
+                exportGl.uniform1f(exportGl.getUniformLocation(prog, "u_seed"), currentComposition.shaderSeed);
+                
+                const posLocs = [], radLocs = [], colLocs = [];
+                for (let i = 0; i < BLOB_COUNT; i++) {
+                    posLocs.push(exportGl.getUniformLocation(prog, `u_blobPos[${i}]`));
+                    radLocs.push(exportGl.getUniformLocation(prog, `u_blobRadii[${i}]`));
+                    colLocs.push(exportGl.getUniformLocation(prog, `u_blobColor[${i}]`));
+                }
+                
+                exportGl.viewport(0, 0, targetW, targetH);
+                exportGl.uniform2f(resLoc, targetW, targetH);
+                
+                exportGl.uniform1f(glassDistLoc, 0.045);
+                exportGl.uniform1f(gridDensLoc, 42.0);
+                
+                for (let i = 0; i < BLOB_COUNT; i++) {
+                    exportGl.uniform2f(posLocs[i], currentComposition.positions[i][0], currentComposition.positions[i][1]);
+                    exportGl.uniform2f(radLocs[i], currentComposition.radii[i][0], currentComposition.radii[i][1]);
+                    exportGl.uniform3f(colLocs[i], currentComposition.colors[i][0], currentComposition.colors[i][1], currentComposition.colors[i][2]);
+                }
+                exportGl.drawArrays(exportGl.TRIANGLES, 0, 6);
+                
+                const link = document.createElement('a');
+                link.download = `glass_dots_${Date.now()}.jpg`;
+                link.href = exportCanvas.toDataURL('image/jpeg', 0.92);
+                link.click();
+                exportGl.deleteProgram(prog);
+
+                if (downloadBtn) downloadBtn.innerText = "↓ DOWNLOAD";
+            }, 50);
+        }
+        
+        // ---------- Initialization ----------
+        function init() {
+            if (!initWebGL()) {
+                console.error("WebGL init failed");
+                return;
+            }
+            
+            const initialComp = generateComposition();
+            historyStack = [JSON.parse(JSON.stringify(initialComp))];
+            historyIndex = 0;
+            currentComposition = JSON.parse(JSON.stringify(initialComp));
+            
+            resizeCanvasAndRedraw();
+            updateNavButtons();
+            
+            const makeBtn = document.getElementById("makeBtn");
+            const downloadBtn = document.getElementById("downloadBtn");
+            const prevBtn = document.getElementById("prevBtn");
+            const nextBtn = document.getElementById("nextBtn");
+            
+            if (makeBtn) makeBtn.addEventListener('click', () => {
+                playClickSound('standard');
+                generateAndPushNew();
+            });
+            if (downloadBtn) downloadBtn.addEventListener('click', () => {
+                playClickSound('standard');
+                exportHighRes();
+            });
+            if (prevBtn) prevBtn.addEventListener('click', () => {
+                playClickSound('standard');
+                goPrev();
+            });
+            if (nextBtn) nextBtn.addEventListener('click', () => {
+                playClickSound('standard');
+                goNext();
+            });
+            
+            window.addEventListener('resize', () => {
+                resizeCanvasAndRedraw();
+            });
+            window.addEventListener('orientationchange', () => {
+                setTimeout(() => resizeCanvasAndRedraw(), 20);
+            });
+            
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden && currentComposition) {
+                    applyAndDraw(currentComposition);
+                }
+            });
+
+            // Automatically auto-scrolls the active tab component directly to the horizontal center alignment context window
+            const activeTab = document.querySelector(".hub-tab.active");
+            if (activeTab) {
+                activeTab.scrollIntoView({ behavior: "auto", inline: "center", block: "nearest" });
+            }
+        }
+        
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
