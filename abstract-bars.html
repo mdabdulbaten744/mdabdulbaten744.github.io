@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Callistra | Abstract Bars</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: #000000;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Anton', sans-serif;
+            letter-spacing: 0.02em;
+        }
+
+        /* Main canvas — fills screen with strict 9:16 vertical aspect */
+        #mainCanvas {
+            position: fixed;
+            z-index: 1;
+            display: block;
+            box-shadow: 0 0 40px rgba(0,0,0,0.4);
+        }
+
+        /* PREV / NEXT — premium glass morphism design */
+        .nav-container {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 18px;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .nav-btn {
+            pointer-events: auto;
+            width: 56px;
+            height: 56px;
+            border-radius: 60px;
+            background: rgba(255, 255, 255, 0.28);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: #1a1a1e;
+            font-size: 32px;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            font-family: 'Anton', sans-serif;
+            line-height: 1;
+        }
+
+        .nav-btn:active {
+            transform: scale(0.96);
+            background: rgba(255, 255, 255, 0.45);
+        }
+
+        .nav-btn.disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* BOTTOM ACTION BUTTONS — glass morphism design */
+        .action-bar {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 16px;
+            z-index: 30;
+            width: auto;
+            max-width: 90%;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .glass-btn {
+            pointer-events: auto;
+            background: rgba(255, 255, 255, 0.28);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 60px;
+            padding: 14px 28px;
+            font-size: 20px;
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            color: #1a1a1e;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            white-space: nowrap;
+            font-family: 'Anton', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .glass-btn:active {
+            transform: scale(0.96);
+            background: rgba(255, 255, 255, 0.45);
+        }
+
+        /* Global Hub Header - Horizontal Tab Switcher */
+        .hub-navigation {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10000; /* Stays securely above all background canvas apps */
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 6px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            max-width: 95%;
+            
+            /* Core scrolling logic */
+            overflow-x: auto;
+            scrollbar-width: none; /* Hide default scrollbars for Firefox */
+        }
+
+        /* Hide default scrollbars for Chrome, Safari, and Opera */
+        .hub-navigation::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Tab Layout Styling */
+        .hub-tab {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-family: 'Anton', sans-serif;
+            font-size: 13px;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            white-space: nowrap; /* Ensures buttons don't wrap to a new line */
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+
+            /* FIXES THE UI GLITCH: Force removes default browser focus box/rectangles */
+            outline: none !important;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        /* Explicitly targets the clicked/active state to ensure no layout box appears */
+        .hub-tab:focus, 
+        .hub-tab:active,
+        .hub-tab:focus-visible {
+            outline: none !important;
+            box-shadow: none;
+        }
+
+        /* Hover Feedback */
+        .hub-tab:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Active Visual State (Restores custom box-shadow styling ONLY when the tab is explicitly active) */
+        .hub-tab.active {
+            background: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(255,255,255,0.2);
+            outline: none !important;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .hub-navigation {
+                top: 12px;
+                padding: 4px;
+            }
+            .hub-tab {
+                padding: 6px 12px;
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .glass-btn {
+                padding: 12px 20px;
+                font-size: 17px;
+            }
+            .nav-btn {
+                width: 48px;
+                height: 48px;
+                font-size: 28px;
+            }
+            .action-bar {
+                gap: 12px;
+                bottom: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hub-navigation">
+        <button class="hub-tab" onclick="navigateStudio('index.html')">1. Vibrant Gradients</button>
+        <button class="hub-tab active" onclick="navigateStudio('abstract-bars.html')">2. Abstract Bars</button>
+        <button class="hub-tab" onclick="navigateStudio('gradient-blob.html')">3. Gradient Blob</button>
+        <button class="hub-tab" onclick="navigateStudio('biostyle-blobs.html')">4. Biostyle Blobs</button>
+        <button class="hub-tab" onclick="navigateStudio('vertical-overlays.html')">5. Vertical Overlays</button>
+        <button class="hub-tab" onclick="navigateStudio('abstract-smokes.html')">6. Abstract Smokes</button>
+        <button class="hub-tab" onclick="navigateStudio('glass-dots.html')">7. Glass Dots</button>
+        <button class="hub-tab" onclick="navigateStudio('advanced-gradients.html')">8. Advanced Gradients</button>
+    </div>
+
+    <canvas id="mainCanvas"></canvas>
+
+    <div class="nav-container">
+        <button class="nav-btn" id="prevBtn" aria-label="Previous color">&lt;</button>
+        <button class="nav-btn" id="nextBtn" aria-label="Next color">&gt;</button>
+    </div>
+
+    <div class="action-bar">
+        <button class="glass-btn" id="makeBtn">/ MAKE</button>
+        <button class="glass-btn" id="downloadBtn">↓ DOWNLOAD</button>
+    </div>
+
+    <script>
+        // --------------------------------------------------------------
+        //  ADVANCED WEBGL MULTI-STACKED BLUR COMPOSITING ENGINE
+        //  With integrated 6% Gaussian Monochromatic Noise Engine
+        // --------------------------------------------------------------
+
+        // ---------- Web Audio API Setup ----------
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playClickSound(mode = 'standard') {
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                const now = ctx.currentTime;
+                
+                if (mode === 'standard') {
+                    // Crisp, subtle electronic UI click reward
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now); // C5 note
+                    osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.06); // Sweep up to C6
+                    
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+                    
+                    osc.start(now);
+                    osc.stop(now + 0.06);
+                } else if (mode === 'random') {
+                    // Generates completely unique retro-synthetic properties each click
+                    const waveTypes = ['sine', 'triangle', 'square', 'sawtooth'];
+                    osc.type = waveTypes[Math.floor(Math.random() * waveTypes.length)];
+                    
+                    const startFreq = 180 + Math.random() * 750;
+                    const endFreq = 200 + Math.random() * 1200;
+                    const duration = 0.06 + Math.random() * 0.16;
+                    
+                    osc.frequency.setValueAtTime(startFreq, now);
+                    osc.frequency.exponentialRampToValueAtTime(endFreq, now + duration);
+                    
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+                    
+                    osc.start(now);
+                    osc.stop(now + duration);
+                }
+            } catch (e) {
+                console.warn("Audio Context could not initialize safely:", e);
+            }
+        }
+
+        // Dedicated link redirection logic with audio engine activation feedback
+        function navigateStudio(url) {
+            playClickSound('standard');
+            setTimeout(() => {
+                window.location.href = url;
+            }, 70);
+        }
+
+        // ----- GLSL Shader Source Layouts -----
+        const vsSource = `
+            attribute vec2 position;
+            varying vec2 vUv;
+            void main() {
+                vUv = position * 0.5 + 0.5;
+                gl_Position = vec4(position, 0.0, 1.0);
+            }
+        `;
+
+        const fsSource = `
+            precision highp float;
+            varying vec2 vUv;
+
+            uniform vec2 u_lineA[3];
+            uniform vec2 u_lineB[3];
+            uniform float u_curveAmp[3];
+            uniform float u_baseWidth[3];
+            uniform float u_feather[3];
+            uniform float u_gradAngle[3];
+            uniform int u_lineCount;
+            uniform float u_aspect;
+            uniform float u_seed;
+            uniform vec3 u_palette[5];
+
+            // Evaluates an elegant, narrow Gaussian spatial stroke profile
+            float getFeatheredStroke(vec2 uvRes, vec2 aRes, vec2 bRes, float amp, float width, float feather) {
+                vec2 ba = bRes - aRes;
+                vec2 pa = uvRes - aRes;
+                float t = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
+                
+                vec2 n = normalize(vec2(-ba.y, ba.x));
+                float travelProfile = sin(t * 3.14159265);
+                vec2 curveOffset = n * amp * travelProfile;
+                
+                float dist = length(uvRes - (mix(aRes, bRes, t) + curveOffset));
+                float dynamicWidth = width * (0.35 + 0.65 * travelProfile);
+                
+                return smoothstep(dynamicWidth + feather, dynamicWidth, dist);
+            }
+
+            // Synthesizes a layered, high-density motion-blurred path
+            vec2 getStrokeData(vec2 uv, vec2 a, vec2 b, float amp, float width, float feather) {
+                vec2 uvRes = vec2(uv.x * u_aspect, uv.y);
+                vec2 aRes = vec2(a.x * u_aspect, a.y);
+                vec2 bRes = vec2(b.x * u_aspect, b.y);
+
+                // Geometric angle generation for seamless motion trails
+                float angle = fract(sin(dot(aRes + bRes, vec2(12.9898, 78.233))) * 43758.5453) * 6.2831853;
+                vec2 dir = vec2(cos(angle), sin(angle));
+
+                // 1. Process directional motion blur tracking loop over a Gaussian profile
+                float motionGlow = 0.0;
+                const int SAMPLES = 16;
+                for (int i = 0; i < SAMPLES; i++) {
+                    float offset = (float(i) / 15.0 - 0.5) * feather * 3.5;
+                    vec2 sampleUV = uvRes + dir * offset;
+                    motionGlow += getFeatheredStroke(sampleUV, aRes, bRes, amp, width, feather * 0.75);
+                }
+                motionGlow /= 16.0;
+
+                // 2. STACK MULTIPLE LAYERS ("Copy & Paste several times" to amplify opacity over 200%)
+                float layer1 = clamp(motionGlow * 3.0, 0.0, 1.0);
+                float layer2 = layer1;
+                float layer3 = layer1;
+                
+                // Composite the layers on top of each other
+                float accumulatedAlpha = layer1;
+                accumulatedAlpha = accumulatedAlpha + layer2 * (1.0 - accumulatedAlpha);
+                accumulatedAlpha = accumulatedAlpha + layer3 * (1.0 - accumulatedAlpha);
+
+                // 3. Structural shadow isolation map for rich background depth breaks
+                vec2 ba = bRes - aRes;
+                vec2 pa = uvRes - aRes;
+                float t = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
+                vec2 n = normalize(vec2(-ba.y, ba.x));
+                float travelProfile = sin(t * 3.14159265);
+                vec2 curveOffset = n * amp * travelProfile;
+                float dist = length(uvRes - (mix(aRes, bRes, t) + curveOffset));
+                float dynamicWidth = width * (0.35 + 0.65 * travelProfile);
+                
+                float shadowAlpha = smoothstep(dynamicWidth + feather * 2.5, dynamicWidth, dist);
+                
+                return vec2(accumulatedAlpha, shadowAlpha);
+            }
+
+            // Gaussian random generator (Box-Muller) producing monochromatic noise with 6% intensity
+            float gaussianNoise(vec2 uv, float seed) {
+                float r1 = fract(sin(dot(uv * 12.9898 + vec2(seed, 47.2943), vec2(37.719, 78.233))) * 43758.5453);
+                float r2 = fract(sin(dot(uv * 31.3498 + vec2(seed * 1.234, 983.212), vec2(17.982, 47.123))) * 28734.8912);
+                r1 = clamp(r1, 0.0001, 0.9999);
+                float gauss = sqrt(-2.0 * log(r1)) * cos(6.28318 * r2);
+                return gauss * 0.06;
+            }
+
+            void main() {
+                vec3 finalColor = vec3(0.0);
+                vec2 uvRes = vec2(vUv.x * u_aspect, vUv.y);
+                vec2 centerRes = vec2(0.5 * u_aspect, 0.5);
+                
+                // Layer 1 (Base Stroke)
+                if (u_lineCount >= 1) {
+                    vec2 stroke0 = getStrokeData(vUv, u_lineA[0], u_lineB[0], u_curveAmp[0], u_baseWidth[0], u_feather[0]);
+                    vec2 dir0 = vec2(cos(u_gradAngle[0]), sin(u_gradAngle[0]));
+                    float maxProj0 = abs(0.5 * u_aspect * dir0.x) + abs(0.5 * dir0.y);
+                    float gradT0 = clamp(dot(uvRes - centerRes, dir0) / maxProj0 * 0.5 + 0.5, 0.0, 1.0);
+                    
+                    gradT0 = smoothstep(0.0, 0.72, gradT0);
+                    finalColor = mix(finalColor, vec3(gradT0), stroke0.x);
+                }
+                
+                // Layer 2 (Overlapping Stroke with Depth Break)
+                if (u_lineCount >= 2) {
+                    vec2 stroke1 = getStrokeData(vUv, u_lineA[1], u_lineB[1], u_curveAmp[1], u_baseWidth[1], u_feather[1]);
+                    finalColor *= (1.0 - stroke1.y * 0.6);
+                    vec2 dir1 = vec2(cos(u_gradAngle[1]), sin(u_gradAngle[1]));
+                    float maxProj1 = abs(0.5 * u_aspect * dir1.x) + abs(0.5 * dir1.y);
+                    float gradT1 = clamp(dot(uvRes - centerRes, dir1) / maxProj1 * 0.5 + 0.5, 0.0, 1.0);
+                    
+                    gradT1 = smoothstep(0.0, 0.72, gradT1);
+                    finalColor = mix(finalColor, vec3(gradT1), stroke1.x);
+                }
+                
+                // Layer 3 (Top Stroke with Depth Break)
+                if (u_lineCount >= 3) {
+                    vec2 stroke2 = getStrokeData(vUv, u_lineA[2], u_lineB[2], u_curveAmp[2], u_baseWidth[2], u_feather[2]);
+                    finalColor *= (1.0 - stroke2.y * 0.6);
+                    vec2 dir2 = vec2(cos(u_gradAngle[2]), sin(u_gradAngle[2]));
+                    float maxProj2 = abs(0.5 * u_aspect * dir2.x) + abs(0.5 * dir2.y);
+                    float gradT2 = clamp(dot(uvRes - centerRes, dir2) / maxProj2 * 0.5 + 0.5, 0.0, 1.0);
+                    
+                    gradT2 = smoothstep(0.0, 0.72, gradT2);
+                    finalColor = mix(finalColor, vec3(gradT2), stroke2.x);
+                }
+                
+                // --- 6% GAUSSIAN MONOCHROMATIC NOISE OVERLAY ---
+                float noiseVal = gaussianNoise(vUv, u_seed);
+                finalColor += vec3(noiseVal);
+                finalColor = clamp(finalColor, 0.0, 1.0);
+
+                // --- 5-COLOR HARMONIOUS GRADIENT MAP OVERLAY ---
+                float t = finalColor.r;
+                vec3 mappedColor;
+                if (t < 0.25) {
+                    mappedColor = mix(u_palette[0], u_palette[1], t * 4.0);
+                } else if (t < 0.5) {
+                    mappedColor = mix(u_palette[1], u_palette[2], (t - 0.25) * 4.0);
+                } else if (t < 0.75) {
+                    mappedColor = mix(u_palette[2], u_palette[3], (t - 0.5) * 4.0);
+                } else {
+                    mappedColor = mix(u_palette[3], u_palette[4], clamp((t - 0.75) * 4.0, 0.0, 1.0));
+                }
+                finalColor = mappedColor;
+                
+                gl_FragColor = vec4(finalColor, 1.0);
+            }
+        `;
+
+        // ----- Algorithmic Vector Path Generator -----
+        function generateRandomLines() {
+            const lines = [];
+            const totalLines = Math.random() > 0.4 ? 3 : 2; 
+
+            const getBoundaryPoint = (side, variance) => {
+                if (side === 0) return { x: variance, y: -0.15 };         // Top
+                if (side === 1) return { x: 1.15, y: variance };          // Right
+                if (side === 2) return { x: variance, y: 1.15 };          // Bottom
+                return { x: -0.15, y: variance };                         // Left
+            };
+
+            for (let i = 0; i < totalLines; i++) {
+                const startSide = Math.floor(Math.random() * 4);
+                const endSide = (startSide + 2 + Math.floor(Math.random() * 1)) % 4;
+
+                const startVar = -0.1 + Math.random() * 1.2;
+                const endVar = -0.1 + Math.random() * 1.2;
+
+                const pStart = getBoundaryPoint(startSide, startVar);
+                const pEnd = getBoundaryPoint(endSide, endVar);
+
+                // --- DIRECT CORRELATION DIRECTIONAL LOGIC ---
+                // Calculate precise directional vector angle of the actual stroke
+                const strokeAngle = Math.atan2(pEnd.y - pStart.y, pEnd.x - pStart.x);
+                
+                // Enforce strict perpendicular orientation logic (offsetting path angle by exactly 90 degrees)
+                // Randomizes directionality to flow seamlessly across either left-to-right or right-to-left
+                const perpendicularDirectionFactor = Math.random() > 0.5 ? 0.5 : -0.5;
+                const gradAngle = strokeAngle + (perpendicularDirectionFactor * Math.PI);
+
+                lines.push({
+                    ax: pStart.x, ay: pStart.y,
+                    bx: pEnd.x, by: pEnd.y,
+                    curveAmp: (Math.random() - 0.5) * 0.35,  
+                    baseWidth: 0.0015 + Math.random() * 0.0035, 
+                    feather: 0.07 + Math.random() * 0.065,
+                    gradAngle: gradAngle
+                });
+            }
+            
+            // Dynamic seeding generation for the noise shader
+            lines.seed = Math.random() * 600.0;
+
+            // --- GENERATE 5-COLOR RANDOM HARMONIOUS PALETTE ---
+            const baseHue = Math.random() * 360;
+            const hueRange = 60 + Math.random() * 60; // Cohesive spread across 60-120 degrees
+            const sat = 0.55 + Math.random() * 0.30;   // Dynamic rich saturation limits
+            
+            lines.palette = [];
+            for (let i = 0; i < 5; i++) {
+                // Scale lightness flawlessly from shadow depths to striking highlights
+                const lit = 0.06 + (i * 0.21); // ~6%, 27%, 48%, 69%, 90%
+                const hue = (baseHue + (i / 4) * hueRange) % 360;
+                
+                // Structural HSL to WebGL normalize vector conversions
+                const hRad = hue / 360;
+                const q = lit < 0.5 ? lit * (1 + sat) : lit + sat - lit * sat;
+                const p = 2 * lit - q;
+                const hue2rgb = (p, q, t) => {
+                    if (t < 0) t += 1;
+                    if (t > 1) t -= 1;
+                    if (t < 1/6) return p + (q - p) * 6 * t;
+                    if (t < 1/2) return q;
+                    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                    return p;
+                };
+                lines.palette.push([
+                    hue2rgb(p, q, hRad + 1/3),
+                    hue2rgb(p, q, hRad),
+                    hue2rgb(p, q, hRad - 1/3)
+                ]);
+            }
+
+            return lines;
+        }
+
+        // ----- Structural Layout & Aspect Ratio Engine -----
+        function getStrictVerticalDimensions() {
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            const targetAspect = 9 / 16;
+            
+            let finalRenderWidth, finalRenderHeight;
+            if ((windowWidth / windowHeight) > targetAspect) {
+                finalRenderHeight = windowHeight;
+                finalRenderWidth = finalRenderHeight * targetAspect;
+            } else {
+                finalRenderWidth = windowWidth;
+                finalRenderHeight = finalRenderWidth / targetAspect;
+            }
+            return { width: finalRenderWidth, height: finalRenderHeight };
+        }
+
+        // ----- Monolithic WebGL Context Compilation & Execution Pipeline -----
+        function createShader(gl, type, source) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            return shader;
+        }
+
+        function initWebGLProgram(gl) {
+            const vs = createShader(gl, gl.VERTEX_SHADER, vsSource);
+            const fs = createShader(gl, gl.FRAGMENT_SHADER, fsSource);
+            const program = gl.createProgram();
+            gl.attachShader(program, vs);
+            gl.attachShader(program, fs);
+            gl.linkProgram(program);
+            return program;
+        }
+
+        function executeRenderPipeline(targetCanvas, width, height, lineConfig) {
+            const gl = targetCanvas.getContext("webgl", { reserveDrawingBuffer: true, antialias: true });
+            if (!gl) return;
+
+            targetCanvas.width = Math.floor(width);
+            targetCanvas.height = Math.floor(height);
+            gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+
+            const program = initWebGLProgram(gl);
+            gl.useProgram(program);
+
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+                -1, -1,  1, -1, -1,  1,
+                -1,  1,  1, -1,  1,  1,
+            ]), gl.STATIC_DRAW);
+
+            const positionLocation = gl.getAttribLocation(program, "position");
+            gl.enableVertexAttribArray(positionLocation);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+            const aspect = 9 / 16; 
+            gl.uniform1f(gl.getUniformLocation(program, "u_aspect"), aspect);
+            gl.uniform1f(gl.getUniformLocation(program, "u_seed"), lineConfig.seed || 0.0);
+            gl.uniform1i(gl.getUniformLocation(program, "u_lineCount"), lineConfig.length);
+
+            lineConfig.forEach((line, idx) => {
+                gl.uniform2f(gl.getUniformLocation(program, `u_lineA[${idx}]`), line.ax, line.ay);
+                gl.uniform2f(gl.getUniformLocation(program, `u_lineA[${idx}]`), line.ax, line.ay);
+                gl.uniform2f(gl.getUniformLocation(program, `u_lineB[${idx}]`), line.bx, line.by);
+                gl.uniform1f(gl.getUniformLocation(program, `u_curveAmp[${idx}]`), line.curveAmp);
+                gl.uniform1f(gl.getUniformLocation(program, `u_baseWidth[${idx}]`), line.baseWidth);
+                gl.uniform1f(gl.getUniformLocation(program, `u_feather[${idx}]`), line.feather);
+                gl.uniform1f(gl.getUniformLocation(program, `u_gradAngle[${idx}]`), line.gradAngle);
+            });
+
+            // Bind Palette Uniform Arrays seamlessly into the shader pipeline
+            if (lineConfig.palette) {
+                for (let i = 0; i < 5; i++) {
+                    gl.uniform3f(gl.getUniformLocation(program, `u_palette[${i}]`), lineConfig.palette[i][0], lineConfig.palette[i][1], lineConfig.palette[i][2]);
+                }
+            }
+
+            gl.clearColor(0.0, 0.0, 0.0, 1.0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, null);
+            gl.deleteBuffer(positionBuffer);
+            gl.deleteProgram(program);
+        }
+
+        // ----- Global App Architecture & State Core -----
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        let historyStack = [];      
+        let historyIndex = -1;
+        const MAX_HISTORY = 11;
+        let currentLinesConfig = [];   
+
+        const canvas = document.getElementById("mainCanvas");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const makeBtn = document.getElementById("makeBtn");
+        const downloadBtn = document.getElementById("downloadBtn");
+
+        function refreshCanvas() {
+            if (!canvas || !currentLinesConfig || currentLinesConfig.length === 0) return;
+            
+            const bounds = getStrictVerticalDimensions();
+            canvas.style.width = bounds.width + "px";
+            canvas.style.height = bounds.height + "px";
+            canvas.style.top = ((window.innerHeight - bounds.height) / 2) + "px";
+            canvas.style.left = ((window.innerWidth - bounds.width) / 2) + "px";
+            
+            const renderWidth = bounds.width * dpr;
+            const renderHeight = bounds.height * dpr;
+            
+            executeRenderPipeline(canvas, renderWidth, renderHeight, currentLinesConfig);
+        }
+
+        function updateNavButtons() {
+            if (prevBtn) prevBtn.classList.toggle("disabled", historyIndex <= 0);
+            if (nextBtn) nextBtn.classList.toggle("disabled", historyIndex >= historyStack.length - 1);
+        }
+
+        function applyStateFromHistory(index) {
+            if (index < 0 || index >= historyStack.length) return;
+            currentLinesConfig = historyStack[index];
+            historyIndex = index;
+            refreshCanvas();
+            updateNavButtons();
+        }
+
+        function addNewGenerativeState() {
+            const newConfig = generateRandomLines();
+            
+            if (historyIndex < historyStack.length - 1) {
+                historyStack = historyStack.slice(0, historyIndex + 1);
+            }
+            
+            historyStack.push(newConfig);
+            if (historyStack.length > MAX_HISTORY) historyStack.shift();
+            
+            historyIndex = historyStack.length - 1;
+            currentLinesConfig = newConfig;
+            refreshCanvas();
+            updateNavButtons();
+        }
+
+        function goPrev() {
+            if (historyIndex > 0) applyStateFromHistory(historyIndex - 1);
+        }
+        
+        function goNext() {
+            if (historyIndex < historyStack.length - 1) applyStateFromHistory(historyIndex + 1);
+        }
+
+        // ----- High-Resolution Studio Wallpaper Export Pipeline -----
+        function downloadHighRes() {
+            if (!currentLinesConfig || currentLinesConfig.length === 0) return;
+            
+            if (downloadBtn) downloadBtn.innerText = "•••";
+
+            setTimeout(() => {
+                const exportCanvas = document.createElement("canvas");
+                const targetWidth = 1440;
+                const targetHeight = 2560; 
+                
+                executeRenderPipeline(exportCanvas, targetWidth, targetHeight, currentLinesConfig);
+                
+                const link = document.createElement("a");
+                link.download = `abstract_bars_${Date.now()}.jpg`;
+                link.href = exportCanvas.toDataURL("image/jpeg", 0.96);
+                link.click();
+                exportCanvas.remove();
+
+                if (downloadBtn) downloadBtn.innerText = "↓ DOWNLOAD";
+            }, 50);
+        }
+
+        // ----- Window & Responsive Handlers -----
+        window.addEventListener("resize", () => {
+            refreshCanvas();
+        });
+        
+        window.addEventListener("orientationchange", () => {
+            setTimeout(() => refreshCanvas(), 20);
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && currentLinesConfig && currentLinesConfig.length > 0) {
+                refreshCanvas();
+            }
+        });
+
+        // ----- INITIALIZATION -----
+        function init() {
+            const initialState = generateRandomLines();
+            historyStack = [initialState];
+            historyIndex = 0;
+            currentLinesConfig = initialState;
+            
+            refreshCanvas();
+            updateNavButtons();
+            
+            if (makeBtn) {
+                makeBtn.addEventListener("click", () => {
+                    playClickSound('standard');
+                    addNewGenerativeState();
+                });
+            }
+            if (downloadBtn) {
+                downloadBtn.addEventListener("click", () => {
+                    playClickSound('standard');
+                    downloadHighRes();
+                });
+            }
+            if (prevBtn) {
+                prevBtn.addEventListener("click", () => {
+                    playClickSound('standard');
+                    goPrev();
+                });
+            }
+            if (nextBtn) {
+                nextBtn.addEventListener("click", () => {
+                    playClickSound('standard');
+                    goNext();
+                });
+            }
+        }
+        
+        init();
+    </script>
+</body>
+</html>
