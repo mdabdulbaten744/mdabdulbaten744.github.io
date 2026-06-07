@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Callistra | Biostyle Blobs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: #000000;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Anton', sans-serif;
+            letter-spacing: 0.02em;
+        }
+
+        /* Global Hub Header - Horizontal Tab Switcher */
+        .hub-navigation {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10000;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 6px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            max-width: 95%;
+            overflow-x: auto;
+            scrollbar-width: none;
+            scroll-behavior: smooth;
+        }
+
+        .hub-navigation::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hub-tab {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-family: 'Anton', sans-serif;
+            font-size: 13px;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            outline: none !important;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .hub-tab:focus, 
+        .hub-tab:active,
+        .hub-tab:focus-visible {
+            outline: none !important;
+            box-shadow: none;
+        }
+
+        .hub-tab:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .hub-tab.active {
+            background: #ffffff;
+            color: #000000;
+            border-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+            outline: none !important;
+        }
+
+        /* Canvas Layout */
+        #glCanvas {
+            position: fixed;
+            z-index: 1;
+            box-shadow: 0 0 40px rgba(0,0,0,0.5);
+            display: block;
+        }
+
+        /* PREV / NEXT Buttons */
+        .nav-container {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 18px;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .nav-btn {
+            pointer-events: auto;
+            width: 56px;
+            height: 56px;
+            border-radius: 60px;
+            background: rgba(255, 255, 255, 0.28);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            color: #1a1a1e;
+            font-size: 32px;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            font-family: 'Anton', sans-serif;
+            line-height: 1;
+            text-align: center;
+        }
+
+        .nav-btn:active {
+            transform: scale(0.96);
+            background: rgba(255, 255, 255, 0.45);
+        }
+
+        .nav-btn.disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        /* Bottom Action Bar */
+        .action-bar {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 16px;
+            z-index: 30;
+            width: auto;
+            max-width: 90%;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .glass-btn {
+            pointer-events: auto;
+            background: rgba(255, 255, 255, 0.28);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 60px;
+            padding: 14px 28px;
+            font-size: 20px;
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            color: #1a1a1e;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            white-space: nowrap;
+            font-family: 'Anton', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .glass-btn:active {
+            transform: scale(0.96);
+            background: rgba(255, 255, 255, 0.45);
+        }
+
+        @media (max-width: 600px) {
+            .hub-navigation {
+                top: 12px;
+                padding: 4px;
+            }
+            .hub-tab {
+                padding: 6px 12px;
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .glass-btn {
+                padding: 12px 20px;
+                font-size: 17px;
+            }
+            .nav-btn {
+                width: 48px;
+                height: 48px;
+                font-size: 28px;
+            }
+            .action-bar {
+                gap: 12px;
+                bottom: 24px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .glass-btn, .nav-btn {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hub-navigation">
+        <button class="hub-tab" onclick="navigateStudio('index.html')">1. Vibrant Gradients</button>
+        <button class="hub-tab" onclick="navigateStudio('abstract-bars.html')">2. Abstract Bars</button>
+        <button class="hub-tab" onclick="navigateStudio('gradient-blob.html')">3. Gradient Blob</button>
+        <button class="hub-tab active" onclick="navigateStudio('biostyle-blobs.html')">4. Biostyle Blobs</button>
+        <button class="hub-tab" onclick="navigateStudio('vertical-overlays.html')">5. Vertical Overlays</button>
+        <button class="hub-tab" onclick="navigateStudio('abstract-smokes.html')">6. Abstract Smokes</button>
+        <button class="hub-tab" onclick="navigateStudio('glass-dots.html')">7. Glass Dots</button>
+        <button class="hub-tab" onclick="navigateStudio('advanced-gradients.html')">8. Advanced Gradients</button>
+    </div>
+
+    <canvas id="glCanvas"></canvas>
+
+    <div class="nav-container">
+        <button class="nav-btn" id="prevBtn">&lt;</button>
+        <button class="nav-btn" id="nextBtn">&gt;</button>
+    </div>
+
+    <div class="action-bar">
+        <button class="glass-btn" id="makeBtn">/ MAKE</button>
+        <button class="glass-btn" id="downloadBtn">↓ DOWNLOAD</button>
+    </div>
+
+    <script>
+        // ---------- Web Audio API Synthesizer Engine (Copied from Grad3) ----------
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playClickSound(mode = 'standard') {
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                const now = ctx.currentTime;
+                
+                if (mode === 'standard') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.06);
+                    
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+                    
+                    osc.start(now);
+                    osc.stop(now + 0.06);
+                } else if (mode === 'random') {
+                    const waveTypes = ['sine', 'triangle', 'square', 'sawtooth'];
+                    osc.type = waveTypes[Math.floor(Math.random() * waveTypes.length)];
+                    
+                    const startFreq = 180 + Math.random() * 750;
+                    const endFreq = 200 + Math.random() * 1200;
+                    const duration = 0.06 + Math.random() * 0.16;
+                    
+                    osc.frequency.setValueAtTime(startFreq, now);
+                    osc.frequency.exponentialRampToValueAtTime(endFreq, now + duration);
+                    
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+                    
+                    osc.start(now);
+                    osc.stop(now + duration);
+                }
+            } catch (e) {
+                console.warn("Audio Context could not initialize safely:", e);
+            }
+        }
+
+        function navigateStudio(url) {
+            playClickSound('standard');
+            setTimeout(() => {
+                window.location.href = url;
+            }, 70);
+        }
+
+        // --------------------------------------------------------------
+        //  WEBGL SHADERS — RESTORED 5-STAGE GRADIENT ENGINE WITH NOISE
+        // --------------------------------------------------------------
+        const vsSource = `
+            attribute vec2 position;
+            varying vec2 vUv;
+            void main() {
+                vUv = position * 0.5 + 0.5;
+                vUv.y = 1.0 - vUv.y;
+                gl_Position = vec4(position, 0.0, 1.0);
+            }
+        `;
+
+        const fsSource = `
+            precision highp float;
+            varying vec2 vUv;
+            uniform vec2 u_resolution;
+            uniform vec2 u_c0;
+            uniform vec2 u_c1;
+            uniform vec2 u_c2;
+            uniform vec2 u_c3;
+
+            // Restored 5-Stage Premium Gradient Architecture Uniforms
+            uniform vec3 u_color0;
+            uniform vec3 u_color1;
+            uniform vec3 u_color2;
+            uniform vec3 u_color3;
+            uniform vec3 u_color4;
+            uniform float u_seed;
+
+            // Box-Muller Gaussian Monochromatic Noise Generator (6% Standard Deviation)
+            float gaussianNoise(vec2 uv, float seed) {
+                float r1 = fract(sin(dot(uv * 12.9898 + vec2(seed, 47.2943), vec2(37.719, 78.233))) * 43758.5453);
+                float r2 = fract(sin(dot(uv * 31.3498 + vec2(seed * 1.234, 983.212), vec2(17.982, 47.123))) * 28734.8912);
+                r1 = clamp(r1, 0.0001, 0.9999);
+                float gauss = sqrt(-2.0 * log(r1)) * cos(6.28318 * r2);
+                return gauss * 0.06;
+            }
+
+            // Sequential Branchless Mapping Matrix 
+            vec3 evaluateGradientMap(float maskValue) {
+                float t1 = clamp((maskValue - 0.00) / 0.25, 0.0, 1.0);
+                float t2 = clamp((maskValue - 0.25) / 0.25, 0.0, 1.0);
+                float t3 = clamp((maskValue - 0.50) / 0.25, 0.0, 1.0);
+                float t4 = clamp((maskValue - 0.75) / 0.25, 0.0, 1.0);
+                
+                vec3 mappedColor = mix(u_color0, u_color1, t1);
+                mappedColor = mix(mappedColor, u_color2, t2);
+                mappedColor = mix(mappedColor, u_color3, t3);
+                mappedColor = mix(mappedColor, u_color4, t4);
+                return mappedColor;
+            }
+
+            void main() {
+                vec2 st = vUv;
+                float aspect = u_resolution.x / u_resolution.y;
+                st.x *= aspect;
+
+                float radius = 0.14; 
+                float blur = radius * 0.3;
+                
+                float d0 = distance(st, u_c0);
+                float d1 = distance(st, u_c1);
+                float d2 = distance(st, u_c2);
+                float d3 = distance(st, u_c3);
+
+                float w0 = smoothstep(radius + blur, radius - blur, d0);
+                float w1 = smoothstep(radius + blur, radius - blur, d1);
+                float w2 = smoothstep(radius + blur, radius - blur, d2);
+                float w3 = smoothstep(radius + blur, radius - blur, d3);
+
+                float compositionMask = clamp(w0 + w1 + w2 + w3, 0.0, 1.0);
+                vec3 finalColor = evaluateGradientMap(compositionMask);
+                
+                // Inject structural Monochromatic Noise Overlay
+                float noiseVal = gaussianNoise(vUv, u_seed);
+                finalColor.rgb += vec3(noiseVal);
+                
+                finalColor = clamp(finalColor, 0.0, 1.0);
+                gl_FragColor = vec4(finalColor, 1.0);
+            }
+        `;
+
+        function hslToRgb(h, s, l) {
+            s /= 100;
+            l /= 100;
+            let c = (1 - Math.abs(2 * l - 1)) * s;
+            let x = c * (1 - Math.abs((h / 60) % 2 - 1));
+            let m = l - c / 2;
+            let r = 0, g = 0, b = 0;
+            if (0 <= h && h < 60) { r = c; g = x; b = 0; }
+            else if (60 <= h && h < 120) { r = x; g = c; b = 0; }
+            else if (120 <= h && h < 180) { r = 0; g = c; b = x; }
+            else if (180 <= h && h < 240) { r = 0; g = x; b = c; }
+            else if (240 <= h && h < 300) { r = x; g = 0; b = c; }
+            else if (300 <= h && h < 360) { r = c; g = 0; b = x; }
+            return { r: r + m, g: g + m, b: b + m };
+        }
+
+        // --------------------------------------------------------------
+        //  ARTISTIC HARMONY PALETTE ENGINE
+        // --------------------------------------------------------------
+        function generateHarmonicPalette() {
+            const aspect = 9 / 16;
+            const randRange = (min, max) => min + Math.random() * (max - min);
+            
+            let c0 = {x:0, y:0}, c1 = {x:0, y:0}, c2 = {x:0, y:0}, c3 = {x:0, y:0};
+            
+            const flipVertical = Math.random() > 0.5;
+            const group1MinY = flipVertical ? 0.62 : 0.20;
+            const group1MaxY = flipVertical ? 0.80 : 0.38;
+            const group2MinY = flipVertical ? 0.20 : 0.62;
+            const group2MaxY = flipVertical ? 0.38 : 0.80;
+            
+            c0.y = randRange(group1MinY, group1MaxY);
+            c0.x = randRange(0.18, aspect - 0.18);
+            
+            let ang1 = Math.random() * Math.PI * 2;
+            let dist1 = randRange(0.15, 0.23); 
+            c1.x = c0.x + Math.cos(ang1) * dist1;
+            c1.y = c0.y + Math.sin(ang1) * dist1;
+            
+            c2.y = randRange(group2MinY, group2MaxY);
+            c2.x = randRange(0.18, aspect - 0.18);
+            
+            let ang3 = Math.random() * Math.PI * 2;
+            let dist3 = randRange(0.15, 0.23); 
+            c3.x = c2.x + Math.cos(ang3) * dist3;
+            c3.y = c2.y + Math.sin(ang3) * dist3;
+            
+            const clampX = (v) => Math.max(0.12, Math.min(aspect - 0.12, v));
+            const clampY = (v) => Math.max(0.12, Math.min(0.88, v));
+
+            const baseHue = Math.random() * 360;
+            const maximumHarmonicArc = 85; 
+            const getHarmoniousStepHue = (fraction) => {
+                return (baseHue + (fraction * maximumHarmonicArc) + 360) % 360;
+            };
+
+            const randomShaderSeed = Math.random() * 800.0;
+
+            return {
+                c0: { x: clampX(c0.x), y: clampY(c0.y) },
+                c1: { x: clampX(c1.x), y: clampY(c1.y) },
+                c2: { x: clampX(c2.x), y: clampY(c2.y) },
+                c3: { x: clampX(c3.x), y: clampY(c3.y) },
+                
+                color0: hslToRgb(baseHue, 45 + Math.random() * 15, 8 + Math.random() * 4), 
+                color1: hslToRgb(getHarmoniousStepHue(0.25), 55 + Math.random() * 15, 24 + Math.random() * 6),
+                color2: hslToRgb(getHarmoniousStepHue(0.50), 65 + Math.random() * 15, 46 + Math.random() * 8),
+                color3: hslToRgb(getHarmoniousStepHue(0.75), 75 + Math.random() * 10, 68 + Math.random() * 5),
+                color4: hslToRgb(getHarmoniousStepHue(1.00), 82 + Math.random() * 13, 85 + Math.random() * 5), 
+                
+                shaderSeed: randomShaderSeed
+            };
+        }
+        
+        // --------------------------------------------------------------
+        //  WEBGL RENDER ENGINE
+        // --------------------------------------------------------------
+        function drawToCanvas(canvas, width, height, pipeline) {
+            if (!pipeline) return;
+            canvas.width = Math.floor(width);
+            canvas.height = Math.floor(height);
+            const gl = canvas.getContext("webgl", { preserveDrawingBuffer: true, antialias: true, powerPreference: "high-performance" });
+            if (!gl) return;
+            
+            const vs = gl.createShader(gl.VERTEX_SHADER);
+            gl.shaderSource(vs, vsSource);
+            gl.compileShader(vs);
+            const fs = gl.createShader(gl.FRAGMENT_SHADER);
+            gl.shaderSource(fs, fsSource);
+            gl.compileShader(fs);
+            const prog = gl.createProgram();
+            gl.attachShader(prog, vs);
+            gl.attachShader(prog, fs);
+            gl.linkProgram(prog);
+            gl.useProgram(prog);
+            
+            const vertices = new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]);
+            const buf = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+            gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+            const posLoc = gl.getAttribLocation(prog, "position");
+            gl.enableVertexAttribArray(posLoc);
+            gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+            
+            gl.uniform2f(gl.getUniformLocation(prog, "u_resolution"), canvas.width, canvas.height);
+            gl.uniform2f(gl.getUniformLocation(prog, "u_c0"), pipeline.c0.x, pipeline.c0.y);
+            gl.uniform2f(gl.getUniformLocation(prog, "u_c1"), pipeline.c1.x, pipeline.c1.y);
+            gl.uniform2f(gl.getUniformLocation(prog, "u_c2"), pipeline.c2.x, pipeline.c2.y);
+            gl.uniform2f(gl.getUniformLocation(prog, "u_c3"), pipeline.c3.x, pipeline.c3.y);
+
+            gl.uniform3f(gl.getUniformLocation(prog, "u_color0"), pipeline.color0.r, pipeline.color0.g, pipeline.color0.b);
+            gl.uniform3f(gl.getUniformLocation(prog, "u_color1"), pipeline.color1.r, pipeline.color1.g, pipeline.color1.b);
+            gl.uniform3f(gl.getUniformLocation(prog, "u_color2"), pipeline.color2.r, pipeline.color2.g, pipeline.color2.b);
+            gl.uniform3f(gl.getUniformLocation(prog, "u_color3"), pipeline.color3.r, pipeline.color3.g, pipeline.color3.b);
+            gl.uniform3f(gl.getUniformLocation(prog, "u_color4"), pipeline.color4.r, pipeline.color4.g, pipeline.color4.b);
+            gl.uniform1f(gl.getUniformLocation(prog, "u_seed"), pipeline.shaderSeed);
+            
+            gl.viewport(0, 0, canvas.width, canvas.height);
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
+        }
+        
+        function getStrictVerticalDimensions() {
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            const targetAspect = 9 / 16;
+            
+            let finalRenderWidth, finalRenderHeight;
+            
+            if ((windowWidth / windowHeight) > targetAspect) {
+                finalRenderHeight = windowHeight;
+                finalRenderWidth = finalRenderHeight * targetAspect;
+            } else {
+                finalRenderWidth = windowWidth;
+                finalRenderHeight = finalRenderWidth / targetAspect;
+            }
+            return { width: finalRenderWidth, height: finalRenderHeight };
+        }
+
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        
+        let currentPipeline = null;
+        let historyStack = [];
+        let historyIndex = -1;
+        const MAX_HISTORY = 11;
+        
+        function refreshCanvas() {
+            if (!currentPipeline) return;
+            const canvas = document.getElementById("glCanvas");
+            const bounds = getStrictVerticalDimensions();
+            
+            canvas.style.width = bounds.width + "px";
+            canvas.style.height = bounds.height + "px";
+            canvas.style.top = ((window.innerHeight - bounds.height) / 2) + "px";
+            canvas.style.left = ((window.innerWidth - bounds.width) / 2) + "px";
+            
+            const renderWidth = bounds.width * dpr;
+            const renderHeight = bounds.height * dpr;
+            drawToCanvas(canvas, renderWidth, renderHeight, currentPipeline);
+        }
+        
+        function updateNavButtons() {
+            const prev = document.getElementById("prevBtn");
+            const next = document.getElementById("nextBtn");
+            if (prev) prev.classList.toggle("disabled", historyIndex <= 0);
+            if (next) next.classList.toggle("disabled", historyIndex >= historyStack.length - 1);
+        }
+        
+        function applyHistory(index) {
+            if (index < 0 || index >= historyStack.length) return;
+            currentPipeline = JSON.parse(JSON.stringify(historyStack[index]));
+            historyIndex = index;
+            refreshCanvas();
+            updateNavButtons();
+        }
+        
+        function addNewArtwork() {
+            const newPipeline = generateHarmonicPalette();
+            if (historyIndex < historyStack.length - 1) {
+                historyStack = historyStack.slice(0, historyIndex + 1);
+            }
+            historyStack.push(newPipeline);
+            if (historyStack.length > MAX_HISTORY) historyStack.shift();
+            historyIndex = historyStack.length - 1;
+            currentPipeline = JSON.parse(JSON.stringify(newPipeline));
+            refreshCanvas();
+            updateNavButtons();
+        }
+        
+        function goPrev() { if (historyIndex > 0) applyHistory(historyIndex - 1); }
+        function goNext() { if (historyIndex < historyStack.length - 1) applyHistory(historyIndex + 1); }
+        
+        // --------------------------------------------------------------
+        //  HIGH-RESOLUTION EXPORT (In-Memory Processing from Grad3)
+        // --------------------------------------------------------------
+        function downloadHighRes() {
+            if (!currentPipeline) return;
+            
+            const tempCanvas = document.createElement("canvas");
+            const outputTargetW = 1440;
+            const outputTargetH = 2560;
+            
+            drawToCanvas(tempCanvas, outputTargetW, outputTargetH, currentPipeline);
+            
+            const exportAnchorLink = document.createElement("a");
+            exportAnchorLink.download = `biostyle_blobs_${Date.now()}.jpg`;
+            exportAnchorLink.href = tempCanvas.toDataURL("image/jpeg", 0.94);
+            exportAnchorLink.click();
+        }
+        
+        window.addEventListener("resize", () => { refreshCanvas(); });
+        window.addEventListener("orientationchange", () => { setTimeout(() => refreshCanvas(), 20); });
+        
+        function init() {
+            const initialArtwork = generateHarmonicPalette();
+            historyStack = [initialArtwork];
+            historyIndex = 0;
+            currentPipeline = JSON.parse(JSON.stringify(initialArtwork));
+            refreshCanvas();
+            updateNavButtons();
+            
+            document.getElementById("makeBtn").addEventListener("click", () => {
+                playClickSound('standard');
+                addNewArtwork();
+            });
+            document.getElementById("downloadBtn").addEventListener("click", () => {
+                playClickSound('standard');
+                downloadHighRes();
+            });
+            document.getElementById("prevBtn").addEventListener("click", () => {
+                playClickSound('standard');
+                goPrev();
+            });
+            document.getElementById("nextBtn").addEventListener("click", () => {
+                playClickSound('standard');
+                goNext();
+            });
+
+            const activeTab = document.querySelector(".hub-tab.active");
+            if (activeTab) {
+                activeTab.scrollIntoView({ behavior: "auto", inline: "center", block: "nearest" });
+            }
+        }
+        
+        init();
+    </script>
+</body>
+</html>
