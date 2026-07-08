@@ -2,768 +2,805 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Callistra | Vibrant Gradients</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Callistra: A private, client-side toolbox for designers. Hundreds of focused web tools that respect your privacy and time.">
+    <title>Callistra — Your most private design toolkit</title>
+    
+    <link rel="canonical" href="https://callistra.design">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://callistra.design">
+    <meta property="og:title" content="Callistra — Your most private design toolkit">
+    <meta property="og:description" content="Callistra: A private, client-side toolbox for designers. Hundreds of focused web tools that respect your privacy and time.">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://callistra.design">
+    <meta name="twitter:title" content="Callistra — Your most private design toolkit">
+    <meta name="twitter:description" content="Callistra: A private, client-side toolbox for designers. Hundreds of focused web tools that respect your privacy and time.">
 
-<meta name="description" content="Create stunning, high-resolution abstract backgrounds instantly. Callistra.design is the fastest generator for digital creators.">
-    
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Callistra",
+        "url": "https://callistra.design",
+        "description": "A private, client-side toolbox for designers. Hundreds of focused web tools that respect your privacy and time.",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "All",
+        "browserRequirements": "Requires HTML5, CSS3, and JavaScript support.",
+        "permissions": "No account or server-side data uploads required.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0.00",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Callistra",
+        "url": "https://callistra.design",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://callistra.design/tools?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+    </script>
+
     <style>
+        /* * BRAND TYPOGRAPHY SYSTEM
+         * Neo-Brutalist Black & White Aesthetics
+         */
+        :root {
+            --bg: #ffffff;
+            --text: #000000;
+            --accent-gradient: linear-gradient(90deg, #6366f1, #3b82f6);
+            --space-unit: 1rem;
+            --section-gap: 12rem;
+            --paragraph-gap: 2rem;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body {
-            background: #000;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            font-family: 'Anton', sans-serif;
-            letter-spacing: 0.02em;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* Global Hub Header - Horizontal Tab Switcher */
-        .hub-navigation {
-            position: fixed;
-            top: 16px;
-            left: 50%;
-            transform: translateX(-50%);
+        /* TYPOGRAPHY UTILITIES */
+        .sans { font-family: sans-serif; }
+        .serif { font-family: serif; font-style: italic; font-weight: 400; }
+        .mono { font-family: monospace; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.85rem; }
+
+        h1, h2, h3, h4 {
+            font-family: sans-serif;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: var(--paragraph-gap);
+        }
+
+        p {
+            font-family: sans-serif;
+            font-weight: 400;
+            font-size: 1.1rem;
+            max-width: 45ch;
+            margin-bottom: var(--paragraph-gap);
+        }
+
+        /* Editorial blocks use Serif for that 'thoughtful note' feel */
+        .editorial {
+            font-family: serif;
+            font-size: 1.25rem;
+            line-height: 1.7;
+        }
+
+        /* LAYOUT */
+        header {
+            padding: 2rem;
             display: flex;
-            gap: 8px;
-            z-index: 10000; /* Stays securely above all background canvas apps */
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 6px;
-            border-radius: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            max-width: 95%;
-            
-            /* Core scrolling logic */
-            overflow-x: auto;
-            scrollbar-width: none; /* Hide default scrollbars for Firefox */
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            z-index: 100;
         }
 
-        /* Hide default scrollbars for Chrome, Safari, and Opera */
-        .hub-navigation::-webkit-scrollbar {
-            display: none;
+        nav a {
+            font-family: sans-serif;
+            font-weight: 500;
+            text-decoration: none;
+            color: var(--text);
+            margin-left: 2rem;
+            font-size: 0.9rem;
+            position: relative;
         }
 
-        /* Tab Layout Styling */
-        .hub-tab {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.6);
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-family: 'Anton', sans-serif;
-            font-size: 13px;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-            white-space: nowrap; /* Ensures buttons don't wrap to a new line */
+        nav a:hover::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--accent-gradient);
+        }
+
+        section {
+            padding: var(--section-gap) 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            padding-top: 8rem;
+            padding-bottom: 12rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-divider {
+            height: 2px;
+            width: 60px;
+            background: var(--accent-gradient);
+            margin-bottom: 3rem;
+        }
+
+        /* BUTTONS */
+        .hero-buttons {
+            margin-top: 3rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border: 2px solid var(--text);
+            color: var(--text);
+            text-decoration: none;
+            font-family: sans-serif;
+            font-weight: 700;
             transition: all 0.2s ease;
-            text-transform: uppercase;
+        }
 
-            /* FIXES THE UI GLITCH: Force removes default browser focus box/rectangles */
-            outline: none !important;
-            -webkit-user-select: none;
+        .btn-primary:hover {
+            background: var(--text);
+            color: var(--bg);
+        }
+
+        .btn-secondary {
+            font-family: sans-serif;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            text-decoration: underline;
+        }
+
+        /* MONO BLOCKS */
+        .mono-block {
+            margin-top: 4rem;
+        }
+
+        .mono-line {
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .kbd {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--text);
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        /* RESPONSIVE LAYOUT CLASSES */
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border: 4px solid #000;
+            margin-top: 4rem;
+            background: #000;
+            gap: 4px;
+        }
+
+        .hero-box-1 {
+            background: #fff;
+            padding: 3rem;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .hero-box-2 {
+            background: #fff;
+            padding: 3rem;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-left: 4px solid #000;
+        }
+
+        .philosophy-container {
+            display: flex;
+            flex-direction: column;
+            border-left: 6px solid #000;
+            padding-left: 2rem;
+            margin-top: 4rem;
+        }
+
+        .philosophy-heading {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            line-height: 1.1;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            margin-bottom: 4rem;
+        }
+
+        .philosophy-heading span {
+            font-style: normal;
+            font-weight: 900;
+            background: #000;
+            color: #fff;
+            padding: 0 1rem;
+            font-size: clamp(1.75rem, 5vw, 3rem);
+            display: inline-block;
+        }
+
+        .philosophy-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .manifesto-box {
+            padding: 3rem;
+            background: #fff;
+        }
+
+        .speed-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 3rem;
+            margin-top: 4rem;
+            border-top: 4px solid #000;
+            padding-top: 3rem;
+        }
+
+        .speed-cpu {
+            font-size: 5rem;
+            font-weight: 900;
+            line-height: 0.8;
+            letter-spacing: -0.05em;
+            opacity: 0.15;
             user-select: none;
         }
 
-        /* Explicitly targets the clicked/active state to ensure no layout box appears */
-        .hub-tab:focus, 
-        .hub-tab:active,
-        .hub-tab:focus-visible {
-            outline: none !important;
-            box-shadow: none;
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
         }
 
-        /* Hover Feedback */
-        .hub-tab:hover {
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        /* Active Visual State (Restores custom box-shadow styling ONLY when the tab is explicitly active) */
-        .hub-tab.active {
-            background: #ffffff;
-            color: #000000;
-            border-color: #ffffff;
-            box-shadow: 0 4px 12px rgba(255,255,255,0.2);
-            outline: none !important;
-        }
-
-        #glCanvas {
-            position: fixed;
-            z-index: 1;
-            box-shadow: 0 0 40px rgba(0,0,0,0.6);
-        }
-
-        .nav-container {
-            position: fixed;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 100%;
+        .about-card {
+            border: 4px solid #000;
+            padding: 2.5rem;
+            background: #fff;
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            padding: 0 18px;
-            z-index: 20;
-            pointer-events: none;
         }
 
-        .nav-btn {
-            pointer-events: auto;
-            width: 56px;
-            height: 56px;
-            border-radius: 60px;
-            background: rgba(255, 255, 255, 0.28);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            color: #1a1a1e;
-            font-size: 32px;
-            font-weight: 400;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            font-family: 'Anton', sans-serif;
-            line-height: 1;
+        .philosophy-long-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 4rem;
+            border-top: 4px solid #000;
+            padding-top: 4rem;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .closing-box {
+            max-width: 700px;
+            margin: 4rem auto 0;
+            border: 4px dashed #000;
+            padding: 4rem 3rem;
             text-align: center;
+            position: relative;
         }
 
-        .nav-btn:active {
-            transform: scale(0.96);
-            background: rgba(255, 255, 255, 0.45);
+        /* FOOTER */
+        footer {
+            padding: 8rem 2rem 4rem;
+            border-top: 1px solid #eee;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .nav-btn.disabled {
-            opacity: 0.3;
-            pointer-events: none;
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 4rem;
         }
 
-        .action-bar {
-            position: fixed;
-            bottom: 32px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 16px;
-            z-index: 30;
-            width: auto;
-            max-width: 90%;
-            justify-content: center;
-            pointer-events: none;
+        .footer-logo {
+            font-size: 1rem;
+            margin-bottom: 2rem;
         }
 
-        .glass-btn {
-            pointer-events: auto;
-            background: rgba(255, 255, 255, 0.28);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            border-radius: 60px;
-            padding: 14px 28px;
-            font-size: 20px;
-            font-weight: 400;
-            letter-spacing: 0.04em;
-            color: #1a1a1e;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            text-align: center;
-            white-space: nowrap;
-            font-family: 'Anton', sans-serif;
-            text-transform: uppercase;
+        .footer-nav {
+            list-style: none;
         }
 
-        .glass-btn:active {
-            transform: scale(0.96);
-            background: rgba(255, 255, 255, 0.45);
+        .footer-nav li {
+            margin-bottom: 0.75rem;
         }
 
-        @media (max-width: 600px) {
-            .hub-navigation {
-                top: 12px;
-                padding: 4px;
+        .footer-nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-family: sans-serif;
+            font-size: 0.9rem;
+        }
+
+        /* RESPONSIVE BREAKPOINTS */
+        @media (max-width: 768px) {
+            :root { 
+                --section-gap: 4rem; 
             }
-            .hub-tab {
-                padding: 6px 12px;
-                font-size: 11px;
+            
+            section {
+                padding: var(--section-gap) 1.25rem;
             }
-        }
 
-        @media (max-width: 500px) {
-            .glass-btn {
-                padding: 12px 20px;
-                font-size: 17px;
+            header {
+                padding: 1.5rem 1.25rem;
             }
-            .nav-btn {
-                width: 48px;
-                height: 48px;
-                font-size: 28px;
-            }
-            .action-bar {
-                gap: 12px;
-                bottom: 24px;
-            }
-        }
 
-        #exportCanvas {
-            display: none;
+            nav { 
+                display: none; 
+            }
+
+            .hero {
+                padding-top: 4rem;
+                padding-bottom: 6rem;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-box-1, .hero-box-2 {
+                padding: 2rem 1.5rem;
+                min-height: auto;
+                gap: 2rem;
+            }
+
+            .hero-box-2 {
+                border-left: none;
+                border-top: 4px solid #000;
+            }
+
+            .philosophy-container {
+                padding-left: 1rem;
+                margin-top: 2rem;
+            }
+
+            .philosophy-heading {
+                margin-bottom: 2.5rem;
+            }
+
+            .philosophy-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+
+            .philosophy-grid p.mono {
+                transform: none !important;
+                align-self: flex-start;
+            }
+
+            .manifesto-box {
+                padding: 1.5rem;
+            }
+
+            .speed-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                margin-top: 2rem;
+                padding-top: 1.5rem;
+            }
+
+            .speed-cpu {
+                font-size: clamp(3rem, 12vw, 5rem);
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+
+            .about-card {
+                padding: 1.5rem;
+            }
+
+            .philosophy-long-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                margin-top: 2rem;
+                padding-top: 2rem;
+            }
+
+            .tech-grid { 
+                grid-template-columns: 1fr; 
+                gap: 0.5rem; 
+            }
+
+            .closing-box {
+                padding: 2.5rem 1.25rem;
+                margin-top: 2rem;
+            }
+
+            footer {
+                padding: 4rem 1.25rem 2rem;
+                gap: 2.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="hub-navigation">
-        <button class="hub-tab active" onclick="navigateStudio('index.html')">1. Vibrant Gradients</button>
-        <button class="hub-tab" onclick="navigateStudio('abstract-bars.html')">2. Abstract Bars</button>
-        <button class="hub-tab" onclick="navigateStudio('gradient-blob.html')">3. Gradient Blob</button>
-        <button class="hub-tab" onclick="navigateStudio('biostyle-blobs.html')">4. Biostyle Blobs</button>
-        <button class="hub-tab" onclick="navigateStudio('vertical-overlays.html')">5. Vertical Overlays</button>
-        <button class="hub-tab" onclick="navigateStudio('abstract-smokes.html')">6. Abstract Smokes</button>
-        <button class="hub-tab" onclick="navigateStudio('glass-dots.html')">7. Glass Dots</button>
-        <button class="hub-tab" onclick="navigateStudio('advanced-gradients.html')">8. Advanced Gradients</button>
-    </div>
 
-    <canvas id="glCanvas"></canvas>
-    <canvas id="exportCanvas"></canvas>
+    <header>
+        <a href="/" class="mono footer-logo" style="text-decoration: none; color: inherit; display: block;">callistra.design</a>
+        <nav>
+            <a href="/tools">All Tools</a>
+            <a href="/about">About</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+            <a href="/contact">Contact</a>
+            <a href="/blog">Blog</a>
+        </nav>
+    </header>
 
-    <div class="nav-container">
-        <button class="nav-btn" id="prevBtn">&lt;</button>
-        <button class="nav-btn" id="nextBtn">&gt;</button>
-    </div>
+    <main>
+        <section class="hero">
+            <h1 class="sans">A private toolbox for <span class="serif">designers.</span></h1>
+            <div class="hero-divider"></div>
+            
+            <div class="hero-grid">
+                <div class="hero-box-1">
+                    <span class="mono" style="font-size: 0.75rem; background: #000; color: #fff; padding: 0.2rem 0.5rem; align-self: flex-start;">[ INDEX / 001 ]</span>
+                    <p class="serif" style="font-size: clamp(1.8rem, 5vw, 2.2rem); line-height: 1.2; letter-spacing: -0.03em; max-width: 10ch; margin: 0; font-style: italic; font-weight: 700;">Hundreds of focused web tools.</p>
+                </div>
+                <div class="hero-box-2">
+                    <span class="mono" style="font-size: 0.75rem; opacity: 0.5;">[ CAPABILITY ]</span>
+                    <p class="sans" style="font-size: 1.1rem; line-height: 1.5; font-weight: 700; margin: 0;">Solving everyday design problems in seconds. No installation. No accounts. No uploads. Just open a tool and get back to creating.</p>
+                </div>
+            </div>
+            <div aria-hidden="true" class="mono" style="font-size: 8vw; font-weight: 900; line-height: 0.8; letter-spacing: -0.05em; transform: scaleY(1.3); margin-top: 3rem; white-space: nowrap; overflow: hidden; opacity: 0.05; user-select: none;">
+                UTILITY UTILITY UTILITY UTILITY UTILITY UTILITY
+            </div>
 
-    <div class="action-bar">
-        <button class="glass-btn" id="makeBtn">/ MAKE</button>
-        <button class="glass-btn" id="downloadBtn">↓ DOWNLOAD</button>
-    </div>
+            <div class="hero-buttons">
+                <a href="/tools" class="btn-primary">Browse Tools &rarr;</a>
+                <a href="/about" class="btn-secondary">Learn why Callistra exists</a>
+            </div>
+        </section>
 
-    <script>
-        // --------------------------------------------------------------
-        //  7 PURE VIBRANT GRADIENTS (NO WHITE, NO LIGHT PASTEL VARIANTS)
-        //  Super-saturated colors (0.92–1.0 saturation, locked vibrant lightness)
-        //  + 6% Gaussian Monochromatic Noise Layer (Box-Muller Math)
-        //  Pure black background.
-        // --------------------------------------------------------------
-        
-        // ---------- WebGL Globals ----------
-        let gl = null;
-        let program = null;
-        let uniformResLoc = null;
-        let uniformPos = [], uniformRadii = [], uniformColor = [];
-        const BLOB_COUNT = 7;
-        
-        let currentComposition = null;
-        let historyStack = [];
-        let historyIndex = -1;
-        const MAX_HISTORY = 12;
-        
-        // ---------- Web Audio API Setup ----------
-        let audioCtx = null;
+        <section>
+            <h2 class="sans">Designed to quietly fit into your <span class="serif">workflow.</span></h2>
+            <div class="philosophy-container">
+                <p class="serif philosophy-heading">
+                    The best software <span class="sans">DOESN'T ASK</span> for attention.
+                </p>
+                <div class="philosophy-grid">
+                    <p class="serif" style="font-size: 1.4rem; line-height: 1.6; max-width: 30ch; margin: 0;">It solves one problem well, then gets out of your way. Every Callistra tool is built with that philosophy.</p>
+                    <p class="mono" style="font-size: 1.1rem; line-height: 1.4; font-weight: bold; transform: rotate(1deg); border: 2px dashed #000; padding: 1.5rem; background: #fff; align-self: center;">
+                        &rarr; OPEN IT.<br>
+                        &rarr; FINISH THE TASK.<br>
+                        &rarr; KEEP CREATING.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-        function getAudioContext() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-            return audioCtx;
-        }
+        <section style="text-align: center;">
+            <div class="mono" style="font-size: 0.85rem; letter-spacing: 0.05em; opacity: 0.6; margin-bottom: var(--paragraph-gap);">OBSERVATION_001</div>
+            <div role="heading" aria-level="3" class="sans" style="font-size: clamp(2.2rem, 8vw, 5.5rem); font-weight: 900; letter-spacing: -0.04em; line-height: 1.0; text-transform: uppercase;">
+                DESTINATION
+            </div>
+            <div class="serif" style="font-size: clamp(2rem, 5vw, 3rem); margin: 1.5rem 0; opacity: 0.3;">↓</div>
+            <div role="heading" aria-level="3" class="sans" style="font-size: clamp(2.2rem, 8vw, 5.5rem); font-weight: 900; letter-spacing: -0.04em; line-height: 1.0; text-transform: uppercase; margin-bottom: 3rem;">
+                SHORTCUT
+            </div>
+            <div style="max-width: 45ch; margin: 0 auto; text-align: left;">
+                <p class="serif" style="font-size: 1.25rem; line-height: 1.7;">
+                    The internet constantly asks for attention. Dashboards. Accounts. Notifications. New workflows.
+                </p>
+                <p class="serif" style="font-size: 1.25rem; line-height: 1.7;">
+                    Callistra chooses another path. It appears when needed. Then disappears.
+                </p>
+                <p class="sans" style="font-weight: 900; font-size: 1.25rem; line-height: 1.4; border-top: 2px solid #000; padding-top: 1.5rem; margin-top: 2rem;">
+                    The less you notice the tool, the more you notice what you're creating.
+                </p>
+            </div>
+        </section>
 
-        function playClickSound(mode = 'standard') {
-            try {
-                const ctx = getAudioContext();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                
-                const now = ctx.currentTime;
-                
-                if (mode === 'standard') {
-                    // Crisp, subtle electronic UI click reward
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(523.25, now); // C5 note
-                    osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.06); // Sweep up to C6
+        <section>
+            <h2 class="sans">Your files stay <span class="serif">with you.</span></h2>
+            <div style="position: relative; margin-top: 4rem; border: 4px solid #000; padding: 0;">
+                <div style="background: #000; color: #fff; padding: 0.75rem 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                    <span class="mono" style="font-size: 0.8rem; font-weight: bold;">SECURITY_MANIFESTO.TXT</span>
+                    <span style="width: 12px; height: 12px; background: #fff; display: inline-block;"></span>
+                </div>
+                <div class="manifesto-box">
+                    <p class="serif" style="font-size: clamp(1.4rem, 4vw, 2rem); line-height: 1.3; font-weight: 700; margin-bottom: 3rem; max-width: 35ch;">
+                        Most online tools begin by asking you to upload your work. <span class="sans" style="font-weight: 900; text-transform: uppercase; font-size: clamp(1.8rem, 7vw, 3.5rem); display: block; letter-spacing: -0.05em; line-height: 1; margin-top: 1rem; text-decoration: underline;">CALLISTRA NEVER DOES.</span>
+                    </p>
+                    <p class="serif" style="font-size: 1.4rem; line-height: 1.6; max-width: 45ch; margin-bottom: 3rem;">
+                        Every tool runs directly inside your browser. Your files never leave your device. We don't receive them. We don't store them. We don't analyze them. We don't train AI on them.
+                    </p>
+                    <p class="sans" style="font-weight: 900; font-size: clamp(1.3rem, 4.5vw, 2.5rem); line-height: 0.9; text-transform: uppercase; letter-spacing: -0.04em; margin: 0; border-top: 4px dashed #000; padding-top: 2rem;">
+                        They remain exactly where they belong—<span class="serif" style="font-style: italic; font-weight: 400; text-transform: none; letter-spacing: 0;">with you.</span>
+                    </p>
+                </div>
+            </div>
+            <div class="mono-block mono">
+                <span class="mono-line">NO SERVER</span>
+                <span class="mono-line">NO DATABASE</span>
+                <span class="mono-line">NO FILE UPLOADS</span>
+                <span class="mono-line">NO AI TRAINING</span>
+                <span class="mono-line">100% CLIENT-SIDE PROCESSING</span>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="sans">Fast because your <span class="serif">computer</span> does the work.</h2>
+            <div class="speed-grid">
+                <div class="mono speed-cpu">
+                    CPU<br>100%
+                </div>
+                <div>
+                    <p class="serif" style="font-size: clamp(1.6rem, 5vw, 2.5rem); line-height: 1.2; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 2rem;">
+                        Your browser is already powerful.
+                    </p>
+                    <p class="serif" style="font-size: 1.35rem; line-height: 1.6; max-width: 40ch; margin-bottom: 3rem;">
+                        Instead of sending your files somewhere else, Callistra simply lets your own device do the work.
+                    </p>
+                    <div style="display: flex; flex-direction: column; gap: 2px; background: #000; border: 2px solid #000;">
+                        <div class="mono" style="background: #fff; padding: 1rem; font-size: 0.9rem; font-weight: bold; opacity: 0.4; text-decoration: line-through;">[01] NO WAITING FOR UPLOADS</div>
+                        <div class="mono" style="background: #fff; padding: 1rem; font-size: 0.9rem; font-weight: bold; opacity: 0.6; text-decoration: line-through;">[02] NO WAITING FOR EXTERNAL PROCESSING</div>
+                        <div class="mono" style="background: #fff; padding: 1rem; font-size: 0.9rem; font-weight: bold; opacity: 0.8; text-decoration: line-through;">[03] NO WAITING TO DOWNLOAD YOUR OWN FILE</div>
+                        <div class="sans" style="background: #000; color: #fff; padding: 1.2rem; font-size: 1.1rem; font-weight: 900; letter-spacing: 0.05em;">[!] JUST INSTANT RESULTS & SMOOTHER FLOW</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section style="position: relative; overflow: hidden;">
+            <div aria-hidden="true" class="sans" style="position: absolute; font-size: clamp(8rem, 25vw, 35rem); font-weight: 900; line-height: 0.8; letter-spacing: -0.06em; opacity: 0.03; top: 50%; left: 50%; transform: translate(-50%, -50%); user-select: none; z-index: 1;">
+                FLOW
+            </div>
+            <div style="position: relative; z-index: 2; max-width: 45ch; margin: 0 auto;">
+                <p class="serif" style="font-size: 1.25rem; line-height: 1.7;">
+                    Creative work is interrupted by tiny unnecessary tasks.
+                </p>
+                <p class="serif" style="font-size: 1.25rem; line-height: 1.7;">
+                    Those interruptions slowly destroy momentum.
+                </p>
+                <p class="serif" style="font-size: 1.25rem; line-height: 1.7;">
+                    Callistra exists to protect momentum.
+                </p>
+                <p class="serif" style="font-size: 1.25rem; line-height: 1.7; font-weight: 700; border-left: 3px solid #000; padding-left: 1.5rem; margin-top: 2rem;">
+                    Creativity isn't built from big moments. It's built from hundreds of uninterrupted small ones.
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="sans">Small tools. Big respect for your <span class="serif">time.</span></h2>
+            <div style="margin-top: 4rem;">
+                <div class="about-grid">
+                    <div>
+                        <p class="serif" style="font-size: clamp(1.5rem, 4vw, 2.2rem); line-height: 1.2; font-weight: 700; margin-bottom: 2rem; letter-spacing: -0.03em;">Design is full of tiny interruptions.</p>
+                        <p class="serif" style="font-size: 1.35rem; line-height: 1.6; max-width: 38ch; margin: 0; opacity: 0.8;">None of these jobs are difficult. They simply interrupt your momentum. Callistra exists to remove those interruptions.</p>
+                    </div>
+                    <div class="about-card">
+                        <p class="sans" style="font-size: 1.2rem; font-weight: 800; line-height: 1.4; margin-bottom: 3rem;">Instead of building one giant application that tries to do everything, we're building hundreds of focused tools that each solve one real problem.</p>
+                        <div class="mono" style="font-size: 0.9rem; line-height: 1.8; font-weight: bold; border-top: 2px dashed #000; padding-top: 1.5rem;">
+                            <span style="display: block;">[+] SOME SAVE 5 SECONDS</span>
+                            <span style="display: block;">[+] SOME SAVE 5 MINUTES</span>
+                            <span style="display: inline-block; background: #000; color: #fff; padding: 0 0.4rem; max-width: 100%;">[+] SOME SAVE AN ENTIRE AFTERNOON</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="sans">What you create is yours.</h2>
+            <div style="margin-top: 4rem; border: 4px solid #000; padding: 3rem; background: #fff;">
+                <span class="mono" style="font-size: 0.75rem; opacity: 0.5; display: block; margin-bottom: 1.5rem;">[ MANIFESTO / OWNERSHIP ]</span>
+                <p class="serif" style="font-size: 1.35rem; line-height: 1.7; max-width: 45ch; margin-bottom: 2rem;">
+                    Every file, asset, and design element remains entirely under your sovereignty. Your files belong exclusively to you—we provide the utility, but you hold absolute ownership.
+                </p>
+                <div style="border-top: 2px dashed #000; padding-top: 1.5rem; margin-top: 2rem;">
+                    <p class="sans" style="font-weight: 900; font-size: 1.1rem; text-transform: uppercase; margin: 0;">
+                        Absolute file autonomy, built by design.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="about-grid">
+                <div>
+                    <h3 class="sans" style="font-size: clamp(2.2rem, 7vw, 4.5rem); font-weight: 900; line-height: 1.0; letter-spacing: -0.04em; text-transform: uppercase; margin: 0;">
+                        RESPECT<br>IS A<br>FEATURE.
+                    </h3>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                    <p class="serif" style="font-size: 1.25rem; line-height: 1.7; margin: 0;">
+                        Every software product reveals the priorities of its creators. Some products collect. Some persuade. Some maximize engagement. Callistra chooses respect.
+                    </p>
                     
-                    gain.gain.setValueAtTime(0.12, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
-                    
-                    osc.start(now);
-                    osc.stop(now + 0.06);
-                } else if (mode === 'random') {
-                    // Generates completely unique retro-synthetic properties each click
-                    const waveTypes = ['sine', 'triangle', 'square', 'sawtooth'];
-                    osc.type = waveTypes[Math.floor(Math.random() * waveTypes.length)];
-                    
-                    const startFreq = 180 + Math.random() * 750;
-                    const endFreq = 200 + Math.random() * 1200;
-                    const duration = 0.06 + Math.random() * 0.16;
-                    
-                    osc.frequency.setValueAtTime(startFreq, now);
-                    osc.frequency.exponentialRampToValueAtTime(endFreq, now + duration);
-                    
-                    gain.gain.setValueAtTime(0.08, now);
-                    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
-                    
-                    osc.start(now);
-                    osc.stop(now + duration);
-                }
-            } catch (e) {
-                console.warn("Audio Context could not initialize safely:", e);
-            }
-        }
+                    <div style="margin-top: 1rem;">
+                        <span class="mono" style="font-size: 0.75rem; display: block; opacity: 0.6; margin-bottom: 0.25rem;">FILES</span>
+                        <p class="serif" style="font-size: 1.15rem; margin-bottom: 1.5rem;">Never processed or hosted on our end.</p>
+                        
+                        <span class="mono" style="font-size: 0.75rem; display: block; opacity: 0.6; margin-bottom: 0.25rem;">TIME</span>
+                        <p class="serif" style="font-size: 1.15rem; margin-bottom: 1.5rem;">Zero configurations or onboarding gates.</p>
+                        
+                        <span class="mono" style="font-size: 0.75rem; display: block; opacity: 0.6; margin-bottom: 0.25rem;">OWNERSHIP</span>
+                        <p class="serif" style="font-size: 1.15rem; margin-bottom: 1.5rem;">Your assets remain bound entirely to your local client.</p>
+                        
+                        <span class="mono" style="font-size: 0.75rem; display: block; opacity: 0.6; margin-bottom: 0.25rem;">ATTENTION</span>
+                        <p class="serif" style="font-size: 1.15rem; margin-bottom: 1.5rem;">Quiet utility with zero popups or alerts.</p>
+                    </div>
 
-        // Dedicated link redirection logic with audio engine activation feedback
-        function navigateStudio(url) {
-            playClickSound('standard');
-            setTimeout(() => {
-                window.location.href = url;
-            }, 70);
-        }
-        
-        // ---------- HSL Utils ----------
-        function hslToRgb(h, s, l) {
-            let c = (1 - Math.abs(2 * l - 1)) * s;
-            let x = c * (1 - Math.abs((h / 60) % 2 - 1));
-            let m = l - c / 2;
-            let r1, g1, b1;
-            if (h < 60) { r1 = c; g1 = x; b1 = 0; }
-            else if (h < 120) { r1 = x; g1 = c; b1 = 0; }
-            else if (h < 180) { r1 = 0; g1 = c; b1 = x; }
-            else if (h < 240) { r1 = 0; g1 = x; b1 = c; }
-            else if (h < 300) { r1 = x; g1 = 0; b1 = c; }
-            else { r1 = c; g1 = 0; b1 = x; }
-            return [r1 + m, m + m, b1 + m];
-        }
-        
-        // Generate 7 EXTREMELY VIBRANT colors exploring all random configurations unhindered
-        function generateVibrantColors() {
-            const colorsRgb = [];
-            
-            // Randomly pick a generation engine style to unlock deep variation and specific color worlds
-            const style = Math.floor(Math.random() * 4);
-            const baseHue = Math.random() * 360;
-            let hues = [];
-            
-            if (style === 0) {
-                // Style 1: Focused Monochromatic / Narrow Family Pop
-                // Allows specific single spectrums (like pure Electric Green or Toxic Yellow) to claim the entire space
-                for (let i = 0; i < BLOB_COUNT; i++) {
-                    hues.push((baseHue + (Math.random() * 40 - 20) + 360) % 360);
-                }
-            } else if (style === 1) {
-                // Style 2: High Contrast Duotone Clash
-                // Forces 2 opposite vibrant color worlds to collide directly without muddy intermediate steps
-                const complementaryHue = (baseHue + 180) % 360;
-                for (let i = 0; i < BLOB_COUNT; i++) {
-                    hues.push(Math.random() < 0.5 ? baseHue : complementaryHue);
-                }
-            } else if (style === 2) {
-                // Style 3: Dynamic Triadic Energy
-                // Picks 3 beautifully balanced points across the entire spectrum
-                const hue2 = (baseHue + 120) % 360;
-                const hue3 = (baseHue + 240) % 360;
-                const choices = [baseHue, hue2, hue3];
-                for (let i = 0; i < BLOB_COUNT; i++) {
-                    hues.push(choices[Math.floor(Math.random() * choices.length)]);
-                }
-            } else {
-                // Style 4: Completely Unbound Chaos
-                // Every single blob receives an independent completely random hue across the entire color wheel
-                for (let i = 0; i < BLOB_COUNT; i++) {
-                    hues.push(Math.random() * 360);
-                }
-            }
-            
-            for (let i = 0; i < BLOB_COUNT; i++) {
-                let sat = 0.92 + Math.random() * 0.08;      // Ultra-saturated (92-100%)
-                let lit = 0.48 + Math.random() * 0.12;      // Vibrant deep core window (48-60% prevents white washouts)
-                colorsRgb.push(hslToRgb(hues[i], sat, lit));
-            }
-            return colorsRgb;
-        }
-        
-        // generate organic positions + radii for 7 blobs
-        function generateBlobGeometries() {
-            const zones = [
-                { xMin: 0.02, xMax: 0.32, yMin: 0.30, yMax: 0.68 },
-                { xMin: 0.42, xMax: 0.72, yMin: 0.48, yMax: 0.82 },
-                { xMin: 0.25, xMax: 0.60, yMin: 0.15, yMax: 0.42 },
-                { xMin: 0.62, xMax: 0.95, yMin: 0.18, yMax: 0.52 },
-                { xMin: 0.12, xMax: 0.52, yMin: 0.58, yMax: 0.92 },
-                { xMin: 0.38, xMax: 0.78, yMin: 0.68, yMax: 0.96 },
-                { xMin: 0.05, xMax: 0.45, yMin: 0.05, yMax: 0.35 }
-            ];
-            const positions = [];
-            const radii = [];
-            for (let i = 0; i < BLOB_COUNT; i++) {
-                const zone = zones[i % zones.length];
-                let x = zone.xMin + Math.random() * (zone.xMax - zone.xMin);
-                let y = zone.yMin + Math.random() * (zone.yMax - zone.yMin);
-                if (Math.random() < 0.25 && i === 0) x = -0.12 + Math.random() * 0.22;
-                if (Math.random() < 0.25 && i === 3) x = 0.90 + Math.random() * 0.12;
-                if (Math.random() < 0.25 && i === 6) y = 0.02 + Math.random() * 0.15;
-                
-                let rx = 0.28 + Math.random() * 0.32;
-                let ry = 0.26 + Math.random() * 0.34;
-                if (i === 0 || i === 1 || i === 5) { rx *= 1.2; ry *= 1.2; }
-                positions.push([x, y]);
-                radii.push([rx, ry]);
-            }
-            return { positions, radii };
-        }
-        
-        function generateComposition() {
-            const colors = generateVibrantColors();
-            const { positions, radii } = generateBlobGeometries();
-            const shaderSeed = Math.random() * 600.0; // Capturing artistic grain distribution seed
-            return { colors, positions, radii, shaderSeed, timestamp: Date.now() };
-        }
-        
-        // ---------- WebGL Shaders (Organic mixing + Learned 6% Box-Muller Monochromatic Grain) ----------
-        const vsSource = `
-            attribute vec2 position;
-            varying vec2 vUv;
-            void main() {
-                vUv = position * 0.5 + 0.5;
-                vUv.y = 1.0 - vUv.y;
-                gl_Position = vec4(position, 0.0, 1.0);
-            }
-        `;
-        
-        const fsSource = `
-            precision highp float;
-            varying vec2 vUv;
-            uniform vec2 u_resolution;
-            uniform vec2 u_blobPos[7];
-            uniform vec2 u_blobRadii[7];
-            uniform vec3 u_blobColor[7];
-            uniform float u_seed;
-            
-            // Gaussian random generator (Box-Muller) producing monochromatic noise with 6% intensity
-            float gaussianNoise(vec2 uv, float seed) {
-                float r1 = fract(sin(dot(uv * 12.9898 + vec2(seed, 47.2943), vec2(37.719, 78.233))) * 43758.5453);
-                float r2 = fract(sin(dot(uv * 31.3498 + vec2(seed * 1.234, 983.212), vec2(17.982, 47.123))) * 28734.8912);
-                r1 = clamp(r1, 0.0001, 0.9999);
-                float gauss = sqrt(-2.0 * log(r1)) * cos(6.28318 * r2);
-                return gauss * 0.06;
-            }
-            
-            void main() {
-                vec2 st = vUv;
-                float aspect = u_resolution.x / u_resolution.y;
-                st.x *= aspect;
-                
-                // PURE BLACK BACKGROUND
-                vec3 finalColor = vec3(0.0);
-                
-                // Mix all 7 gradient blobs smoothly using linear alpha interpolation to block harsh white over-exposure
-                for (int i = 0; i < 7; i++) {
-                    vec2 center = u_blobPos[i];
-                    center.x *= aspect;
-                    vec2 delta = st - center;
-                    vec2 ratio = delta / u_blobRadii[i];
-                    float dist = length(ratio);
-                    float intensity = pow(1.0 - smoothstep(0.0, 1.0, dist), 1.85);
-                    intensity = clamp(intensity * 1.05, 0.0, 1.0);
-                    
-                    finalColor = mix(finalColor, u_blobColor[i], intensity);
-                }
-                
-                // Subtle vignette
-                vec2 vignetteUV = vUv * 1.8 - 0.4;
-                float vignette = 1.0 - smoothstep(0.2, 1.0, length(vignetteUV)) * 0.48;
-                finalColor *= vignette;
-                
-                // --- 6% GAUSSIAN MONOCHROMATIC NOISE OVERLAY (Uniform canvas overlay) ---
-                float noiseVal = gaussianNoise(vUv, u_seed);
-                finalColor.rgb += vec3(noiseVal);
-                
-                finalColor = clamp(finalColor, 0.0, 1.0);
-                gl_FragColor = vec4(finalColor, 1.0);
-            }
-        `;
-        
-        function initWebGL() {
-            const canvas = document.getElementById("glCanvas");
-            gl = canvas.getContext('webgl', { antialias: true, preserveDrawingBuffer: true, powerPreference: "high-performance" });
-            if (!gl) {
-                console.warn("WebGL not supported");
-                return false;
-            }
-            
-            const vs = gl.createShader(gl.VERTEX_SHADER);
-            gl.shaderSource(vs, vsSource);
-            gl.compileShader(vs);
-            const fs = gl.createShader(gl.FRAGMENT_SHADER);
-            gl.shaderSource(fs, fsSource);
-            gl.compileShader(fs);
-            program = gl.createProgram();
-            gl.attachShader(program, vs);
-            gl.attachShader(program, fs);
-            gl.linkProgram(program);
-            gl.useProgram(program);
-            
-            const vertices = new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]);
-            const buffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-            gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-            const posLoc = gl.getAttribLocation(program, "position");
-            gl.enableVertexAttribArray(posLoc);
-            gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
-            
-            uniformResLoc = gl.getUniformLocation(program, "u_resolution");
-            for (let i = 0; i < BLOB_COUNT; i++) {
-                uniformPos.push(gl.getUniformLocation(program, `u_blobPos[${i}]`));
-                uniformRadii.push(gl.getUniformLocation(program, `u_blobRadii[${i}]`));
-                uniformColor.push(gl.getUniformLocation(program, `u_blobColor[${i}]`));
-            }
-            return true;
-        }
-        
-        function applyAndDraw(composition) {
-            if (!gl || !program || !composition) return;
-            const w = gl.canvas.width, h = gl.canvas.height;
-            if (w === 0 || h === 0) return;
-            gl.viewport(0, 0, w, h);
-            gl.uniform2f(uniformResLoc, w, h);
-            
-            // Inject uniform mathematical noise distribution vector tracking
-            gl.uniform1f(gl.getUniformLocation(program, "u_seed"), composition.shaderSeed);
-            
-            for (let i = 0; i < BLOB_COUNT; i++) {
-                const pos = composition.positions[i];
-                const rad = composition.radii[i];
-                const col = composition.colors[i];
-                gl.uniform2f(uniformPos[i], pos[0], pos[1]);
-                gl.uniform2f(uniformRadii[i], rad[0], rad[1]);
-                gl.uniform3f(uniformColor[i], col[0], col[1], col[2]);
-            }
-            gl.drawArrays(gl.TRIANGLES, 0, 6);
-        }
-        
-        // ---------- STRICT VERTICAL ASPECT (9:16) ----------
-        function getStrictVerticalDimensions() {
-            const windowWidth = window.innerWidth;
-            const windowHeight = window.innerHeight;
-            const verticalAspectBound = 9 / 16;
-            let finalRenderWidth, finalRenderHeight;
-            if ((windowWidth / windowHeight) > verticalAspectBound) {
-                finalRenderHeight = windowHeight;
-                finalRenderWidth = finalRenderHeight * verticalAspectBound;
-            } else {
-                finalRenderWidth = windowWidth;
-                finalRenderHeight = finalRenderWidth / verticalAspectBound;
-            }
-            return { width: finalRenderWidth, height: finalRenderHeight };
-        }
-        
-        function resizeCanvasAndRedraw() {
-            if (!gl || !currentComposition) return;
-            const canvas = document.getElementById("glCanvas");
-            const bounds = getStrictVerticalDimensions();
-            const dpr = Math.min(window.devicePixelRatio || 1, 2);
-            
-            canvas.style.width = bounds.width + "px";
-            canvas.style.height = bounds.height + "px";
-            canvas.style.top = ((window.innerHeight - bounds.height) / 2) + "px";
-            canvas.style.left = ((window.innerWidth - bounds.width) / 2) + "px";
-            
-            const newWidth = Math.floor(bounds.width * dpr);
-            const newHeight = Math.floor(bounds.height * dpr);
-            if (canvas.width !== newWidth || canvas.height !== newHeight) {
-                canvas.width = newWidth;
-                canvas.height = newHeight;
-            }
-            
-            gl.viewport(0, 0, canvas.width, canvas.height);
-            gl.uniform2f(uniformResLoc, canvas.width, canvas.height);
-            applyAndDraw(currentComposition);
-        }
-        
-        // ---------- History Management ----------
-        function updateNavButtons() {
-            const prevBtn = document.getElementById("prevBtn");
-            const nextBtn = document.getElementById("nextBtn");
-            if (prevBtn) prevBtn.classList.toggle("disabled", historyIndex <= 0);
-            if (nextBtn) nextBtn.classList.toggle("disabled", historyIndex >= historyStack.length - 1);
-        }
-        
-        function pushToHistory(composition, isNew = true) {
-            const clone = JSON.parse(JSON.stringify(composition));
-            if (isNew && historyIndex < historyStack.length - 1) {
-                historyStack = historyStack.slice(0, historyIndex + 1);
-            }
-            historyStack.push(clone);
-            if (historyStack.length > MAX_HISTORY) historyStack.shift();
-            historyIndex = historyStack.length - 1;
-            currentComposition = JSON.parse(JSON.stringify(clone));
-            applyAndDraw(currentComposition);
-            updateNavButtons();
-        }
-        
-        // Trigger composition rebuild sequence
-        function generateAndPushNew() {
-            const newComp = generateComposition();
-            pushToHistory(newComp, true);
-        }
-        
-        // ---------- High-Res Export (1440x2560) ----------
-        function exportHighRes() {
-            if (!currentComposition) return;
-            const downloadBtn = document.getElementById("downloadBtn");
-            
-            // UI state modification for processing feedback
-            if (downloadBtn) downloadBtn.innerText = "•••";
+                    <div style="border-top: 2px dashed #000; padding-top: 1.5rem; margin-top: 1rem;">
+                        <p class="serif" style="font-size: 1.25rem; line-height: 1.6; font-style: italic; margin-bottom: 0.5rem;">
+                            There isn't a growth hack hidden behind it.
+                        </p>
+                        <p class="serif" style="font-size: 1.25rem; line-height: 1.6; font-style: italic; margin: 0;">
+                            Only a decision. Made again. Every time we build something.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-            // Delaying thread slightly to force the DOM layout to paint "•••" before blocking WebGL calculations
-            setTimeout(() => {
-                const exportCanvas = document.getElementById("exportCanvas");
-                const targetW = 1440;
-                const targetH = 2560;
-                exportCanvas.width = targetW;
-                exportCanvas.height = targetH;
-                
-                const exportGl = exportCanvas.getContext('webgl', { preserveDrawingBuffer: true, antialias: false });
-                if (!exportGl) {
-                    if (downloadBtn) downloadBtn.innerText = "↓ DOWNLOAD";
-                    return;
-                }
-                
-                const vs = exportGl.createShader(exportGl.VERTEX_SHADER);
-                exportGl.shaderSource(vs, vsSource);
-                exportGl.compileShader(vs);
-                const fs = exportGl.createShader(exportGl.FRAGMENT_SHADER);
-                exportGl.shaderSource(fs, fsSource);
-                exportGl.compileShader(fs);
-                const prog = exportGl.createProgram();
-                exportGl.attachShader(prog, vs);
-                exportGl.attachShader(prog, fs);
-                exportGl.linkProgram(prog);
-                exportGl.useProgram(prog);
-                
-                const verts = new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]);
-                const buf = exportGl.createBuffer();
-                exportGl.bindBuffer(exportGl.ARRAY_BUFFER, buf);
-                exportGl.bufferData(exportGl.ARRAY_BUFFER, verts, exportGl.STATIC_DRAW);
-                const posLoc = exportGl.getAttribLocation(prog, "position");
-                exportGl.enableVertexAttribArray(posLoc);
-                exportGl.vertexAttribPointer(posLoc, 2, exportGl.FLOAT, false, 0, 0);
-                
-                const resLoc = exportGl.getUniformLocation(prog, "u_resolution");
-                
-                // Sync structural seed values for crisp downloadable results
-                exportGl.uniform1f(exportGl.getUniformLocation(prog, "u_seed"), currentComposition.shaderSeed);
-                
-                const posLocs = [], radLocs = [], colLocs = [];
-                for (let i = 0; i < BLOB_COUNT; i++) {
-                    posLocs.push(exportGl.getUniformLocation(prog, `u_blobPos[${i}]`));
-                    radLocs.push(exportGl.getUniformLocation(prog, `u_blobRadii[${i}]`));
-                    colLocs.push(exportGl.getUniformLocation(prog, `u_blobColor[${i}]`));
-                }
-                
-                exportGl.viewport(0, 0, targetW, targetH);
-                exportGl.uniform2f(resLoc, targetW, targetH);
-                for (let i = 0; i < BLOB_COUNT; i++) {
-                    exportGl.uniform2f(posLocs[i], currentComposition.positions[i][0], currentComposition.positions[i][1]);
-                    exportGl.uniform2f(radLocs[i], currentComposition.radii[i][0], currentComposition.radii[i][1]);
-                    exportGl.uniform3f(colLocs[i], currentComposition.colors[i][0], currentComposition.colors[i][1], currentComposition.colors[i][2]);
-                }
-                exportGl.drawArrays(exportGl.TRIANGLES, 0, 6);
-                
-                const link = document.createElement('a');
-                link.download = `vibrant_gradients_${Date.now()}.jpg`;
-                link.href = exportCanvas.toDataURL('image/jpeg', 0.92);
-                link.click();
-                exportGl.deleteProgram(prog);
+        <section>
+            <h2 class="sans">Software should respect <span class="serif">people.</span></h2>
+            <div class="philosophy-long-grid">
+                <div style="display: flex; flex-direction: column; gap: 2.5rem;">
+                    <p class="serif" style="font-size: 1.4rem; line-height: 1.5; margin: 0; border-bottom: 1px solid #000; padding-bottom: 1.5rem;">
+                        <span class="mono" style="font-size: 0.8rem; display: block; margin-bottom: 0.5rem; opacity: 0.5;">BELIEF_01</span>
+                        Useful software can also be <span style="font-weight: 700; font-style: italic;">simple.</span>
+                    </p>
+                    <p class="serif" style="font-size: 1.4rem; line-height: 1.5; margin: 0; border-bottom: 1px solid #000; padding-bottom: 1.5rem;">
+                        <span class="mono" style="font-size: 0.8rem; display: block; margin-bottom: 0.5rem; opacity: 0.5;">BELIEF_02</span>
+                        Privacy should be the <span class="sans" style="font-weight: 900; font-size: 1.05rem; background: #000; color: #fff; padding: 0.1rem 0.4rem; text-transform: uppercase;">DEFAULT</span>, not an upgrade.
+                    </p>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 2.5rem;">
+                    <p class="serif" style="font-size: 1.4rem; line-height: 1.5; margin: 0; border-bottom: 1px solid #000; padding-bottom: 1.5rem;">
+                        <span class="mono" style="font-size: 0.8rem; display: block; margin-bottom: 0.5rem; opacity: 0.5;">BELIEF_03</span>
+                        Tools should help you <span style="font-weight: 700; font-style: italic;">focus on your work</span> instead of demanding attention.
+                    </p>
+                    <p class="serif" style="font-size: 1.4rem; line-height: 1.5; margin: 0; border-bottom: 1px solid #000; padding-bottom: 1.5rem;">
+                        <span class="mono" style="font-size: 0.8rem; display: block; margin-bottom: 0.5rem; opacity: 0.5;">BELIEF_04</span>
+                        Trust is something you earn through <span style="text-decoration: underline; font-weight: bold;">actions</span>, not marketing.
+                    </p>
+                </div>
+            </div>
+            <div class="sans" style="font-size: clamp(1.5rem, 5vw, 3rem); font-weight: 900; text-transform: uppercase; letter-spacing: -0.04em; line-height: 1; margin-top: 4rem; background: #000; color: #fff; padding: 2rem; text-align: center;">
+                OUR EVERYDAY STANDARD.
+            </div>
+        </section>
 
-                // Restore previous state safely once processing triggers download hook
-                if (downloadBtn) downloadBtn.innerText = "↓ DOWNLOAD";
-            }, 50);
-        }
-        
-        // ---------- Initialization ----------
-        function init() {
-            if (!initWebGL()) {
-                console.error("WebGL init failed");
-                return;
-            }
-            
-            const initialComp = generateComposition();
-            historyStack = [JSON.parse(JSON.stringify(initialComp))];
-            historyIndex = 0;
-            currentComposition = JSON.parse(JSON.stringify(initialComp));
-            
-            resizeCanvasAndRedraw();
-            updateNavButtons();
-            
-            const makeBtn = document.getElementById("makeBtn");
-            const downloadBtn = document.getElementById("downloadBtn");
-            const prevBtn = document.getElementById("prevBtn");
-            const nextBtn = document.getElementById("nextBtn");
-            
-            if (makeBtn) {
-                makeBtn.addEventListener('click', () => {
-                    playClickSound('standard');
-                    generateAndPushNew();
-                });
-            }
-            if (downloadBtn) {
-                downloadBtn.addEventListener('click', () => {
-                    playClickSound('standard');
-                    exportHighRes();
-                });
-            }
-            if (prevBtn) {
-                prevBtn.addEventListener('click', () => {
-                    playClickSound('standard');
-                    if (historyIndex > 0) {
-                        historyIndex--;
-                        currentComposition = JSON.parse(JSON.stringify(historyStack[historyIndex]));
-                        applyAndDraw(currentComposition);
-                        updateNavButtons();
-                    }
-                });
-            }
-            if (nextBtn) {
-                nextBtn.addEventListener('click', () => {
-                    playClickSound('standard');
-                    if (historyIndex < historyStack.length - 1) {
-                        historyIndex++;
-                        currentComposition = JSON.parse(JSON.stringify(historyStack[historyIndex]));
-                        applyAndDraw(currentComposition);
-                        updateNavButtons();
-                    }
-                });
-            }
-            
-            window.addEventListener('resize', () => {
-                resizeCanvasAndRedraw();
-            });
-            window.addEventListener('orientationchange', () => {
-                setTimeout(() => resizeCanvasAndRedraw(), 20);
-            });
-            
-            document.addEventListener('visibilitychange', () => {
-                if (!document.hidden && currentComposition) {
-                    applyAndDraw(currentComposition);
-                }
-            });
-        }
-        
-        window.addEventListener('DOMContentLoaded', init);
-    </script>
+        <section>
+            <h2 class="sans">Built simply. Built thoughtfully.</h2>
+            <div class="tech-grid mono">
+                <div>Built with</div>
+                <div>HTML, CSS, JavaScript</div>
+                
+                <div>Processing</div>
+                <div>100% Client-side</div>
+                
+                <div>Cookies</div>
+                <div>Google Analytics only</div>
+                
+                <div>Tracking</div>
+                <div>Anonymous usage analytics only</div>
+                
+                <div>File Uploads</div>
+                <div>Never</div>
+            </div>
+        </section>
+
+        <section style="text-align: center;">
+            <div style="max-width: 45ch; margin: 0 auto;">
+                <p class="serif" style="font-size: clamp(1.5rem, 5vw, 2.5rem); font-weight: 400; line-height: 1.4; font-style: italic; margin-bottom: 3rem;">
+                    One day you will forget Callistra existed.
+                </p>
+                <p class="serif" style="font-size: 1.2rem; line-height: 1.7; opacity: 0.8; margin-bottom: 4rem;">
+                    They'll remember the project, the presentation, the illustration, the website, the client. But not the utility that solved the tiny problem. That is success.
+                </p>
+                <div class="sans" style="font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 900; letter-spacing: -0.04em; text-transform: uppercase; margin-bottom: 3rem;">
+                    Great tools become invisible.
+                </div>
+                <div class="mono" style="font-size: 0.8rem; opacity: 0.5; letter-spacing: 0.1em;">END_OF_INTERFACE</div>
+            </div>
+        </section>
+
+        <section style="text-align: center; max-width: 800px;">
+            <h2 class="sans">Made for <span class="serif">designers.</span></h2>
+            <div class="closing-box">
+                <span class="mono" style="font-size: 0.8rem; font-weight: bold; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #fff; padding: 0 1rem; border: 2px solid #000;">VALEDICTION</span>
+                <p class="serif" style="font-size: clamp(1.5rem, 4vw, 2.2rem); line-height: 1.2; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 2rem; font-style: italic;">Creativity already comes with enough challenges.</p>
+                <p class="serif" style="font-size: 1.4rem; line-height: 1.8; margin-bottom: 3rem; opacity: 0.8;">Your tools shouldn't be one of them. Whether you're fixing a tiny detail or finishing an important project, we hope Callistra quietly makes your day a little easier.</p>
+                <p class="sans" style="font-size: clamp(1.8rem, 6vw, 3.5rem); font-weight: 900; text-transform: uppercase; letter-spacing: -0.05em; line-height: 1; margin: 0;">THAT'S WHY WE'RE HERE.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <a href="/" class="mono" style="text-decoration: none; color: inherit; display: block; margin-bottom: 1rem;">callistra.design</a>
+                <div class="editorial" style="font-size: 1rem;">Built with care.</div>
+                <p class="sans" style="font-size: 0.85rem; margin-top: 1rem; opacity: 0.8;">Designed with respect for your privacy, your time, and your work.</p>
+            </div>
+            <div>
+                <ul class="footer-nav">
+                    <li><a href="/tools">All Tools</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/privacy">Privacy Policy</a></li>
+                    <li><a href="/terms">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div>
+                <ul class="footer-nav">
+                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="#">Twitter / X</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="mono" style="margin-top: 4rem; font-size: 0.7rem; opacity: 0.5;">
+            &copy; Callistra. No rights reserved. Your work is yours.
+        </div>
+    </footer>
+
 </body>
 </html>
