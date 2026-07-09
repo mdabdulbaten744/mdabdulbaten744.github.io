@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Callistra: Privacy Policy. A transparent breakdown of our data collection, cookie usage, and client-side architecture.">
+    <title>Privacy Policy — Callistra</title>
+    
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#ffffff">
+
+    <link rel="canonical" href="https://callistra.design/privacy">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://callistra.design/privacy">
+    <meta property="og:title" content="Privacy Policy — Callistra">
+    <meta property="og:site_name" content="Callistra">
+    <meta property="og:description" content="Callistra: Privacy Policy. A transparent breakdown of our data collection, cookie usage, and client-side architecture.">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://callistra.design/privacy">
+    <meta name="twitter:title" content="Privacy Policy — Callistra">
+    <meta name="twitter:description" content="Callistra: Privacy Policy. A transparent breakdown of our data collection, cookie usage, and client-side architecture.">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Privacy Policy — Callistra",
+      "description": "Callistra: Privacy Policy. A transparent breakdown of our data collection, cookie usage, and client-side architecture.",
+      "url": "https://callistra.design/privacy",
+      "inLanguage": "en-US",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Callistra",
+        "url": "https://callistra.design"
+      },
+      "dateModified": "2026-07-01"
+    }
+    </script>
+
+    <style>
+        /* * BRAND TYPOGRAPHY SYSTEM
+         * Neo-Brutalist Black & White Aesthetics
+         * Inherited entirely from TestingLand.html
+         */
+        :root {
+            --bg: #ffffff;
+            --text: #000000;
+            --accent-gradient: linear-gradient(90deg, #6366f1, #3b82f6);
+            --space-unit: 1rem;
+            --section-gap: 6rem;
+            --paragraph-gap: 1.5rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* TYPOGRAPHY UTILITIES */
+        .sans { font-family: sans-serif; }
+        .serif { font-family: serif; font-style: italic; font-weight: 400; }
+        .mono { font-family: monospace; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.85rem; }
+
+        /* Document Headings remain strictly Sans-Serif */
+        h1, h2, h3, h4 {
+            font-family: sans-serif;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: var(--paragraph-gap);
+            margin-top: 2.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            margin-top: 4rem;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        /* All Body Texts globally switched to Serif */
+        p {
+            font-family: serif;
+            font-weight: 400;
+            font-size: 1.15rem;
+            max-width: 68ch;
+            margin-bottom: var(--paragraph-gap);
+            color: var(--text);
+        }
+
+        ul {
+            margin-bottom: var(--paragraph-gap);
+            padding-left: 1.5rem;
+            max-width: 68ch;
+        }
+
+        li {
+            font-family: serif;
+            font-size: 1.15rem;
+            margin-bottom: 0.6rem;
+            color: var(--text);
+        }
+
+        li strong, p strong {
+            font-family: serif;
+            font-weight: 700;
+        }
+
+        /* Editorial context notes */
+        .editorial {
+            font-family: serif;
+            font-size: 1.25rem;
+            line-height: 1.7;
+        }
+
+        /* LAYOUT ARCHITECTURE */
+        header {
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: none; /* No layout border below logo heading */
+        }
+
+        nav a {
+            font-family: sans-serif;
+            font-weight: 500;
+            text-decoration: none;
+            color: var(--text);
+            margin-left: 2rem;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        nav a:hover::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--accent-gradient);
+        }
+
+        .document-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--section-gap) 2rem;
+        }
+
+        .document-meta {
+            margin-bottom: 3rem;
+            border-bottom: 4px solid #000;
+            padding-bottom: 2rem;
+        }
+
+        .hero-divider {
+            height: 2px;
+            width: 60px;
+            background: var(--accent-gradient);
+            margin-bottom: 2rem;
+        }
+
+        /* Architectural Document Blockquotes */
+        .document-quote {
+            margin: 2.5rem 0;
+            border-left: 4px solid #000;
+            padding-left: 1.5rem;
+            max-width: 68ch;
+        }
+        
+        .document-quote p {
+            font-style: italic;
+            margin-bottom: 0;
+        }
+
+        /* FOOTER SYSTEM */
+        footer {
+            padding: 8rem 2rem 4rem;
+            border-top: none; /* No layout border before footer */
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 4rem;
+        }
+
+        .footer-logo {
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-nav {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .footer-nav li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-family: sans-serif;
+            font-size: 0.9rem;
+        }
+
+        /* RESPONSIVE AGILITY BREAKPOINTS */
+        @media (max-width: 768px) {
+            :root { 
+                --section-gap: 3rem; 
+            }
+            
+            .document-container {
+                padding: var(--section-gap) 1.25rem;
+            }
+
+            header {
+                padding: 1.5rem 1.25rem;
+            }
+
+            nav { 
+                display: none; 
+            }
+
+            footer {
+                padding: 4rem 1.25rem 2rem;
+                gap: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="/" class="mono footer-logo" style="text-decoration: none; color: inherit; display: block;">callistra.design</a>
+        <nav>
+            <a href="/tools">All Tools</a>
+            <a href="/about">About</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+            <a href="/contact">Contact</a>
+            <a href="/blog">Blog</a>
+        </nav>
+    </header>
+
+    <main class="document-container">
+        <div class="document-meta">
+            <span class="mono" style="font-size: 0.75rem; opacity: 0.6; display: block; margin-bottom: 0.5rem;">[ LEGAL DISCLOSURE / SECURITY PROTOCOL ]</span>
+            <h1 class="sans">Privacy Policy</h1>
+            <div class="hero-divider"></div>
+            <span class="mono" style="font-weight: bold; display: block;">Last Updated: July 2026</span>
+        </div>
+
+        <p style="font-size: 1.25rem; font-weight: 700; line-height: 1.6;">
+            Most privacy policies are dense walls of legalese designed to protect a company while exploiting your data. This privacy policy is different. It is written to protect you, respect your time, and codify a simple truth: <strong>Your work belongs to you, and we have no business looking at it.</strong>
+        </p>
+
+        <h2 class="sans">1. The Core Philosophy: Zero Asset Storage</h2>
+        <p>Callistra is built as a private, local-first sandbox environment. Our infrastructure ensures that the tools you interact with process your files directly on your machine rather than in our databases.</p>
+        <ul>
+            <li><strong>No Accounts:</strong> You do not need to sign up, log in, or provide an email address to use any tool on Callistra.</li>
+            <li><strong>No File Uploads:</strong> When you use a tool to manipulate an asset, code snippet, or design file, that file is never uploaded to a remote backend server.</li>
+            <li><strong>No Asset Storage:</strong> Because your production items remain localized, we cannot store them, catalog them, or review them.</li>
+            <li><strong>No AI Training:</strong> We do not track your outputs, and we never use your proprietary work to train generative language or design models.</li>
+        </ul>
+
+        <h2 class="sans">2. Technical Architecture: How It Works</h2>
+        <p>Every application on Callistra runs exclusively within your web browser’s local sandbox environment.</p>
+        
+        <div class="document-quote">
+            <p><strong>Local Execution:</strong> When you load a tool, the HTML, CSS, and JavaScript are downloaded to your device. From that point forward, your own device's CPU does 100% of the computation.</p>
+        </div>
+        
+        <p>If you disconnect your internet entirely after loading a tool page, the tool will still function flawlessly. Your workspace assets remain completely bound to your local machine.</p>
+
+        <h2 class="sans">3. Cookies and Third-Party Analytics</h2>
+        <p>To evaluate traffic metrics and steadily optimize application behavior, Callistra interfaces with external analytics utilities.</p>
+        <ul>
+            <li><strong>Google Analytics Cookies:</strong> We utilize Google Analytics to capture aggregate, non-identifiable usage statistics. Google Analytics deposits first-party cookies (such as <code>_ga</code>) in your browser memory to monitor user sessions, track popular tools, and evaluate site navigation.</li>
+            <li><strong>Asset Isolation:</strong> While Google Analytics documents metadata like page visits and technical browser types, it has zero visibility into the files, code structures, or media objects processed through our interface. Your actual inputs never cross into Google's tracking pipeline.</li>
+        </ul>
+
+        <h2 class="sans">4. Server Logs and Hosting Infrastructure</h2>
+        <p>Like all web pages, the server infrastructure hosting Callistra automatically receives basic, non-identifiable technical packet headers required to transmit core site files to your layout engine (such as your network IP address, browser distribution profile, and temporal timestamps).</p>
+        <p>This tracking occurs solely to monitor overall host performance, block distributed network attacks, and maintain platform stability. These system logs are kept isolated from the utilities themselves and are never merged with your tool interactions.</p>
+
+        <h2 class="sans">5. Local Autonomy &amp; State Persistence</h2>
+        <p>Certain interactive tools may offer to retain your layout preferences or persistent syntax configurations for local convenience.</p>
+        <ul>
+            <li>Any custom parameters saved between your platform visits are logged solely inside your browser's native <strong>Local Storage</strong> or <strong>Session Storage</strong>.</li>
+            <li>This tracking records data locally, never migrates off your physical machine, and can be deleted instantly by purging your temporary browser cache.</li>
+        </ul>
+
+        <h2 class="sans">6. Intellectual Property &amp; Sovereignty</h2>
+        <p>Everything you input into Callistra, modify with Callistra, or generate using Callistra remains entirely under your sovereign ownership. We claim zero rights, titles, or interest in any work you process through our toolbox.</p>
+
+        <h2 class="sans">7. Changes to This Policy</h2>
+        <p>We won't sneakily alter this policy to pivot our business model toward data monetization. If we build new tools, they will adhere strictly to this client-side manifesto. Should technical delivery mechanisms change, any updates to this policy will be clearly posted on this page with an updated timestamp.</p>
+
+        <h2 class="sans">8. Contact</h2>
+        <p>If you have questions about our local-first architecture or want to review our open philosophy, you can contact us directly via our public repository channel on <a href="https://callistra.design" style="color: var(--text); font-weight: bold; text-decoration: underline;">GitHub</a> or reach out through the contact channels listed on our main page.</p>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <a href="/" class="mono" style="text-decoration: none; color: inherit; display: block; margin-bottom: 1rem;">callistra.design</a>
+                <div class="editorial" style="font-size: 1rem;">Built with care.</div>
+                <p style="font-size: 0.85rem; margin-top: 1rem; opacity: 0.8; font-family: serif; max-width: 100%;">Designed with respect for your privacy, your time, and your work.</p>
+            </div>
+            <div>
+                <ul class="footer-nav">
+                    <li><a href="/tools">All Tools</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/privacy">Privacy Policy</a></li>
+                    <li><a href="/terms">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div>
+                <ul class="footer-nav">
+                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="https://x.com/abdulbatenhere" target="_blank">Twitter / X</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="mono" style="margin-top: 4rem; font-size: 0.7rem; opacity: 0.5;">
+            &copy; Callistra. No rights reserved. Your work is yours.
+        </div>
+    </footer>
+
+</body>
+</html>
