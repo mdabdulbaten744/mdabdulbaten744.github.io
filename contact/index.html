@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Contact Callistra. Get in touch directly via email or our social channels. Direct communication with zero layers of automated customer routing.">
+    <title>Contact Us — Callistra</title>
+    
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#ffffff">
+
+    
+    <link rel="canonical" href="https://callistra.design/contact">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://callistra.design/contact">
+    <meta property="og:title" content="Contact Us — Callistra">
+    <meta property="og:site_name" content="Callistra">
+    <meta property="og:description" content="Contact Callistra. Get in touch directly via email or our social channels. Direct communication with zero layers of automated customer routing.">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://callistra.design/contact">
+    <meta name="twitter:title" content="Contact Us — Callistra">
+    <meta name="twitter:description" content="Contact Callistra. Get in touch directly via email or our social channels. Direct communication with zero layers of automated customer routing.">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ContactPage",
+      "mainEntity": {
+        "@type": "Organization",
+        "name": "Callistra",
+        "url": "https://callistra.design",
+        "description": "A local-first toolbox containing hundreds of small, focused web tools crafted for designers, developers, and digital creators."
+      },
+      "url": "https://callistra.design/contact",
+      "name": "Contact Us — Callistra",
+      "description": "Contact Callistra. Get in touch directly via email or our social channels. Direct communication with zero layers of automated customer routing."
+    }
+    </script>
+
+    <style>
+        /* * BRAND TYPOGRAPHY SYSTEM
+         * Neo-Brutalist Black & White Aesthetics
+         * Inherited identically from terms, privacy, and about architectures
+         */
+        :root {
+            --bg: #ffffff;
+            --text: #000000;
+            --accent-gradient: linear-gradient(90deg, #6366f1, #3b82f6);
+            --space-unit: 1rem;
+            --section-gap: 6rem;
+            --paragraph-gap: 1.5rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* TYPOGRAPHY UTILITIES */
+        .sans { font-family: sans-serif; }
+        .serif { font-family: serif; font-style: italic; font-weight: 400; }
+        .mono { font-family: monospace; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.85rem; }
+
+        /* Document Headings strictly Sans-Serif */
+        h1, h2, h3, h4 {
+            font-family: sans-serif;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: var(--paragraph-gap);
+            margin-top: 2.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            margin-top: 4rem;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Body Typography globally mapped to elegant Serif for editorial tone */
+        p {
+            font-family: serif;
+            font-weight: 400;
+            font-size: 1.15rem;
+            max-width: 68ch;
+            margin-bottom: var(--paragraph-gap);
+            color: var(--text);
+        }
+
+        ul {
+            margin-bottom: var(--paragraph-gap);
+            padding-left: 1.5rem;
+            max-width: 68ch;
+        }
+
+        li {
+            font-family: serif;
+            font-size: 1.15rem;
+            margin-bottom: 0.6rem;
+            color: var(--text);
+        }
+
+        li strong, p strong {
+            font-family: serif;
+            font-weight: 700;
+        }
+
+        /* Editorial Context Notes */
+        .editorial {
+            font-family: serif;
+            font-size: 1.25rem;
+            line-height: 1.7;
+        }
+
+        /* LAYOUT ARCHITECTURE */
+        header {
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: none;
+        }
+
+        nav a {
+            font-family: sans-serif;
+            font-weight: 500;
+            text-decoration: none;
+            color: var(--text);
+            margin-left: 2rem;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        nav a:hover::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--accent-gradient);
+        }
+
+        .document-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--section-gap) 2rem;
+        }
+
+        .document-meta {
+            margin-bottom: 3rem;
+            border-bottom: 4px solid #000;
+            padding-bottom: 2rem;
+        }
+
+        .hero-divider {
+            height: 2px;
+            width: 60px;
+            background: var(--accent-gradient);
+            margin-bottom: 2rem;
+        }
+
+        /* Architectural Blockquotes */
+        .document-quote {
+            margin: 2.5rem 0;
+            border-left: 4px solid #000;
+            padding-left: 1.5rem;
+            max-width: 68ch;
+        }
+        
+        .document-quote p {
+            font-style: italic;
+            margin-bottom: 0;
+        }
+
+        /* Responsive Layout Grid Accents */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 4rem;
+        }
+
+        .about-card {
+            border: 4px solid #000;
+            padding: 2.5rem;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .about-card a {
+            color: var(--text);
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        .closing-box {
+            max-width: 700px;
+            margin: 6rem auto 0;
+            border: 4px dashed #000;
+            padding: 4rem 3rem;
+            text-align: center;
+            position: relative;
+        }
+
+        /* FOOTER SYSTEM */
+        footer {
+            padding: 8rem 2rem 4rem;
+            border-top: none;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 4rem;
+        }
+
+        .footer-logo {
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-nav {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .footer-nav li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-family: sans-serif;
+            font-size: 0.9rem;
+        }
+
+        /* RESPONSIVE AGILITY BREAKPOINTS */
+        @media (max-width: 768px) {
+            :root { 
+                --section-gap: 3rem; 
+            }
+            
+            .document-container {
+                padding: var(--section-gap) 1.25rem;
+            }
+
+            header {
+                padding: 1.5rem 1.25rem;
+            }
+
+            nav { 
+                display: none; 
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+
+            .about-card {
+                padding: 1.5rem;
+            }
+
+            .closing-box {
+                padding: 2.5rem 1.25rem;
+                margin-top: 4rem;
+            }
+
+            footer {
+                padding: 4rem 1.25rem 2rem;
+                gap: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="/" class="mono footer-logo" style="text-decoration: none; color: inherit; display: block;">callistra.design</a>
+        <nav>
+            <a href="/tools">All Tools</a>
+            <a href="/about">About</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+            <a href="/contact">Contact</a>
+            <a href="/blog">Blog</a>
+        </nav>
+    </header>
+
+    <main class="document-container">
+        <div class="document-meta">
+            <span class="mono" style="font-size: 0.75rem; opacity: 0.6; display: block; margin-bottom: 0.5rem;">[ INQUIRIES / DIRECT DIALOGUE ]</span>
+            <h1 class="sans">Contact Channels</h1>
+            <div class="hero-divider"></div>
+            <span class="mono" style="font-weight: bold; display: block;">HUMAN IN THE LOOP / JULY 2026</span>
+        </div>
+
+        <p style="font-size: 1.25rem; font-weight: 700; line-height: 1.6;">
+            We choose to build quiet tools, which means we also choose straightforward communication. No support ticket numbers, no complex drop-down forms, and no AI chatbots routing your input. If you have questions, feedback, or bugs to flag, reach out to us directly.
+        </p>
+
+        <h2 class="sans">1. Choose Your Interface</h2>
+        <p>Whether you want to share a line of code that broke, request a completely new utility module, or just have an existential conversation about design workflows, you can find our verified touchpoints below:</p>
+
+        <div class="about-grid">
+            <div class="about-card">
+                <div>
+                    <span class="mono" style="font-size: 0.75rem; opacity: 0.5; display: block; margin-bottom: 1rem;">[ ROUTE 01 / INBOX ]</span>
+                    <h3 class="sans" style="margin-top: 0;">Asynchronous Email</h3>
+                    <p class="sans" style="font-size: 1rem; margin-bottom: 1.5rem;">For architectural questions, critical bugs, tools critique, or formal business inquiries.</p>
+                </div>
+                <a href="mailto:mailabdulbaten@gmail.com" class="sans" style="font-size: 0.95rem;">mailabdulbaten@gmail.com &rarr;</a>
+            </div>
+            
+            <div class="about-card">
+                <div>
+                    <span class="mono" style="font-size: 0.75rem; opacity: 0.5; display: block; margin-bottom: 1rem;">[ ROUTE 02 / SOCIALS ]</span>
+                    <h3 class="sans" style="margin-top: 0;">Public Vectors</h3>
+                    <p class="sans" style="font-size: 1rem; margin-bottom: 1.5rem;">For quick interactions, modular updates, updates on current tool pipelines, or general ecosystem chatter.</p>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <a href="https://x.com/abdulbatenhere" target="_blank" class="sans" style="font-size: 0.95rem;">Twitter / X &rarr;</a>
+                    <a href="https://instagram.com/abdulbatenhere" target="_blank" class="sans" style="font-size: 0.95rem;">Instagram &rarr;</a>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="sans">2. Open System Framework</h2>
+        <p>Because everything built under the Callistra ecosystem is stored natively within client-side browser logic, we don't hold user files on a remote master storage matrix. If a micro-tool generates an unexpected mathematical output or structural visual flaw, sending a raw description or code snippet via email dramatically accelerates our debugging workflow.</p>
+        
+        <div class="document-quote">
+            <p><strong>We measure communication success the same way we measure layout tools: by how effectively we answer your core problem and get out of your way. Your creative focus remains paramount.</strong></p>
+        </div>
+
+        <div class="closing-box">
+            <span class="mono" style="font-size: 0.8rem; font-weight: bold; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #fff; padding: 0 1rem; border: 2px solid #000;">THE SINCERE STANDARD</span>
+            <p class="serif" style="font-size: clamp(1.4rem, 4vw, 2rem); line-height: 1.3; font-weight: 700; margin-bottom: 2rem; font-style: italic;">No growth hacks. No distribution funnels.</p>
+            <p class="serif" style="font-size: 1.15rem; line-height: 1.7; margin-bottom: 0; opacity: 0.8;">Your messages don't drop into an automated database designed to extract demographic value. We read every word, implement structural corrections on tools where it counts, and keep building transparently.</p>
+            <div class="sans" style="font-size: clamp(1.5rem, 5vw, 2.5rem); font-weight: 900; text-transform: uppercase; letter-spacing: -0.05em; line-height: 1; margin-top: 2.5rem; background: #000; color: #fff; padding: 1.5rem 1rem;">ALWAYS DIRECTLY HUMAN.</div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <a href="/" class="mono" style="text-decoration: none; color: inherit; display: block; margin-bottom: 1rem;">callistra.design</a>
+                <div class="editorial" style="font-size: 1rem;">Built with care.</div>
+                <p style="font-size: 0.85rem; margin-top: 1rem; opacity: 0.8; font-family: serif; max-width: 100%;">Designed with respect for your privacy, your time, and your work.</p>
+            </div>
+            <div>
+                <ul class="footer-nav">
+                    <li><a href="/tools">All Tools</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/privacy">Privacy Policy</a></li>
+                    <li><a href="/terms">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div>
+                <ul class="footer-nav">
+                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="https://x.com/abdulbatenhere" target="_blank">Twitter / X</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="mono" style="margin-top: 4rem; font-size: 0.7rem; opacity: 0.5;">
+            &copy; Callistra. No rights reserved. Your work is yours.
+        </div>
+    </footer>
+
+</body>
+</html>
