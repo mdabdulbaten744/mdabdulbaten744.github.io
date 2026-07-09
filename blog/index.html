@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The Callistra Blog: Focused perspectives on color theory, interface typography, minimalist engineering, and design sovereignty.">
+    <title>Blog — Callistra</title>
+    
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <meta name="theme-color" content="#ffffff">
+    
+    <link rel="canonical" href="https://callistra.design/blog">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://callistra.design/blog">
+    <meta property="og:title" content="Blog — Callistra">
+    <meta property="og:site_name" content="Callistra">
+    <meta property="og:description" content="Focused perspectives on color theory, interface typography, minimalist engineering, and design sovereignty.">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://callistra.design/blog">
+    <meta name="twitter:title" content="Blog — Callistra">
+    <meta name="twitter:description" content="Focused perspectives on color theory, interface typography, minimalist engineering, and design sovereignty.">
+
+    <style>
+        /* * BRAND TYPOGRAPHY SYSTEM
+         * Neo-Brutalist Black & White Aesthetics
+         * Inherited identically from terms, privacy, and about architectures
+         */
+        :root {
+            --bg: #ffffff;
+            --text: #000000;
+            --accent-gradient: linear-gradient(90deg, #6366f1, #3b82f6);
+            --space-unit: 1rem;
+            --section-gap: 6rem;
+            --paragraph-gap: 1.5rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* TYPOGRAPHY UTILITIES */
+        .sans { font-family: sans-serif; }
+        .serif { font-family: serif; font-style: italic; font-weight: 400; }
+        .mono { font-family: monospace; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.85rem; }
+
+        /* Document Headings strictly Sans-Serif */
+        h1, h2, h3, h4 {
+            font-family: sans-serif;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: var(--paragraph-gap);
+            margin-top: 2.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        /* Body Typography globally mapped to elegant Serif for editorial tone */
+        p {
+            font-family: serif;
+            font-weight: 400;
+            font-size: 1.15rem;
+            max-width: 68ch;
+            margin-bottom: var(--paragraph-gap);
+            color: var(--text);
+        }
+
+        ul {
+            margin-bottom: var(--paragraph-gap);
+            padding-left: 1.5rem;
+            max-width: 68ch;
+        }
+
+        li {
+            font-family: serif;
+            font-size: 1.15rem;
+            margin-bottom: 0.6rem;
+            color: var(--text);
+        }
+
+        li strong, p strong {
+            font-family: serif;
+            font-weight: 700;
+        }
+
+        /* Editorial Context Notes */
+        .editorial {
+            font-family: serif;
+            font-size: 1.25rem;
+            line-height: 1.7;
+        }
+
+        /* LAYOUT ARCHITECTURE */
+        header {
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: none; /* No layout border below logo heading */
+        }
+
+        nav a {
+            font-family: sans-serif;
+            font-weight: 500;
+            text-decoration: none;
+            color: var(--text);
+            margin-left: 2rem;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        nav a:hover::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--accent-gradient);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .blog-hero {
+            padding-top: 6rem;
+            padding-bottom: 4rem;
+            border-bottom: 4px solid #000000;
+        }
+
+        .blog-hero h1 {
+            font-size: clamp(3rem, 7vw, 5rem);
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-divider {
+            height: 2px;
+            width: 60px;
+            background: var(--accent-gradient);
+            margin-bottom: 2rem;
+        }
+
+        .hero-description {
+            font-size: 1.35rem;
+            max-width: 50ch;
+        }
+
+        /* ==========================================================================
+           GRID SYSTEM & ARTICLE CARDS (MOBILE FIRST)
+           ========================================================================== */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4px;
+            background: #000000;
+            border: 4px solid #000000;
+            margin: 4rem 0 var(--section-gap);
+        }
+
+        .article-card {
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            transition: background 0.15s ease;
+        }
+
+        .article-card:hover {
+            background: #fafafa;
+        }
+
+        .card-content {
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .card-title {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-top: 0;
+            margin-bottom: 1rem;
+            color: #000000;
+        }
+
+        .card-excerpt {
+            font-family: serif;
+            font-style: italic;
+            font-size: 1.15rem;
+            line-height: 1.5;
+            opacity: 0.7;
+            margin-bottom: 3rem;
+            max-width: 42ch;
+        }
+
+        .card-link {
+            font-family: sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-block;
+            margin-top: auto;
+        }
+
+        /* Pure CSS Dynamic Artwork Thumbnails */
+        .card-art {
+            width: 100%;
+            height: 240px;
+            border-bottom: 4px solid #000000;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Thumbnail Art Variations */
+        .art-gradients {
+            background: linear-gradient(135deg, #6366f1, #ff8a00, #ff0055, #3b82f6);
+            background-size: 150% 150%;
+        }
+
+        .art-typography {
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 1rem;
+            align-items: stretch;
+        }
+        .typo-stripe {
+            height: 35px;
+            background: #000000;
+            color: #ffffff;
+            font-family: sans-serif;
+            font-weight: 900;
+            font-size: 1.8rem;
+            line-height: 35px;
+            white-space: nowrap;
+            padding: 0 1rem;
+            transform: skewX(-10deg);
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        .art-minimalism {
+            background: #f3f4f6;
+        }
+        .minimal-box {
+            width: 80px;
+            height: 80px;
+            border: 4px solid #000000;
+            background: #ffffff;
+            position: relative;
+        }
+        .minimal-box::after {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            width: 100%;
+            height: 100%;
+            border: 4px solid #000000;
+            background: transparent;
+            z-index: -1;
+        }
+
+        .art-contrast {
+            background: #000000;
+        }
+        .contrast-circle {
+            width: 100px;
+            height: 100px;
+            background: #ffffff;
+            border-radius: 50%;
+            mix-blend-mode: difference;
+            position: relative;
+        }
+        .contrast-circle::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            background: #ffffff;
+            border-radius: 100px 0 0 100px;
+        }
+
+        /* FOOTER SYSTEM */
+        footer {
+            padding: 8rem 2rem 4rem;
+            border-top: none; /* No layout border rule above standard footer */
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 4rem;
+        }
+
+        .footer-logo {
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-nav {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .footer-nav li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-nav a {
+            text-decoration: none;
+            color: var(--text);
+            font-family: sans-serif;
+            font-size: 0.9rem;
+        }
+
+        /* ==========================================================================
+           RESPONSIVE BREAKPOINTS (STRICT MOBILE COMPATIBILITY)
+           ========================================================================== */
+        @media (max-width: 900px) {
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            :root { 
+                --section-gap: 3rem; 
+            }
+            
+            main {
+                padding: 0 1.25rem;
+            }
+
+            header {
+                padding: 1.5rem 1.25rem;
+            }
+
+            nav { 
+                display: none; 
+            }
+
+            .blog-hero {
+                padding-top: 4rem;
+                padding-bottom: 3rem;
+            }
+
+            .card-content {
+                padding: 1.75rem;
+            }
+
+            .card-excerpt {
+                margin-bottom: 2rem;
+            }
+
+            footer {
+                padding: 4rem 1.25rem 2rem;
+                gap: 2.5rem;
+            }
+        }
+    </style>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "headline": "Callistra Blog",
+      "description": "Focused perspectives on color theory, interface typography, minimalist engineering, and design sovereignty.",
+      "url": "https://callistra.design/blog",
+      "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "url": "https://callistra.design/blog/beautiful-gradient-palettes"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "url": "https://callistra.design/blog/laws-of-minimal-interfaces"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "url": "https://callistra.design/blog/designing-terminal-viewport"
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "url": "https://callistra.design/blog/color-isolation-optical-contrast"
+          }
+        ]
+      }
+    }
+    </script>
+</head>
+<body>
+
+    <header>
+        <a href="/" class="mono footer-logo" style="text-decoration: none; color: inherit; display: block;">callistra.design</a>
+        <nav>
+            <a href="/tools">All Tools</a>
+            <a href="/about">About</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+            <a href="/contact">Contact</a>
+            <a href="/blog">Blog</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="blog-hero">
+            <h1 class="sans">The <span class="serif">Journal.</span></h1>
+            <div class="hero-divider"></div>
+            <p class="serif hero-description">
+                Focused essays on color math, clear typography layouts, interface logic, and modern frontend craftsmanship.
+            </p>
+        </section>
+
+        <div class="blog-grid">
+
+            <a href="posts/beautiful-gradient-palettes.html" class="article-card">
+                <div class="card-art art-gradients" aria-hidden="true"></div>
+                <div class="card-content">
+                    <div>
+                        <div class="card-meta">
+                            <span class="mono">COLOR THEORY</span>
+                            <span class="mono" style="opacity: 0.5;">JULY 2026</span>
+                        </div>
+                        <h2 class="sans card-title">How to Create Beautiful Gradient Palettes Every Time</h2>
+                        <p class="card-excerpt">Why some gradients feel magical while others look muddy—and how to make the good ones consistently.</p>
+                    </div>
+                    <span class="card-link">Read Article &rarr;</span>
+                </div>
+            </a>
+
+            <a href="posts/laws-of-minimal-interfaces.html" class="article-card">
+                <div class="card-art art-typography" aria-hidden="true">
+                    <div class="typo-stripe">SCALE RULES</div>
+                    <div class="typo-stripe" style="background:#fff; color:#000; border:2px solid #000; font-size:1.4rem; height:28px; line-height:24px;">STRUCTURE</div>
+                    <div class="typo-stripe" style="font-size:1rem; height:20px; line-height:20px;">SYSTEM</div>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="card-meta">
+                            <span class="mono">TYPOGRAPHY SYSTEM</span>
+                            <span class="mono" style="opacity: 0.5;">JUNE 2026</span>
+                        </div>
+                        <h2 class="sans card-title">The Typography Laws of Minimal Interfaces</h2>
+                        <p class="card-excerpt">Why structural layout planning beats cosmetic font decoration every single time, and how to govern scale with absolute hierarchy.</p>
+                    </div>
+                    <span class="card-link">Read Article &rarr;</span>
+                </div>
+            </a>
+
+            <a href="posts/designing-terminal-viewport.html" class="article-card">
+                <div class="card-art art-minimalism" aria-hidden="true">
+                    <div class="minimal-box"></div>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="card-meta">
+                            <span class="mono">INTERFACE LOGIC</span>
+                            <span class="mono" style="opacity: 0.5;">MAY 2026</span>
+                        </div>
+                        <h2 class="sans card-title">Designing for the Terminal Viewport</h2>
+                        <p class="card-excerpt">An exploration of text-only layouts, system monospace architectures, and building lightning-fast web workspaces that load instantly everywhere.</p>
+                    </div>
+                    <span class="card-link">Read Article &rarr;</span>
+                </div>
+            </a>
+
+            <a href="posts/color-isolation-optical-contrast.html" class="article-card">
+                <div class="card-art art-contrast" aria-hidden="true">
+                    <div class="contrast-circle"></div>
+                </div>
+                <div class="card-content">
+                    <div>
+                        <div class="card-meta">
+                            <span class="mono">HUMAN PERCEPTION</span>
+                            <span class="mono" style="opacity: 0.5;">APRIL 2026</span>
+                        </div>
+                        <h2 class="sans card-title">Color Isolation and Optical Contrast Tricks</h2>
+                        <p class="card-excerpt">How human eyes constantly misinterpret adjacent value weights on glowing digital displays, and how to programmatically correct them.</p>
+                    </div>
+                    <span class="card-link">Read Article &rarr;</span>
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <a href="/" class="mono" style="text-decoration: none; color: inherit; display: block; margin-bottom: 1rem;">callistra.design</a>
+                <div class="editorial" style="font-size: 1rem;">Built with care.</div>
+                <p style="font-size: 0.85rem; margin-top: 1rem; opacity: 0.8; font-family: serif; max-width: 100%;">Designed with respect for your privacy, your time, and your work.</p>
+            </div>
+            <div>
+                <ul class="footer-nav">
+                    <li><a href="/tools">All Tools</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/privacy">Privacy Policy</a></li>
+                    <li><a href="/terms">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div>
+                <ul class="footer-nav">
+                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="https://x.com/abdulbatenhere" target="_blank">Twitter / X</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="mono" style="margin-top: 4rem; font-size: 0.7rem; opacity: 0.5;">
+            &copy; Callistra. No rights reserved. Your work is yours.
+        </div>
+    </footer>
+
+</body>
+</html>
