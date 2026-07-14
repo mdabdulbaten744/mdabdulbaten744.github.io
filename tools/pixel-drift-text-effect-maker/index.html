@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Pixel Drift Text Effect Maker – Free Online Glitch Typography Tool</title>
+    <meta name="description" content="Create brutalist pixel drift text effects online for free. Slice typography into drifting digital blocks, customize grid size, scatter intensity, and export transparent PNGs or motion videos instantly.">
+    <meta name="keywords" content="pixel drift text effect, glitch text generator, digital fragmentation tool, block displacement typography, text distortion generator, drift text maker, fragmented text effect, typography glitch generator, graphic design tool, text manipulation online, transparent PNG text, animated glitch text">
+    <link rel="canonical" href="https://callistra.design/tools/pixel-drift-text-effect-maker">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#1b1a18">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://callistra.design/tools/pixel-drift-text-effect-maker">
+    <meta property="og:title" content="Pixel Drift Text Effect Maker – Free Online Glitch Typography Tool">
+    <meta property="og:description" content="Create brutalist pixel drift text effects online for free. Slice typography into drifting digital blocks, customize grid size, scatter intensity, and export transparent PNGs or motion videos instantly.">
+    <meta property="og:image" content="https://callistra.design/assets/pixel-drift-og.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://callistra.design/tools/pixel-drift-text-effect-maker">
+    <meta name="twitter:title" content="Pixel Drift Text Effect Maker – Free Online Glitch Typography Tool">
+    <meta name="twitter:description" content="Create brutalist pixel drift text effects online for free. Slice typography into drifting digital blocks, customize grid size, scatter intensity, and export transparent PNGs or motion videos instantly.">
+    <meta name="twitter:image" content="https://callistra.design/assets/pixel-drift-og.png">
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <style>
+        /* Timeless & Neutral Color Palette */
+        :root {
+            --bg-color: #faf8f5;        
+            --panel-bg: #ffffff;        
+            --border-color: #eae5df;    
+            --text-primary: #1b1a18;    
+            --text-muted: #7c766e;      
+            --accent: #1b1a18;          
+            --record-active: #a82e2e;   
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Semantic Header & Navigation Styles */
+        header {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
+        .logo-link {
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        nav a {
+            font-family: sans-serif;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Tool Context Intro Details */
+        .tool-intro {
+            width: 100%;
+            max-width: 1100px;
+            margin-bottom: 25px;
+        }
+
+        header h1, .tool-intro h1 {
+            font-family: sans-serif;
+            font-weight: 700;
+            font-size: 1.75rem;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .tool-subtitle {
+            font-family: sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Two-Column Layout */
+        .app-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            width: 100%;
+            max-width: 1100px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
+            margin-bottom: 60px;
+        }
+
+        @media (max-width: 950px) {
+            .app-layout {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 20px;
+            }
+        }
+
+        /* Canvas container with scaling backdrops */
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 2 / 1;
+            border: 1px solid var(--border-color);
+            background-color: #ffffff;
+            background-image: conic-gradient(#f3f1ed 0.25turn, #ffffff 0.25turn 0.5turn, #f3f1ed 0.5turn 0.75turn, #ffffff 0.75turn);
+            background-size: 16px 16px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Control Panel elements */
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .controls-group {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .text-input-wrapper {
+            position: relative;
+        }
+
+        .text-input {
+            width: 100%;
+            font-size: 1.25rem;
+            padding: 12px 0;
+            border: none;
+            border-bottom: 2px solid var(--accent);
+            outline: none;
+            background: transparent;
+            font-family: sans-serif;
+            font-weight: bold;
+            color: var(--text-primary);
+            letter-spacing: 0.02em;
+        }
+
+        .text-input::placeholder {
+            color: #d1cbc4;
+        }
+
+        .control-row {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .control-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            font-family: sans-serif;
+        }
+
+        .value-display {
+            color: var(--text-primary);
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 2px;
+            background: #e2ded9;
+            outline: none;
+            margin: 10px 0;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.3);
+        }
+
+        /* Details & Advanced Options */
+        details.advanced-options {
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 0;
+            margin-top: 5px;
+        }
+
+        details.advanced-options summary {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            font-family: sans-serif;
+        }
+
+        details.advanced-options summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details.advanced-options summary::after {
+            content: "＋";
+            font-size: 0.8rem;
+        }
+
+        details.advanced-options[open] summary::after {
+            content: "－";
+        }
+
+        .advanced-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding-top: 20px;
+        }
+
+        .advanced-grid .control-row.full-width {
+            grid-column: span 2;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--panel-bg);
+            color: var(--text-primary);
+            font-family: sans-serif;
+            font-size: 0.85rem;
+            outline: none;
+            cursor: pointer;
+            border-radius: 0;
+        }
+
+        .color-selector {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            padding: 4px;
+            gap: 10px;
+            background: var(--panel-bg);
+        }
+
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            background: none;
+        }
+
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        input[type="color"]::-webkit-color-swatch {
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-download {
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+            padding: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.15s ease, transform 0.1s ease;
+            width: 100%;
+            margin-top: 15px;
+            font-family: sans-serif;
+        }
+
+        .btn-download:hover {
+            opacity: 0.9;
+        }
+
+        .btn-download:active {
+            transform: scale(0.995);
+        }
+
+        .btn-record {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            margin-top: 10px;
+        }
+
+        .btn-record.active {
+            background: var(--record-active);
+            color: #ffffff;
+            border-color: var(--record-active);
+            animation: pulse-border 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse-border {
+            0% { box-shadow: 0 0 0 0 rgba(168, 46, 46, 0.4); }
+            70% { box-shadow: 0 0 0 6px rgba(168, 46, 46, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(168, 46, 46, 0); }
+        }
+
+        /* Informative Content & Articles Area styling */
+        .content-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .content-container h2 {
+            font-family: sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+            color: var(--text-primary);
+        }
+
+        .content-container p {
+            font-family: serif;
+            font-size: 1.05rem;
+            line-height: 1.65;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .content-container ul {
+            margin-left: 20px;
+            margin-bottom: 25px;
+        }
+
+        .content-container li {
+            font-family: serif;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        /* FAQ Semantic Accordion Elements */
+        .faq-section {
+            margin-top: 50px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 40px;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border-color);
+            padding: 18px 0;
+        }
+
+        .faq-item summary {
+            font-family: sans-serif;
+            font-weight: 600;
+            font-size: 1.05rem;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            color: var(--text-primary);
+        }
+
+        .faq-item summary::before {
+            content: "▲";
+            font-size: 0.65rem;
+            margin-right: 12px;
+            transform: rotate(90deg);
+            transition: transform 0.2s ease;
+            color: var(--text-primary);
+        }
+
+        .faq-item[open] summary::before {
+            transform: rotate(180deg);
+        }
+
+        .faq-item p {
+            font-family: serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-top: 12px;
+            color: var(--text-muted);
+            padding-left: 22px;
+        }
+
+        /* Related Tools Area */
+        .related-tools-section {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-color);
+            margin-bottom: 60px;
+        }
+
+        .related-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .related-card {
+            display: block;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            background: var(--panel-bg);
+            text-decoration: none;
+            transition: border-color 0.15s ease;
+        }
+
+        .related-card:hover {
+            border-color: var(--text-primary);
+        }
+
+        .related-card h3 {
+            font-family: sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .related-card p {
+            font-family: serif;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* Footer */
+        footer {
+            width: 100%;
+            max-width: 1100px;
+            border-top: 1px solid var(--border-color);
+            padding: 30px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        footer p {
+            font-family: sans-serif;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.02em;
+        }
+    </style>
+</head>
+<body>
+
+    <header role="banner">
+        <a href="/" class="logo-link">Callistra.design</a>
+        <nav role="navigation" aria-label="Main Navigation">
+            <a href="/tools">Tools</a>
+        </nav>
+    </header>
+
+    <main role="main">
+        <div class="tool-intro">
+            <h1>Pixel Drift Text Effect Maker</h1>
+            <p class="tool-subtitle">Free Online Glitch Typography Tool</p>
+        </div>
+
+        <div class="app-layout">
+            <div class="canvas-container">
+                <canvas id="canvas" width="800" height="400" aria-label="Typography preview canvas showcasing pixel drift text effects"></canvas>
+            </div>
+
+            <div class="control-panel">
+                <div class="controls-group">
+                    <div class="text-input-wrapper">
+                        <input type="text" id="textInput" class="text-input" value="DRIFT" placeholder="TYPE SOMETHING..." oninput="draw()" aria-label="Drift Text Input Source">
+                    </div>
+
+                    <div class="control-row">
+                        <div class="control-header">
+                            <label for="blockSize">Grid Block Size</label>
+                            <span id="v_blockSize" class="value-display">20px</span>
+                        </div>
+                        <input type="range" id="blockSize" min="2" max="100" step="1" value="20" oninput="draw()">
+                    </div>
+
+                    <div class="control-row">
+                        <div class="control-header">
+                            <label for="drift">Scatter Amount</label>
+                            <span id="v_drift" class="value-display">15px</span>
+                        </div>
+                        <input type="range" id="drift" min="0" max="150" step="1" value="15" oninput="draw()">
+                    </div>
+
+                    <details class="advanced-options">
+                        <summary>Advanced Layout & Typography</summary>
+                        <div class="advanced-grid">
+                            <div class="control-row full-width">
+                                <div class="control-header">
+                                    <label for="fontFamily">Font Family</label>
+                                </div>
+                                <select id="fontFamily" onchange="draw()">
+                                    <optgroup label="Modern Sans-Serifs">
+                                        <option value="system-ui, -apple-system, sans-serif" selected>System Sans</option>
+                                        <option value="'Helvetica Neue', Helvetica, Arial, sans-serif">Helvetica / Arial</option>
+                                        <option value="'Impact', sans-serif">Impact (Heavy)</option>
+                                        <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+                                    </optgroup>
+                                    <optgroup label="Classic Serifs">
+                                        <option value="Georgia, serif">Georgia</option>
+                                        <option value="Garamond, 'EB Garamond', serif">Garamond</option>
+                                        <option value="'Times New Roman', Times, serif">Times New Roman</option>
+                                    </optgroup>
+                                    <optgroup label="Hacker / Monospace">
+                                        <option value="'Courier New', Courier, monospace">Courier New</option>
+                                        <option value="monospace">Standard Monospace</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <div class="control-row">
+                                <div class="control-header">
+                                    <label for="fontSize">Base Size</label>
+                                    <span id="v_fontSize" class="value-display">150px</span>
+                                </div>
+                                <input type="range" id="fontSize" min="30" max="250" value="150" oninput="draw()">
+                            </div>
+
+                            <div class="control-row">
+                                <div class="control-header">
+                                    <label for="textColor">Color</label>
+                                </div>
+                                <div class="color-selector">
+                                    <input type="color" id="textColor" value="#1b1a18" oninput="updateColorLabel(this.value)">
+                                    <span id="v_color" class="value-display" style="font-size: 0.75rem;">#1B1A18</span>
+                                </div>
+                            </div>
+
+                            <div class="control-row">
+                                <div class="control-header">
+                                    <label for="offsetX">Horizontal Shift</label>
+                                    <span id="v_offsetX" class="value-display">0</span>
+                                </div>
+                                <input type="range" id="offsetX" min="-200" max="200" value="0" oninput="draw()">
+                            </div>
+
+                            <div class="control-row">
+                                <div class="control-header">
+                                    <label for="offsetY">Vertical Shift</label>
+                                    <span id="v_offsetY" class="value-display">0</span>
+                                </div>
+                                <input type="range" id="offsetY" min="-150" max="150" value="0" oninput="draw()">
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <div>
+                    <button class="btn-download" onclick="download()">Download Transparent PNG</button>
+                    <button id="btnRecord" class="btn-download btn-record" onclick="toggleRecording()">Record Motion Video</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-container">
+            <h2>Create a Pixel Drift Text Effect Online</h2>
+            <p>The Pixel Drift Text Effect Maker allows you to shatter your typography into a field of fragmented, displaced blocks. Instead of standard waves or blurs, this tool systematically slices your text into a grid and disperses the internal pixels, giving your designs a raw, brutalist digital glitch appearance.</p>
+            <p>This type of block displacement typography is highly sought after in modern graphic design, adding tension, a high-tech data corruption aesthetic, and visual interest to otherwise static lettering.</p>
+            <p>Whether you're developing a cyberpunk UI, designing an underground album cover, or creating streetwear graphics, a pixel drift effect is an elite way to instantly transform clean fonts into aggressive visual statements.</p>
+
+            <h2>What Is a Pixel Drift Effect?</h2>
+            <p>A pixel drift effect operates by displacing localized chunks of an image—in this case, vector typography—along random structural offsets. By controlling the size of these blocks and the intensity of the scatter, the text transitions from a subtle screen-tearing vibe into completely abstracted typographical particles. This acts as a high-grade glitch text generator that outputs directly inside your browser.</p>
+            <p>Unlike simple skewing or standard perspective warps, the pixel drift logic creates harsh right-angles and disjointed horizontal/vertical shifts. The output feels mechanical and destructive, maintaining crisp, un-blurred edges on every fragment.</p>
+
+            <h2>Key Features</h2>
+            <ul>
+                <li>Live digital fragmentation preview with zero lag.</li>
+                <li>Adjustable Grid Block Size to switch between chunky data blocks or fine-grain digital static.</li>
+                <li>Scatter Amount slider to dictate the aggressiveness of the typographical displacement.</li>
+                <li>Font family dropdown tuned for modern aesthetics and classic hacker monospace styles.</li>
+                <li>Full sizing and alignment matrix to perfectly position your glitch.</li>
+                <li>Export high-resolution transparent PNG layers instantly.</li>
+                <li>Motion video recording to manually animate the slider states and output custom animated glitch text sequences.</li>
+            </ul>
+
+            <h2>Who Is This Graphic Design Tool For?</h2>
+            <p>We engineered this text distortion generator for creators seeking rapid, brutalist typographic manipulation:</p>
+            <ul>
+                <li>UI/UX designers mocking up cyberpunk, tech-forward interfaces.</li>
+                <li>Graphic designers conceptualizing modern poster grids and brand identities.</li>
+                <li>Streetwear and apparel designers layering fragmented graphics for print.</li>
+                <li>Social media creators making thumb-stopping digital corruption overlays.</li>
+                <li>Motion designers using the video record feature to grab quick glitch elements.</li>
+                <li>Anyone who needs a quick, reliable drift text maker without launching heavy desktop software.</li>
+            </ul>
+
+            <h2>How to Use the Tool</h2>
+            <p>Hacking your typography takes only a few seconds:</p>
+            <ul>
+                <li>Type your base copy directly into the text input field.</li>
+                <li>Use the Grid Block Size slider to determine the resolution of the slices. Smaller numbers mean more slices.</li>
+                <li>Dial the Scatter Amount to push the blocks further away from their original coordinates.</li>
+                <li>Open the Advanced Layout menu to dial in the perfect font weight, color, and canvas positioning.</li>
+                <li>Download your composition as a transparent PNG, or click "Record Motion Video" and drag the sliders to record dynamic glitch animations.</li>
+            </ul>
+
+            <h2>No Design Software Required</h2>
+            <p>Generating a precise block displacement glitch in professional software typically requires duplicating layers, drawing masks, and tedious manual shifting. This browser-based alternative mathematically segments and scatters your layer instantly. The processing happens entirely client-side, returning transparent outputs that drop seamlessly into Figma, Photoshop, or your video editor of choice.</p>
+
+            <h2>How the Mechanism Works Under the Hood</h2>
+            <p>Internally, this tool renders your text onto a hidden offscreen canvas buffer to capture perfect alpha-channel pixel data. When it renders the final composition, it loops across a mathematical coordinate grid defined by your Block Size parameter. For each grid cell, a deterministic spatial pseudo-random function calculates an offset multiplier based on your Scatter Amount. Finally, the tool uses hardware-accelerated canvas clipping methods to rip that localized chunk from the buffer and project it onto the main canvas at its new, drifted position.</p>
+
+            <section class="faq-section">
+                <h2 id="faq-heading">Frequently Asked Questions</h2>
+                
+                <details class="faq-item">
+                    <summary>Is the Pixel Drift Text Maker free?</summary>
+                    <p>Yes. You can generate, customize, and export all your fragmented typography right from the browser without any cost or paywalls.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Does the exported PNG have a transparent background?</summary>
+                    <p>Yes. The output PNG retains a transparent background so the glitch text can easily overlay photos, videos, or other design assets.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>How do I animate the glitch effect?</summary>
+                    <p>Click the "Record Motion Video" button, then actively drag the Grid Block Size or Scatter Amount sliders. The tool will capture those real-time adjustments and compile them into a downloadable WebM video file.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Why does the drift pattern stay the same when I change colors?</summary>
+                    <p>We use a deterministic spatial algorithm based on the X/Y coordinates of the canvas. This ensures that your layout remains consistent while adjusting typography, so your composition doesn't wildly change unless you alter the Grid or Scatter sliders.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Which fonts look best with this effect?</summary>
+                    <p>Heavy sans-serifs (like Impact or System Sans) provide a thick surface area that makes the block displacement highly visible. However, standard monospace fonts look incredibly authentic for "terminal corruption" aesthetics.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Do I need to install anything?</summary>
+                    <p>No. The entire rendering pipeline executes securely within your local browser memory. No installations, plugins, or server uploads are required.</p>
+                </details>
+            </section>
+
+            <section class="related-tools-section">
+                <h2>Related tools</h2>
+                <div class="related-links">
+                    <a href="/tools/corner-pull" class="related-card">
+                        <h3>Corner Pull Text Generator</h3>
+                        <p>Warp typography aggressively toward any corner of the canvas.</p>
+                    </a>
+                    <a href="/tools/kinetic-wave" class="related-card">
+                        <h3>Kinetic Wave Typography</h3>
+                        <p>Distort text lines into fluid ribbons and organic wave layers.</p>
+                    </a>
+                    <a href="/tools/sphere-wrap" class="related-card">
+                        <h3>3D Sphere Typography Wrapper</h3>
+                        <p>Inflate flat text into high-resolution modern spherical lookups.</p>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer role="contentinfo">
+        <p>&copy; 2026 Callistra.design. All creative tools processed purely client-side for maximum privacy.</p>
+    </footer>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://callistra.design/#website",
+          "url": "https://callistra.design/",
+          "name": "Callistra Design Studio"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://callistra.design/tools/pixel-drift-text-effect-maker#webpage",
+          "url": "https://callistra.design/tools/pixel-drift-text-effect-maker",
+          "name": "Pixel Drift Text Effect Maker – Free Online Glitch Typography Tool",
+          "isPartOf": { "@id": "https://callistra.design/#website" },
+          "description": "Create brutalist pixel drift text effects online for free. Slice typography into drifting digital blocks, customize grid size, scatter intensity, and export transparent PNGs or motion videos instantly."
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://callistra.design/tools/pixel-drift-text-effect-maker#software",
+          "name": "Pixel Drift Typography Studio",
+          "applicationCategory": "DesignApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires HTML5 Canvas and JavaScript",
+          "url": "https://callistra.design/tools/pixel-drift-text-effect-maker",
+          "offers": {
+            "@type": "Offer",
+            "price": "0.00",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Is the Pixel Drift Text Maker free?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. You can generate, customize, and export all your fragmented typography right from the browser without any cost or paywalls."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does the exported PNG have a transparent background?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. The output PNG retains a transparent background so the glitch text can easily overlay photos, videos, or other design assets."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I animate the glitch effect?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Click the \"Record Motion Video\" button, then actively drag the Grid Block Size or Scatter Amount sliders. The tool will capture those real-time adjustments and compile them into a downloadable WebM video file."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Video Recording Variables
+        let mediaRecorder;
+        let recordedChunks = [];
+        let isRecording = false;
+
+        function updateColorLabel(colorVal) {
+            document.getElementById('v_color').innerText = colorVal.toUpperCase();
+            draw();
+        }
+
+        // Deterministic pseudo-random function based on spatial coordinates
+        // This ensures the scatter pattern stays stable while editing typography,
+        // but completely re-rolls when grid sizes change, behaving like a pro tool.
+        function getSpatialRandom(x, y) {
+            let n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
+            return n - Math.floor(n);
+        }
+
+        // Performance guard: Debounces rapid UI input to safely limit rendering to 60 FPS
+        let renderPending = false;
+
+        function draw() {
+            if (!renderPending) {
+                renderPending = true;
+                requestAnimationFrame(() => {
+                    try {
+                        performDraw();
+                    } finally {
+                        renderPending = false;
+                    }
+                });
+            }
+        }
+
+        function performDraw() {
+            // Collect Main Parameters
+            const text = document.getElementById('textInput').value.toUpperCase();
+            
+            // Safety parsing for blockSize to prevent infinite loops or frozen rendering states
+            let blockSize = parseInt(document.getElementById('blockSize').value);
+            if (isNaN(blockSize) || blockSize < 1) blockSize = 1;
+            
+            const drift = parseInt(document.getElementById('drift').value);
+
+            // Collect Advanced Typography Settings
+            const fontFamily = document.getElementById('fontFamily').value;
+            const fontSize = parseInt(document.getElementById('fontSize').value);
+            const textColor = document.getElementById('textColor').value;
+            const offsetX = parseInt(document.getElementById('offsetX').value);
+            const offsetY = parseInt(document.getElementById('offsetY').value);
+
+            // Update Slider UI Display Values
+            document.getElementById('v_blockSize').innerText = blockSize + 'px';
+            document.getElementById('v_drift').innerText = drift + 'px';
+            document.getElementById('v_fontSize').innerText = fontSize + 'px';
+            document.getElementById('v_offsetX').innerText = offsetX;
+            document.getElementById('v_offsetY').innerText = offsetY;
+
+            // Clear root canvas completely to handle transparency rendering correctly
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (!text) return;
+
+            // Create pristine offscreen buffer for accurate text sampling
+            const offscreen = document.createElement('canvas');
+            offscreen.width = canvas.width; 
+            offscreen.height = canvas.height;
+            const octx = offscreen.getContext('2d');
+            
+            octx.font = `bold ${fontSize}px ${fontFamily}`;
+            octx.textAlign = 'center';
+            octx.textBaseline = 'middle';
+            octx.fillStyle = textColor;
+            octx.fillText(text, (canvas.width / 2) + offsetX, (canvas.height / 2) + offsetY);
+
+            // Performance Fix: Replaces the notoriously expensive 'ctx.drawImage' block loops with hyper-efficient O(W*H) direct Uint32Array memory transfers.
+            const width = canvas.width;
+            const height = canvas.height;
+            const sourceData = octx.getImageData(0, 0, width, height);
+            const targetData = ctx.createImageData(width, height);
+            const sourceBuffer = new Uint32Array(sourceData.data.buffer);
+            const targetBuffer = new Uint32Array(targetData.data.buffer);
+
+            // Run coordinate drift loop across the defined block grid
+            for (let y = 0; y < height; y += blockSize) {
+                for (let x = 0; x < width; x += blockSize) {
+                    
+                    // Fetch consistent spatial seeds for this block's coordinate
+                    const randX = getSpatialRandom(x, y);
+                    const randY = getSpatialRandom(x + 100, y + 100);
+
+                    // Determine deterministic offset for this block cell
+                    const driftOffsetX = Math.round((randX - 0.5) * drift);
+                    const driftOffsetY = Math.round((randY - 0.5) * drift);
+                    
+                    const destX = x + driftOffsetX;
+                    const destY = y + driftOffsetY;
+                    
+                    // Calculate precise spatial boundaries for the fragmented chunk
+                    const blockW = Math.min(blockSize, width - x);
+                    const blockH = Math.min(blockSize, height - y);
+
+                    // Reconstruct grid logic natively in flat memory for instant execution speed
+                    for (let by = 0; by < blockH; by++) {
+                        const sy = y + by;
+                        const dy = destY + by;
+                        
+                        if (dy >= 0 && dy < height) {
+                            for (let bx = 0; bx < blockW; bx++) {
+                                const sx = x + bx;
+                                const dx = destX + bx;
+                                
+                                if (dx >= 0 && dx < width) {
+                                    const sourcePixel = sourceBuffer[sy * width + sx];
+                                    
+                                    // Bypasses empty offscreen pixels to correctly overlay overlapping solid text glitches
+                                    if (sourcePixel !== 0) {
+                                        targetBuffer[dy * width + dx] = sourcePixel;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Push completely calculated binary layout securely into main display
+            ctx.putImageData(targetData, 0, 0);
+        }
+        
+        function download() {
+            const link = document.createElement('a');
+            link.download = 'pixel-drift-typography.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // Video Recording Logic
+        function toggleRecording() {
+            const btn = document.getElementById('btnRecord');
+            
+            if (!isRecording) {
+                recordedChunks = [];
+                
+                // Capture canvas updates dynamically at 30 FPS
+                const stream = canvas.captureStream(30);
+                
+                // VP9 WebM codec natively supports transparency (alpha channel)
+                let options = { mimeType: 'video/webm;codecs=vp9' };
+                if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+                    // Generically supported webm fallback
+                    options = { mimeType: 'video/webm' };
+                }
+
+                try {
+                    mediaRecorder = new MediaRecorder(stream, options);
+                } catch (e) {
+                    console.warn("VP9 transparency encoding not supported. Recording standard WebM.", e);
+                    mediaRecorder = new MediaRecorder(stream);
+                }
+
+                mediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        recordedChunks.push(event.data);
+                    }
+                };
+
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(recordedChunks, { type: mediaRecorder.mimeType });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'pixel-drift-motion.webm';
+                    link.click();
+                    
+                    // Cleanup memory
+                    setTimeout(() => URL.revokeObjectURL(url), 100);
+                };
+
+                mediaRecorder.start();
+                isRecording = true;
+                btn.innerText = "Stop & Save Video";
+                btn.classList.add('active');
+            } else {
+                mediaRecorder.stop();
+                isRecording = false;
+                btn.innerText = "Record Motion Video";
+                btn.classList.remove('active');
+            }
+        }
+        
+        // Initial Render Call
+        draw();
+    </script>
+</body>
+</html>
