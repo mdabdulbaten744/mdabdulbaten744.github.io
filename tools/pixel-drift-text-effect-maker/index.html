@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Pixel Drift Text Effect Maker – Free Online Glitch Typography Tool</title>
-    <meta name="description" content="Create brutalist pixel drift text effects online for free. Slice typography into drifting digital blocks, customize grid size, scatter intensity, and export transparent PNGs or motion videos instantly.">
-    <meta name="keywords" content="pixel drift text effect, glitch text generator, digital fragmentation tool, block displacement typography, text distortion generator, drift text maker, fragmented text effect, typography glitch generator, graphic design tool, text manipulation online, transparent PNG text, animated glitch text">
+    <meta name="description" content="Create brutalist pixel drift text effects online for free. Slice typography into drifting digital blocks, customize grid size, scatter intensity, and export transparent PNGs instantly.">
+    <meta name="keywords" content="pixel drift text effect, glitch text generator, digital fragmentation tool, block displacement typography, text distortion generator, drift text maker, fragmented text effect, typography glitch generator, graphic design tool, text manipulation online, transparent PNG text">
     <link rel="canonical" href="https://callistra.design/tools/pixel-drift-text-effect-maker">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#1b1a18">
@@ -14,17 +14,21 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://callistra.design/tools/pixel-drift-text-effect-maker">
     <meta property="og:title" content="Pixel Drift Text Effect Maker – Free Online Glitch Typography Tool">
-    <meta property="og:description" content="Create brutalist pixel drift text effects online for free. Slice typography into drifting digital blocks, customize grid size, scatter intensity, and export transparent PNGs or motion videos instantly.">
+    <meta property="og:description" content="Create brutalist pixel drift text effects online for free. Slice typography into drifting digital blocks, customize grid size, scatter intensity, and export transparent PNGs instantly.">
     <meta property="og:image" content="https://callistra.design/assets/pixel-drift-og.png">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://callistra.design/tools/pixel-drift-text-effect-maker">
     <meta name="twitter:title" content="Pixel Drift Text Effect Maker – Free Online Glitch Typography Tool">
-    <meta name="twitter:description" content="Create brutalist pixel drift text effects online for free. Slice typography into drifting digital blocks, customize grid size, scatter intensity, and export transparent PNGs or motion videos instantly.">
+    <meta name="twitter:description" content="Create brutalist pixel drift text effects online for free. Slice typography into drifting digital blocks, customize grid size, scatter intensity, and export transparent PNGs instantly.">
     <meta name="twitter:image" content="https://callistra.design/assets/pixel-drift-og.png">
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
 
     <style>
         /* Timeless & Neutral Color Palette */
@@ -35,7 +39,6 @@
             --text-primary: #1b1a18;    
             --text-muted: #7c766e;      
             --accent: #1b1a18;          
-            --record-active: #a82e2e;   
         }
 
         * {
@@ -182,10 +185,13 @@
             border-bottom: 2px solid var(--accent);
             outline: none;
             background: transparent;
-            font-family: sans-serif;
-            font-weight: bold;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
             color: var(--text-primary);
             letter-spacing: 0.02em;
+            resize: vertical;
+            min-height: 52px;
+            line-height: 1.2;
         }
 
         .text-input::placeholder {
@@ -214,6 +220,20 @@
             color: var(--text-primary);
             font-family: monospace;
             font-size: 0.85rem;
+        }
+
+        .value-display[contenteditable="true"] {
+            cursor: text;
+            outline: none;
+            border-bottom: 1px dashed var(--text-muted);
+            min-width: 40px;
+            display: inline-block;
+            text-align: right;
+            transition: border-bottom-color 0.2s ease;
+        }
+
+        .value-display[contenteditable="true"]:focus {
+            border-bottom-color: var(--accent);
         }
 
         input[type="range"] {
@@ -284,23 +304,6 @@
             padding-top: 20px;
         }
 
-        .advanced-grid .control-row.full-width {
-            grid-column: span 2;
-        }
-
-        select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            background: var(--panel-bg);
-            color: var(--text-primary);
-            font-family: sans-serif;
-            font-size: 0.85rem;
-            outline: none;
-            cursor: pointer;
-            border-radius: 0;
-        }
-
         .color-selector {
             display: flex;
             align-items: center;
@@ -350,25 +353,11 @@
         .btn-download:active {
             transform: scale(0.995);
         }
-
-        .btn-record {
-            background: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-            margin-top: 10px;
-        }
-
-        .btn-record.active {
-            background: var(--record-active);
-            color: #ffffff;
-            border-color: var(--record-active);
-            animation: pulse-border 1.5s infinite ease-in-out;
-        }
-
-        @keyframes pulse-border {
-            0% { box-shadow: 0 0 0 0 rgba(168, 46, 46, 0.4); }
-            70% { box-shadow: 0 0 0 6px rgba(168, 46, 46, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(168, 46, 46, 0); }
+        
+        .btn-download:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
         }
 
         /* Informative Content & Articles Area styling */
@@ -384,6 +373,16 @@
             font-weight: 700;
             margin-top: 40px;
             margin-bottom: 16px;
+            letter-spacing: -0.01em;
+            color: var(--text-primary);
+        }
+
+        .content-container h3 {
+            font-family: sans-serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-top: 30px;
+            margin-bottom: 12px;
             letter-spacing: -0.01em;
             color: var(--text-primary);
         }
@@ -488,6 +487,7 @@
             font-weight: 600;
             color: var(--text-primary);
             margin-bottom: 5px;
+            margin-top: 0;
         }
 
         .related-card p {
@@ -538,13 +538,13 @@
             <div class="control-panel">
                 <div class="controls-group">
                     <div class="text-input-wrapper">
-                        <input type="text" id="textInput" class="text-input" value="DRIFT" placeholder="TYPE SOMETHING..." oninput="draw()" aria-label="Drift Text Input Source">
+                        <textarea id="textInput" class="text-input" placeholder="TYPE SOMETHING..." oninput="draw()" aria-label="Drift Text Input Source" rows="2">Drift</textarea>
                     </div>
 
                     <div class="control-row">
                         <div class="control-header">
                             <label for="blockSize">Grid Block Size</label>
-                            <span id="v_blockSize" class="value-display">20px</span>
+                            <span id="v_blockSize" class="value-display" contenteditable="true" oninput="updateFromText('blockSize')" onblur="handleBlur('blockSize')">20px</span>
                         </div>
                         <input type="range" id="blockSize" min="2" max="100" step="1" value="20" oninput="draw()">
                     </div>
@@ -552,41 +552,18 @@
                     <div class="control-row">
                         <div class="control-header">
                             <label for="drift">Scatter Amount</label>
-                            <span id="v_drift" class="value-display">15px</span>
+                            <span id="v_drift" class="value-display" contenteditable="true" oninput="updateFromText('drift')" onblur="handleBlur('drift')">15px</span>
                         </div>
                         <input type="range" id="drift" min="0" max="150" step="1" value="15" oninput="draw()">
                     </div>
 
                     <details class="advanced-options">
-                        <summary>Advanced Layout & Typography</summary>
+                        <summary>Color and Size</summary>
                         <div class="advanced-grid">
-                            <div class="control-row full-width">
-                                <div class="control-header">
-                                    <label for="fontFamily">Font Family</label>
-                                </div>
-                                <select id="fontFamily" onchange="draw()">
-                                    <optgroup label="Modern Sans-Serifs">
-                                        <option value="system-ui, -apple-system, sans-serif" selected>System Sans</option>
-                                        <option value="'Helvetica Neue', Helvetica, Arial, sans-serif">Helvetica / Arial</option>
-                                        <option value="'Impact', sans-serif">Impact (Heavy)</option>
-                                        <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
-                                    </optgroup>
-                                    <optgroup label="Classic Serifs">
-                                        <option value="Georgia, serif">Georgia</option>
-                                        <option value="Garamond, 'EB Garamond', serif">Garamond</option>
-                                        <option value="'Times New Roman', Times, serif">Times New Roman</option>
-                                    </optgroup>
-                                    <optgroup label="Hacker / Monospace">
-                                        <option value="'Courier New', Courier, monospace">Courier New</option>
-                                        <option value="monospace">Standard Monospace</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-
                             <div class="control-row">
                                 <div class="control-header">
-                                    <label for="fontSize">Base Size</label>
-                                    <span id="v_fontSize" class="value-display">150px</span>
+                                    <label for="fontSize">Size</label>
+                                    <span id="v_fontSize" class="value-display" contenteditable="true" oninput="updateFromText('fontSize')" onblur="handleBlur('fontSize')">150px</span>
                                 </div>
                                 <input type="range" id="fontSize" min="30" max="250" value="150" oninput="draw()">
                             </div>
@@ -600,114 +577,412 @@
                                     <span id="v_color" class="value-display" style="font-size: 0.75rem;">#1B1A18</span>
                                 </div>
                             </div>
-
-                            <div class="control-row">
-                                <div class="control-header">
-                                    <label for="offsetX">Horizontal Shift</label>
-                                    <span id="v_offsetX" class="value-display">0</span>
-                                </div>
-                                <input type="range" id="offsetX" min="-200" max="200" value="0" oninput="draw()">
-                            </div>
-
-                            <div class="control-row">
-                                <div class="control-header">
-                                    <label for="offsetY">Vertical Shift</label>
-                                    <span id="v_offsetY" class="value-display">0</span>
-                                </div>
-                                <input type="range" id="offsetY" min="-150" max="150" value="0" oninput="draw()">
-                            </div>
                         </div>
                     </details>
                 </div>
 
                 <div>
-                    <button class="btn-download" onclick="download()">Download Transparent PNG</button>
-                    <button id="btnRecord" class="btn-download btn-record" onclick="toggleRecording()">Record Motion Video</button>
+                    <button class="btn-download" onclick="download4K()">DOWNLOAD PNG - 4K</button>
                 </div>
             </div>
         </div>
 
         <div class="content-container">
-            <h2>Create a Pixel Drift Text Effect Online</h2>
-            <p>The Pixel Drift Text Effect Maker allows you to shatter your typography into a field of fragmented, displaced blocks. Instead of standard waves or blurs, this tool systematically slices your text into a grid and disperses the internal pixels, giving your designs a raw, brutalist digital glitch appearance.</p>
-            <p>This type of block displacement typography is highly sought after in modern graphic design, adding tension, a high-tech data corruption aesthetic, and visual interest to otherwise static lettering.</p>
-            <p>Whether you're developing a cyberpunk UI, designing an underground album cover, or creating streetwear graphics, a pixel drift effect is an elite way to instantly transform clean fonts into aggressive visual statements.</p>
+            <h2>Pixel Drift Text Effect Maker</h2>
+            <p><strong>Create High-Impact Glitch Typography Online — Free, Fast & Fully Customizable</strong></p>
+            <p>Transform ordinary text into bold digital artwork with the Pixel Drift Text Effect Maker, a professional online typography tool that creates fragmented, glitched, and pixel-displaced text in seconds. Whether you're designing a cyberpunk poster, streetwear graphic, album cover, gaming logo, YouTube thumbnail, or social media artwork, this browser-based generator helps you produce distinctive typography without installing design software.</p>
+            <p>Unlike traditional text effects that simply blur or warp letters, the Pixel Drift effect breaks typography into hundreds of individual pixel blocks and intelligently shifts each section to create a controlled digital distortion. The result is a clean, high-resolution glitch aesthetic that feels intentional, modern, and visually striking.</p>
+            <p>Everything runs directly in your browser. Your text is processed locally using HTML5 Canvas, giving you instant previews, smooth performance, and complete privacy. Nothing is uploaded to a server, making the tool both fast and secure.</p>
+            <p>Whether you're creating experimental typography for a branding project or simply exploring new creative styles, this generator gives you complete control over the intensity, scale, and appearance of every effect before exporting a transparent PNG that's ready for professional use.</p>
 
-            <h2>What Is a Pixel Drift Effect?</h2>
-            <p>A pixel drift effect operates by displacing localized chunks of an image—in this case, vector typography—along random structural offsets. By controlling the size of these blocks and the intensity of the scatter, the text transitions from a subtle screen-tearing vibe into completely abstracted typographical particles. This acts as a high-grade glitch text generator that outputs directly inside your browser.</p>
-            <p>Unlike simple skewing or standard perspective warps, the pixel drift logic creates harsh right-angles and disjointed horizontal/vertical shifts. The output feels mechanical and destructive, maintaining crisp, un-blurred edges on every fragment.</p>
+            <h2>Create Professional Pixel Drift Typography in Seconds</h2>
+            <p>Pixel Drift typography has become one of the defining visual styles of modern digital design. Inspired by corrupted displays, damaged video signals, data fragmentation, and early computer graphics, the effect creates the illusion that text is breaking apart while still remaining readable.</p>
+            <p>This style appears everywhere—from music artwork and fashion campaigns to esports branding, technology startups, editorial layouts, and futuristic interfaces. Designers use it because it immediately communicates movement, energy, disruption, and digital culture.</p>
+            <p>With this online generator, you can recreate that aesthetic without spending hours inside Photoshop or Illustrator.</p>
+            <p>Simply enter your text, adjust a few controls, and watch your typography transform instantly.</p>
 
-            <h2>Key Features</h2>
+            <h2>Why Designers Use Pixel Drift Effects</h2>
+            <p>Typography is often the strongest visual element in a design. Instead of relying on plain text, designers manipulate letterforms to create emotion, hierarchy, and personality.</p>
+            <p>Pixel Drift introduces controlled imperfection.</p>
+            <p>Rather than distorting every character equally, the effect separates typography into structured blocks and moves each fragment independently. This produces an authentic digital breakdown that feels more organic than traditional filters while maintaining sharp edges and crisp readability.</p>
+            <p>The result is typography that captures attention immediately.</p>
+            <p>Popular creative applications include:</p>
             <ul>
-                <li>Live digital fragmentation preview with zero lag.</li>
-                <li>Adjustable Grid Block Size to switch between chunky data blocks or fine-grain digital static.</li>
-                <li>Scatter Amount slider to dictate the aggressiveness of the typographical displacement.</li>
-                <li>Font family dropdown tuned for modern aesthetics and classic hacker monospace styles.</li>
-                <li>Full sizing and alignment matrix to perfectly position your glitch.</li>
-                <li>Export high-resolution transparent PNG layers instantly.</li>
-                <li>Motion video recording to manually animate the slider states and output custom animated glitch text sequences.</li>
+                <li>Cyberpunk user interfaces</li>
+                <li>Tech startup branding</li>
+                <li>Gaming logos and overlays</li>
+                <li>Album covers</li>
+                <li>Music festival posters</li>
+                <li>Streetwear graphics</li>
+                <li>Motion graphics</li>
+                <li>Twitch overlays</li>
+                <li>YouTube thumbnails</li>
+                <li>Social media campaigns</li>
+                <li>Editorial magazine layouts</li>
+                <li>NFT artwork</li>
+                <li>Digital art projects</li>
+                <li>Experimental typography</li>
+                <li>Creative portfolios</li>
             </ul>
+            <p>Whether you're designing for web, print, or video, Pixel Drift typography instantly gives your work a modern digital identity.</p>
 
-            <h2>Who Is This Graphic Design Tool For?</h2>
-            <p>We engineered this text distortion generator for creators seeking rapid, brutalist typographic manipulation:</p>
+            <h2>Powerful Features Built for Creators</h2>
+            <p>Every control has been designed to give designers complete creative freedom while remaining incredibly easy to use.</p>
+            
+            <h3>Live Real-Time Rendering</h3>
+            <p>See every adjustment immediately without refreshing the page. As you type or move a slider, the preview updates instantly, allowing rapid experimentation and faster creative decisions.</p>
+            
+            <h3>Adjustable Grid Size</h3>
+            <p>Control how finely your text is divided before displacement begins.</p>
+            <p>Small grid sizes create detailed digital noise with intricate fragmentation, while larger grid sizes generate bold geometric blocks that produce dramatic visual impact.</p>
+            <p>This single setting dramatically changes the character of the final artwork.</p>
+            
+            <h3>Scatter Amount Control</h3>
+            <p>Fine-tune how far each pixel block moves from its original position.</p>
+            <p>Lower values create subtle digital imperfections that resemble signal interference or compressed video artifacts.</p>
+            <p>Higher values produce aggressive fragmentation suitable for futuristic posters, dystopian branding, and abstract artwork.</p>
+            
+            <h3>Typography Controls</h3>
+            <p>Create exactly the composition you need by adjusting:</p>
             <ul>
-                <li>UI/UX designers mocking up cyberpunk, tech-forward interfaces.</li>
-                <li>Graphic designers conceptualizing modern poster grids and brand identities.</li>
-                <li>Streetwear and apparel designers layering fragmented graphics for print.</li>
-                <li>Social media creators making thumb-stopping digital corruption overlays.</li>
-                <li>Motion designers using the video record feature to grab quick glitch elements.</li>
-                <li>Anyone who needs a quick, reliable drift text maker without launching heavy desktop software.</li>
+                <li>Font size</li>
+                <li>Multi-line layouts</li>
+                <li>Text color</li>
+                <li>Canvas positioning</li>
+                <li>Overall composition</li>
             </ul>
-
-            <h2>How to Use the Tool</h2>
-            <p>Hacking your typography takes only a few seconds:</p>
+            <p>Whether you're creating a minimalist logo or a large-format headline, every element remains fully customizable.</p>
+            
+            <h3>Transparent PNG Export</h3>
+            <p>Once you're satisfied with the design, export your artwork as a high-quality transparent PNG.</p>
+            <p>Because the background remains transparent, your typography can be placed directly into:</p>
             <ul>
-                <li>Type your base copy directly into the text input field.</li>
-                <li>Use the Grid Block Size slider to determine the resolution of the slices. Smaller numbers mean more slices.</li>
-                <li>Dial the Scatter Amount to push the blocks further away from their original coordinates.</li>
-                <li>Open the Advanced Layout menu to dial in the perfect font weight, color, and canvas positioning.</li>
-                <li>Download your composition as a transparent PNG, or click "Record Motion Video" and drag the sliders to record dynamic glitch animations.</li>
+                <li>Adobe Photoshop</li>
+                <li>Adobe Illustrator</li>
+                <li>Figma</li>
+                <li>Canva</li>
+                <li>After Effects</li>
+                <li>Premiere Pro</li>
+                <li>DaVinci Resolve</li>
+                <li>Blender</li>
+                <li>Affinity Designer</li>
+                <li>Any modern design application</li>
             </ul>
+            <p>No background removal or additional editing is required.</p>
 
-            <h2>No Design Software Required</h2>
-            <p>Generating a precise block displacement glitch in professional software typically requires duplicating layers, drawing masks, and tedious manual shifting. This browser-based alternative mathematically segments and scatters your layer instantly. The processing happens entirely client-side, returning transparent outputs that drop seamlessly into Figma, Photoshop, or your video editor of choice.</p>
+            <h2>What Makes This Tool Different?</h2>
+            <p>Many online glitch generators simply apply a random displacement filter across an image.</p>
+            <p>This tool was built specifically for typography.</p>
+            <p>Instead of degrading the text with blur, compression artifacts, or noisy overlays, the Pixel Drift algorithm preserves crisp letterforms while introducing structured fragmentation. Every displaced block maintains sharp pixel boundaries, creating a clean digital appearance that's suitable for both professional branding and experimental artwork.</p>
+            <p>The effect feels intentional rather than accidental.</p>
+            <p>Because rendering happens directly inside your browser, interactions remain responsive even while experimenting with different settings, allowing you to iterate rapidly until you find the perfect visual style.</p>
+            <p>The result is professional-quality typography without expensive software, complicated workflows, or technical experience.</p>
 
-            <h2>How the Mechanism Works Under the Hood</h2>
-            <p>Internally, this tool renders your text onto a hidden offscreen canvas buffer to capture perfect alpha-channel pixel data. When it renders the final composition, it loops across a mathematical coordinate grid defined by your Block Size parameter. For each grid cell, a deterministic spatial pseudo-random function calculates an offset multiplier based on your Scatter Amount. Finally, the tool uses hardware-accelerated canvas clipping methods to rip that localized chunk from the buffer and project it onto the main canvas at its new, drifted position.</p>
+            <h2>Who Is This Tool For?</h2>
+            <p>The Pixel Drift Text Effect Maker is designed for anyone who wants distinctive typography that stands out in crowded digital spaces.</p>
+            <p>It's especially useful for:</p>
+            <ul>
+                <li>Graphic designers</li>
+                <li>Brand designers</li>
+                <li>Creative agencies</li>
+                <li>UI and UX designers</li>
+                <li>Motion designers</li>
+                <li>Digital artists</li>
+                <li>Content creators</li>
+                <li>YouTubers</li>
+                <li>Twitch streamers</li>
+                <li>Social media managers</li>
+                <li>Apparel designers</li>
+                <li>Poster designers</li>
+                <li>Marketing teams</li>
+                <li>Students learning typography</li>
+                <li>Anyone experimenting with modern visual design</li>
+            </ul>
+            <p>Whether you're building a complete brand identity or creating a single promotional graphic, Pixel Drift typography adds depth, movement, and personality that static text simply cannot achieve.</p>
+
+            <h2>How the Pixel Drift Effect Works</h2>
+            <p>Although the final result appears random, the Pixel Drift effect is based on a structured algorithm rather than pure chance.</p>
+            <p>The generator first renders your text as a clean raster image before dividing it into a uniform grid of pixel blocks. Each block is then repositioned using controlled displacement values, producing the appearance of digital fragmentation while preserving the overall structure of the typography.</p>
+            <p>Because every fragment is calculated independently, the distortion feels natural instead of repetitive. This creates an authentic "signal corruption" aesthetic similar to broken displays, damaged digital transmissions, or fragmented computer graphics.</p>
+            <p>Unlike blur-based glitch effects, Pixel Drift preserves crisp edges throughout the composition. The typography remains sharp, making it suitable for high-resolution exports, print production, digital branding, and motion graphics.</p>
+
+            <h2>When Should You Use Pixel Drift Typography?</h2>
+            <p>Pixel Drift is incredibly versatile because it balances readability with abstraction.</p>
+            <p>It works particularly well when you want typography to become part of the visual identity rather than simply communicating information.</p>
+            <p>Some of the most effective applications include:</p>
+            
+            <h3>Music Artwork</h3>
+            <p>Electronic music, techno, industrial, synthwave, drum & bass, hyperpop, experimental, and underground artists frequently use fragmented typography to create bold visual identities.</p>
+            <p>The effect communicates movement, distortion, and digital culture while remaining memorable.</p>
+            
+            <h3>Poster Design</h3>
+            <p>Modern posters often rely on expressive typography rather than photography alone.</p>
+            <p>Pixel Drift creates dynamic headlines that immediately capture attention on walls, billboards, event promotions, and exhibition graphics.</p>
+            
+            <h3>Gaming Graphics</h3>
+            <p>Gaming aesthetics frequently combine futuristic interfaces with digital distortion.</p>
+            <p>Use Pixel Drift for:</p>
+            <ul>
+                <li>Game logos</li>
+                <li>Stream overlays</li>
+                <li>Tournament branding</li>
+                <li>Loading screens</li>
+                <li>Menu titles</li>
+                <li>Promotional banners</li>
+                <li>Character introductions</li>
+            </ul>
+            <p>The effect naturally complements sci-fi, cyberpunk, horror, and futuristic themes.</p>
+            
+            <h3>Fashion & Streetwear</h3>
+            <p>Many contemporary clothing brands incorporate distressed typography into hoodie prints, oversized graphics, packaging, and lookbooks.</p>
+            <p>Pixel Drift offers a modern alternative to traditional distressed text by introducing a distinctly digital aesthetic.</p>
+            
+            <h3>Technology Branding</h3>
+            <p>AI companies, cybersecurity firms, software startups, blockchain projects, and digital agencies often use fragmented typography to communicate innovation and technological sophistication.</p>
+            <p>Used subtly, Pixel Drift can make branding feel contemporary without overwhelming the overall design.</p>
+
+            <h2>Pixel Drift vs. Traditional Glitch Effects</h2>
+            <p>Although the terms are often used interchangeably, Pixel Drift is only one category within digital glitch typography.</p>
+            <p>Understanding the differences helps designers choose the right style for each project.</p>
+            
+            <h3>Pixel Drift</h3>
+            <ul>
+                <li>Structured block displacement</li>
+                <li>Crisp geometric fragments</li>
+                <li>High readability</li>
+                <li>Clean digital appearance</li>
+                <li>Ideal for branding and editorial work</li>
+            </ul>
+            
+            <h3>RGB Split</h3>
+            <p>This effect separates the red, green, and blue color channels to simulate monitor misalignment.</p>
+            <p>Best for:</p>
+            <ul>
+                <li>Retro aesthetics</li>
+                <li>VHS-inspired artwork</li>
+                <li>Digital nostalgia</li>
+                <li>Motion graphics</li>
+            </ul>
+            
+            <h3>Scanline Glitch</h3>
+            <p>Adds horizontal interruptions resembling damaged television signals.</p>
+            <p>Best for:</p>
+            <ul>
+                <li>Broadcast graphics</li>
+                <li>Interface design</li>
+                <li>Analog-inspired visuals</li>
+            </ul>
+            
+            <h3>Pixel Sorting</h3>
+            <p>Instead of moving fixed blocks, Pixel Sorting rearranges pixels according to brightness or color values.</p>
+            <p>The result is more fluid and painterly than Pixel Drift, making it popular in generative art and abstract digital compositions.</p>
+            
+            <h3>Noise Distortion</h3>
+            <p>Random visual interference is layered over typography to simulate compression artifacts or transmission errors.</p>
+            <p>While dramatic, it often reduces readability more than Pixel Drift.</p>
+
+            <h2>Design Tips for Better Results</h2>
+            <p>The strongest typography isn't necessarily the most distorted.</p>
+            <p>Professional designers usually apply visual effects with purpose rather than maximum intensity.</p>
+            
+            <h3>Start with Bold Fonts</h3>
+            <p>Heavy sans-serif typefaces generally produce cleaner fragmentation because their larger letterforms provide more surface area for displacement.</p>
+            <p>Black, Extra Bold, and Ultra Bold weights typically generate the most dramatic effects.</p>
+            
+            <h3>Use Moderate Scatter First</h3>
+            <p>A small amount of displacement often creates a more sophisticated design than pushing every slider to the maximum.</p>
+            <p>Subtle distortion maintains readability while still introducing visual interest.</p>
+            
+            <h3>Scale Grid Size to Match Font Size</h3>
+            <p>Larger typography works well with larger block sizes.</p>
+            <p>Smaller typography benefits from finer grids that preserve detail.</p>
+            <p>Balancing these two settings produces more consistent results.</p>
+            
+            <h3>Create Visual Hierarchy</h3>
+            <p>Not every line of text needs the same intensity.</p>
+            <p>Applying stronger distortion to headlines while keeping supporting text cleaner helps guide the viewer's attention.</p>
+            
+            <h3>Leave Negative Space</h3>
+            <p>Fragmented typography naturally creates visual complexity.</p>
+            <p>Allowing generous spacing around the composition prevents the design from feeling cluttered.</p>
+
+            <h2>Creative Ideas to Try</h2>
+            <p>Need inspiration?</p>
+            <p>Experiment with combinations like:</p>
+            <ul>
+                <li>Album titles with aggressive fragmentation</li>
+                <li>Minimal logos with subtle pixel drift</li>
+                <li>Cyberpunk event posters</li>
+                <li>Futuristic product launches</li>
+                <li>AI startup hero banners</li>
+                <li>Streaming overlays</li>
+                <li>Discord server branding</li>
+                <li>Twitch panels</li>
+                <li>Gaming clan logos</li>
+                <li>NFT collection artwork</li>
+                <li>Abstract editorial covers</li>
+                <li>Motion graphics title cards</li>
+                <li>Tech conference presentations</li>
+                <li>Fashion campaign headlines</li>
+                <li>Experimental social media posts</li>
+            </ul>
+            <p>Because every setting produces a unique composition, even simple words can generate striking visual identities.</p>
+
+            <h2>Built for Modern Creative Workflows</h2>
+            <p>One of the biggest advantages of browser-based creative tools is speed.</p>
+            <p>Instead of opening multiple applications, importing fonts, creating masks, duplicating layers, and manually moving dozens of selections, you can generate professional typography within seconds.</p>
+            <p>The exported PNG can immediately be dropped into your existing workflow.</p>
+            <p>Popular software compatibility includes:</p>
+            <ul>
+                <li>Adobe Photoshop</li>
+                <li>Adobe Illustrator</li>
+                <li>Adobe InDesign</li>
+                <li>Adobe After Effects</li>
+                <li>Adobe Premiere Pro</li>
+                <li>Figma</li>
+                <li>Canva</li>
+                <li>Affinity Designer</li>
+                <li>Sketch</li>
+                <li>Blender</li>
+                <li>DaVinci Resolve</li>
+                <li>Final Cut Pro</li>
+                <li>CapCut</li>
+                <li>Pixelmator Pro</li>
+            </ul>
+            <p>Whether you're producing social media graphics, marketing assets, print materials, or video content, the transparent export makes integration effortless.</p>
+
+            <h2>Fast, Private, and Browser-Based</h2>
+            <p>Everything happens directly on your device.</p>
+            <p>Your text is processed locally using your browser's graphics engine, meaning your designs are never uploaded to external servers during generation.</p>
+            <p>This approach provides several benefits:</p>
+            <ul>
+                <li>Faster rendering</li>
+                <li>Improved privacy</li>
+                <li>No waiting for server processing</li>
+                <li>Works instantly after loading</li>
+                <li>No account required</li>
+                <li>No software installation</li>
+                <li>No watermarks</li>
+                <li>Unlimited experimentation</li>
+            </ul>
+            <p>Because the calculations are performed locally, changes appear almost immediately, allowing you to iterate quickly until the composition feels exactly right.</p>
+
+            <h2>Why Designers Love Browser-Based Typography Tools</h2>
+            <p>Modern creative professionals value speed just as much as flexibility.</p>
+            <p>Instead of interrupting their workflow with complex editing software for every small task, many designers now use specialized browser tools to generate assets quickly before refining them in larger creative suites.</p>
+            <p>Pixel Drift typography is a perfect example.</p>
+            <p>In just a few seconds, you can explore dozens of visual directions, compare compositions, and export polished graphics ready for production. This rapid experimentation encourages creativity, reduces repetitive manual work, and makes it easier to discover unique visual styles that might never emerge through traditional editing alone.</p>
+            <p>Whether you're an experienced designer or someone creating graphics for the first time, the Pixel Drift Text Effect Maker offers a fast, intuitive way to transform ordinary words into striking digital typography.</p>
 
             <section class="faq-section">
                 <h2 id="faq-heading">Frequently Asked Questions</h2>
                 
                 <details class="faq-item">
-                    <summary>Is the Pixel Drift Text Maker free?</summary>
-                    <p>Yes. You can generate, customize, and export all your fragmented typography right from the browser without any cost or paywalls.</p>
+                    <summary>Is the Pixel Drift Text Effect Maker free to use?</summary>
+                    <p>Yes. You can create, customize, preview, and export pixel drift typography without paying, creating an account, or installing additional software. Simply open the tool, enter your text, adjust the settings, and download your finished design.</p>
                 </details>
 
                 <details class="faq-item">
-                    <summary>Does the exported PNG have a transparent background?</summary>
-                    <p>Yes. The output PNG retains a transparent background so the glitch text can easily overlay photos, videos, or other design assets.</p>
+                    <summary>Do I need Photoshop or Illustrator?</summary>
+                    <p>No.</p>
+                    <p>The generator works entirely in your web browser, allowing you to create professional glitch typography without expensive desktop software. While you can import your exported PNG into Photoshop, Illustrator, Figma, Canva, or any other design application, the effect itself is created directly online.</p>
                 </details>
 
                 <details class="faq-item">
-                    <summary>How do I animate the glitch effect?</summary>
-                    <p>Click the "Record Motion Video" button, then actively drag the Grid Block Size or Scatter Amount sliders. The tool will capture those real-time adjustments and compile them into a downloadable WebM video file.</p>
+                    <summary>Does the tool support transparent backgrounds?</summary>
+                    <p>Yes.</p>
+                    <p>Every export is generated as a transparent PNG, making it easy to place your typography over photographs, videos, gradients, illustrations, websites, presentations, or other design assets without additional editing.</p>
                 </details>
 
                 <details class="faq-item">
-                    <summary>Why does the drift pattern stay the same when I change colors?</summary>
-                    <p>We use a deterministic spatial algorithm based on the X/Y coordinates of the canvas. This ensures that your layout remains consistent while adjusting typography, so your composition doesn't wildly change unless you alter the Grid or Scatter sliders.</p>
+                    <summary>Can I use the generated graphics commercially?</summary>
+                    <p>Yes.</p>
+                    <p>Whether you're creating client work, branding, marketing materials, merchandise, YouTube content, posters, apparel, album artwork, or commercial advertising, the exported graphics are suitable for professional projects.</p>
                 </details>
 
                 <details class="faq-item">
-                    <summary>Which fonts look best with this effect?</summary>
-                    <p>Heavy sans-serifs (like Impact or System Sans) provide a thick surface area that makes the block displacement highly visible. However, standard monospace fonts look incredibly authentic for "terminal corruption" aesthetics.</p>
+                    <summary>Does the tool upload my text to a server?</summary>
+                    <p>No.</p>
+                    <p>Everything is processed locally inside your browser using HTML5 Canvas. Your text never needs to leave your device during generation, providing greater privacy, faster rendering, and a smoother editing experience.</p>
                 </details>
 
                 <details class="faq-item">
-                    <summary>Do I need to install anything?</summary>
-                    <p>No. The entire rendering pipeline executes securely within your local browser memory. No installations, plugins, or server uploads are required.</p>
+                    <summary>Which browsers are supported?</summary>
+                    <p>The Pixel Drift Text Effect Maker works in all modern browsers that support HTML5 Canvas and JavaScript, including:</p>
+                    <ul>
+                        <li>Google Chrome</li>
+                        <li>Microsoft Edge</li>
+                        <li>Mozilla Firefox</li>
+                        <li>Safari</li>
+                        <li>Opera</li>
+                        <li>Brave</li>
+                    </ul>
+                    <p>For the best performance, use the latest version of your preferred browser.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Can I create multi-line typography?</summary>
+                    <p>Absolutely.</p>
+                    <p>Simply press Enter to add multiple lines of text. Each line is rendered as part of the same composition, making it easy to create posters, headlines, stacked logos, and promotional graphics.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Does increasing the Scatter Amount reduce image quality?</summary>
+                    <p>No.</p>
+                    <p>Scatter changes only the position of each fragmented block. The exported image maintains the original sharpness of the rendered typography, ensuring clean edges and professional-quality output.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>What's the difference between Grid Size and Scatter Amount?</summary>
+                    <p>Grid Size determines how many pieces your typography is divided into.</p>
+                    <p>Smaller values create finer fragmentation with intricate detail.</p>
+                    <p>Larger values produce bigger geometric blocks for a more dramatic visual style.</p>
+                    <p>Scatter Amount determines how far those blocks move away from their original position.</p>
+                    <p>Together, these controls allow you to create everything from subtle digital imperfections to highly fragmented abstract typography.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Can I use this tool for logos?</summary>
+                    <p>Yes.</p>
+                    <p>Many designers use Pixel Drift to experiment with logo concepts, gaming brands, music projects, apparel graphics, and creative identities.</p>
+                    <p>For maximum readability, begin with subtle settings before increasing the distortion.</p>
                 </details>
             </section>
+
+            <h2>Why Choose This Pixel Drift Generator?</h2>
+            <p>There are countless online text effect generators, but most rely on generic image filters that produce repetitive or low-quality results.</p>
+            <p>This tool was built specifically for modern typography.</p>
+            <p>Instead of simply overlaying visual noise, it intelligently fragments your lettering while preserving sharp edges, clean geometry, and high-resolution output.</p>
+            <p>That means your typography remains expressive without becoming unreadable.</p>
+            <p>Whether you're creating bold experimental artwork or polished commercial graphics, you maintain complete creative control throughout the design process.</p>
+            <p>Key advantages include:</p>
+            <ul>
+                <li>Instant live preview</li>
+                <li>Browser-based editing</li>
+                <li>Fast rendering</li>
+                <li>Responsive controls</li>
+                <li>Transparent PNG export</li>
+                <li>Professional-quality output</li>
+                <li>No software installation</li>
+                <li>No account required</li>
+                <li>Privacy-first processing</li>
+                <li>Works across desktop platforms</li>
+            </ul>
+
+            <h2>Designed for Modern Designers</h2>
+            <p>Creative trends evolve constantly, but expressive typography remains one of the most effective ways to capture attention.</p>
+            <p>From futuristic branding and cyberpunk aesthetics to editorial layouts and digital advertising, fragmented typography continues to influence visual culture across print, web, motion graphics, gaming, and fashion.</p>
+            <p>The Pixel Drift Text Effect Maker was created to make this design style accessible to everyone—from beginners exploring typography for the first time to experienced professionals building client work under tight deadlines.</p>
+            <p>Fast rendering, intuitive controls, and clean exports allow you to focus on creativity rather than technical complexity.</p>
+
+            <h2>Start Creating Your Pixel Drift Typography</h2>
+            <p>Whether you're designing a futuristic logo, promoting a music release, creating social media graphics, producing a gaming identity, or experimenting with bold editorial layouts, the Pixel Drift Text Effect Maker gives you everything you need to transform ordinary text into visually compelling digital artwork.</p>
+            <p>Experiment with different grid sizes, adjust the scatter intensity, refine your composition, and discover entirely new typographic styles in just a few clicks.</p>
+            <p>No downloads.</p>
+            <p>No complicated workflow.</p>
+            <p>No learning curve.</p>
+            <p>Just powerful, professional typography generated instantly in your browser.</p>
+            <p>Create, customize, export, and bring your next creative idea to life with striking Pixel Drift typography.</p>
 
             <section class="related-tools-section">
                 <h2>Related tools</h2>
@@ -749,7 +1024,7 @@
           "url": "https://callistra.design/tools/pixel-drift-text-effect-maker",
           "name": "Pixel Drift Text Effect Maker – Free Online Glitch Typography Tool",
           "isPartOf": { "@id": "https://callistra.design/#website" },
-          "description": "Create brutalist pixel drift text effects online for free. Slice typography into drifting digital blocks, customize grid size, scatter intensity, and export transparent PNGs or motion videos instantly."
+          "description": "Create brutalist pixel drift text effects online for free. Slice typography into drifting digital blocks, customize grid size, scatter intensity, and export transparent PNGs instantly."
         },
         {
           "@type": "SoftwareApplication",
@@ -770,26 +1045,34 @@
           "mainEntity": [
             {
               "@type": "Question",
-              "name": "Is the Pixel Drift Text Maker free?",
+              "name": "Is the Pixel Drift Text Effect Maker free to use?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Yes. You can generate, customize, and export all your fragmented typography right from the browser without any cost or paywalls."
+                "text": "Yes. You can create, customize, preview, and export pixel drift typography without paying, creating an account, or installing additional software. Simply open the tool, enter your text, adjust the settings, and download your finished design."
               }
             },
             {
               "@type": "Question",
-              "name": "Does the exported PNG have a transparent background?",
+              "name": "Do I need Photoshop or Illustrator?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Yes. The output PNG retains a transparent background so the glitch text can easily overlay photos, videos, or other design assets."
+                "text": "No. The generator works entirely in your web browser, allowing you to create professional glitch typography without expensive desktop software. While you can import your exported PNG into Photoshop, Illustrator, Figma, Canva, or any other design application, the effect itself is created directly online."
               }
             },
             {
               "@type": "Question",
-              "name": "How do I animate the glitch effect?",
+              "name": "Does the tool support transparent backgrounds?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Click the \"Record Motion Video\" button, then actively drag the Grid Block Size or Scatter Amount sliders. The tool will capture those real-time adjustments and compile them into a downloadable WebM video file."
+                "text": "Yes. Every export is generated as a transparent PNG, making it easy to place your typography over photographs, videos, gradients, illustrations, websites, presentations, or other design assets without additional editing."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I use the generated graphics commercially?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Whether you're creating client work, branding, marketing materials, merchandise, YouTube content, posters, apparel, album artwork, or commercial advertising, the exported graphics are suitable for professional projects."
               }
             }
           ]
@@ -802,14 +1085,26 @@
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
 
-        // Video Recording Variables
-        let mediaRecorder;
-        let recordedChunks = [];
-        let isRecording = false;
-
         function updateColorLabel(colorVal) {
             document.getElementById('v_color').innerText = colorVal.toUpperCase();
             draw();
+        }
+
+        // Functions to handle editable values safely syncing with range inputs
+        function updateFromText(id) {
+            const span = document.getElementById('v_' + id);
+            const input = document.getElementById(id);
+            let val = parseInt(span.innerText.replace(/[^0-9-]/g, ''));
+            if (!isNaN(val)) {
+                input.value = val;
+                draw();
+            }
+        }
+        
+        function handleBlur(id) {
+            const span = document.getElementById('v_' + id);
+            const input = document.getElementById(id);
+            span.innerText = input.value + 'px';
         }
 
         // Deterministic pseudo-random function based on spatial coordinates
@@ -837,89 +1132,105 @@
         }
 
         function performDraw() {
+            renderToCanvas(ctx, canvas.width, canvas.height, 1);
+        }
+
+        function renderToCanvas(targetCtx, targetWidth, targetHeight, scale) {
             // Collect Main Parameters
-            const text = document.getElementById('textInput').value.toUpperCase();
+            const text = document.getElementById('textInput').value;
             
-            // Safety parsing for blockSize to prevent infinite loops or frozen rendering states
-            let blockSize = parseInt(document.getElementById('blockSize').value);
-            if (isNaN(blockSize) || blockSize < 1) blockSize = 1;
+            let origBlockSize = parseInt(document.getElementById('blockSize').value);
+            if (isNaN(origBlockSize) || origBlockSize < 1) origBlockSize = 1;
             
-            const drift = parseInt(document.getElementById('drift').value);
-
-            // Collect Advanced Typography Settings
-            const fontFamily = document.getElementById('fontFamily').value;
-            const fontSize = parseInt(document.getElementById('fontSize').value);
+            const origDrift = parseInt(document.getElementById('drift').value);
+            const origFontSize = parseInt(document.getElementById('fontSize').value);
             const textColor = document.getElementById('textColor').value;
-            const offsetX = parseInt(document.getElementById('offsetX').value);
-            const offsetY = parseInt(document.getElementById('offsetY').value);
 
-            // Update Slider UI Display Values
-            document.getElementById('v_blockSize').innerText = blockSize + 'px';
-            document.getElementById('v_drift').innerText = drift + 'px';
-            document.getElementById('v_fontSize').innerText = fontSize + 'px';
-            document.getElementById('v_offsetX').innerText = offsetX;
-            document.getElementById('v_offsetY').innerText = offsetY;
+            // Update Slider UI Display Values if they are not actively being typed into
+            if (scale === 1) {
+                if (document.activeElement !== document.getElementById('v_blockSize')) {
+                    document.getElementById('v_blockSize').innerText = origBlockSize + 'px';
+                }
+                if (document.activeElement !== document.getElementById('v_drift')) {
+                    document.getElementById('v_drift').innerText = origDrift + 'px';
+                }
+                if (document.activeElement !== document.getElementById('v_fontSize')) {
+                    document.getElementById('v_fontSize').innerText = origFontSize + 'px';
+                }
+            }
 
-            // Clear root canvas completely to handle transparency rendering correctly
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Clear target canvas
+            targetCtx.clearRect(0, 0, targetWidth, targetHeight);
             
-            if (!text) return;
+            if (!text) return null;
 
-            // Create pristine offscreen buffer for accurate text sampling
+            // Create offscreen buffer for accurate text sampling
             const offscreen = document.createElement('canvas');
-            offscreen.width = canvas.width; 
-            offscreen.height = canvas.height;
+            offscreen.width = targetWidth; 
+            offscreen.height = targetHeight;
             const octx = offscreen.getContext('2d');
             
-            octx.font = `bold ${fontSize}px ${fontFamily}`;
+            const scaledFontSize = origFontSize * scale;
+            
+            octx.font = `900 ${scaledFontSize}px "Montserrat", sans-serif`;
             octx.textAlign = 'center';
             octx.textBaseline = 'middle';
             octx.fillStyle = textColor;
-            octx.fillText(text, (canvas.width / 2) + offsetX, (canvas.height / 2) + offsetY);
+            
+            // Handle Multi-line Support 
+            const lines = text.split('\n');
+            const lineHeight = scaledFontSize * 1.1; 
+            const totalHeight = lines.length * lineHeight;
+            let startY = (targetHeight / 2) - (totalHeight / 2) + (lineHeight / 2);
 
-            // Performance Fix: Replaces the notoriously expensive 'ctx.drawImage' block loops with hyper-efficient O(W*H) direct Uint32Array memory transfers.
-            const width = canvas.width;
-            const height = canvas.height;
-            const sourceData = octx.getImageData(0, 0, width, height);
-            const targetData = ctx.createImageData(width, height);
+            lines.forEach((line, index) => {
+                octx.fillText(line, (targetWidth / 2), startY + (index * lineHeight));
+            });
+
+            const sourceData = octx.getImageData(0, 0, targetWidth, targetHeight);
+            const targetData = targetCtx.createImageData(targetWidth, targetHeight);
             const sourceBuffer = new Uint32Array(sourceData.data.buffer);
             const targetBuffer = new Uint32Array(targetData.data.buffer);
 
-            // Run coordinate drift loop across the defined block grid
-            for (let y = 0; y < height; y += blockSize) {
-                for (let x = 0; x < width; x += blockSize) {
+            const scaledDrift = origDrift * scale;
+
+            // Iterate over the mathematical unscaled coordinates to preserve exact deterministic drift patterns
+            for (let y = 0; y < 400; y += origBlockSize) {
+                for (let x = 0; x < 800; x += origBlockSize) {
                     
-                    // Fetch consistent spatial seeds for this block's coordinate
                     const randX = getSpatialRandom(x, y);
                     const randY = getSpatialRandom(x + 100, y + 100);
 
-                    // Determine deterministic offset for this block cell
-                    const driftOffsetX = Math.round((randX - 0.5) * drift);
-                    const driftOffsetY = Math.round((randY - 0.5) * drift);
+                    const driftOffsetX = Math.round((randX - 0.5) * scaledDrift);
+                    const driftOffsetY = Math.round((randY - 0.5) * scaledDrift);
                     
-                    const destX = x + driftOffsetX;
-                    const destY = y + driftOffsetY;
-                    
-                    // Calculate precise spatial boundaries for the fragmented chunk
-                    const blockW = Math.min(blockSize, width - x);
-                    const blockH = Math.min(blockSize, height - y);
+                    const scaledX = Math.round(x * scale);
+                    const scaledY = Math.round(y * scale);
 
-                    // Reconstruct grid logic natively in flat memory for instant execution speed
+                    const destX = scaledX + driftOffsetX;
+                    const destY = scaledY + driftOffsetY;
+                    
+                    const nextScaledX = Math.round((x + origBlockSize) * scale);
+                    const nextScaledY = Math.round((y + origBlockSize) * scale);
+                    
+                    // Precise bounds matching visual geometry
+                    const blockW = Math.min(nextScaledX - scaledX, targetWidth - scaledX);
+                    const blockH = Math.min(nextScaledY - scaledY, targetHeight - scaledY);
+
                     for (let by = 0; by < blockH; by++) {
-                        const sy = y + by;
+                        const sy = scaledY + by;
                         const dy = destY + by;
                         
-                        if (dy >= 0 && dy < height) {
+                        if (dy >= 0 && dy < targetHeight) {
                             for (let bx = 0; bx < blockW; bx++) {
-                                const sx = x + bx;
+                                const sx = scaledX + bx;
                                 const dx = destX + bx;
                                 
-                                if (dx >= 0 && dx < width) {
-                                    const sourcePixel = sourceBuffer[sy * width + sx];
+                                if (dx >= 0 && dx < targetWidth && sy >= 0 && sx >= 0 && sy < targetHeight && sx < targetWidth) {
+                                    const sourcePixel = sourceBuffer[sy * targetWidth + sx];
                                     
-                                    // Bypasses empty offscreen pixels to correctly overlay overlapping solid text glitches
                                     if (sourcePixel !== 0) {
-                                        targetBuffer[dy * width + dx] = sourcePixel;
+                                        targetBuffer[dy * targetWidth + dx] = sourcePixel;
                                     }
                                 }
                             }
@@ -928,73 +1239,105 @@
                 }
             }
             
-            // Push completely calculated binary layout securely into main display
-            ctx.putImageData(targetData, 0, 0);
-        }
-        
-        function download() {
-            const link = document.createElement('a');
-            link.download = 'pixel-drift-typography.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
+            targetCtx.putImageData(targetData, 0, 0);
+            return targetData;
         }
 
-        // Video Recording Logic
-        function toggleRecording() {
-            const btn = document.getElementById('btnRecord');
-            
-            if (!isRecording) {
-                recordedChunks = [];
-                
-                // Capture canvas updates dynamically at 30 FPS
-                const stream = canvas.captureStream(30);
-                
-                // VP9 WebM codec natively supports transparency (alpha channel)
-                let options = { mimeType: 'video/webm;codecs=vp9' };
-                if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-                    // Generically supported webm fallback
-                    options = { mimeType: 'video/webm' };
-                }
+        // 4K Render and Exact Crop Download Architecture
+        function download4K() {
+            const btn = document.querySelector('.btn-download');
+            const origText = btn.innerText;
+            btn.innerText = "RENDERING...";
+            btn.disabled = true;
 
+            // Small delay so the UI updates to show "RENDERING..." before heavy processing starts
+            setTimeout(() => {
                 try {
-                    mediaRecorder = new MediaRecorder(stream, options);
-                } catch (e) {
-                    console.warn("VP9 transparency encoding not supported. Recording standard WebM.", e);
-                    mediaRecorder = new MediaRecorder(stream);
-                }
+                    // Base 4K multiplier (800 * 4.8 = 3840px horizontal space)
+                    const scale = 4.8; 
+                    const width4K = 800 * scale; 
+                    const height4K = 400 * scale; 
 
-                mediaRecorder.ondataavailable = (event) => {
-                    if (event.data.size > 0) {
-                        recordedChunks.push(event.data);
+                    const tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = width4K;
+                    tempCanvas.height = height4K;
+                    const tempCtx = tempCanvas.getContext('2d');
+
+                    const targetData = renderToCanvas(tempCtx, width4K, height4K, scale);
+
+                    if (!targetData) {
+                        btn.innerText = origText;
+                        btn.disabled = false;
+                        return;
                     }
-                };
 
-                mediaRecorder.onstop = () => {
-                    const blob = new Blob(recordedChunks, { type: mediaRecorder.mimeType });
-                    const url = URL.createObjectURL(blob);
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.download = 'pixel-drift-motion.webm';
-                    link.click();
+                    const buffer = new Uint32Array(targetData.data.buffer);
+                    let minX = width4K, minY = height4K, maxX = 0, maxY = 0;
+                    let hasPixels = false;
+
+                    // Ultra-fast flat memory array scan to calculate non-transparent bounding box
+                    for (let y = 0; y < height4K; y++) {
+                        const rowOffset = y * width4K;
+                        for (let x = 0; x < width4K; x++) {
+                            if (buffer[rowOffset + x] !== 0) {
+                                if (x < minX) minX = x;
+                                if (x > maxX) maxX = x;
+                                if (y < minY) minY = y;
+                                if (y > maxY) maxY = y;
+                                hasPixels = true;
+                            }
+                        }
+                    }
+
+                    if (!hasPixels) {
+                        alert("No text to download.");
+                        btn.innerText = origText;
+                        btn.disabled = false;
+                        return;
+                    }
+
+                    const cropW = maxX - minX + 1;
+                    const cropH = maxY - minY + 1;
+
+                    // Dedicated output canvas dimensioned to exactly fit the text
+                    const cropCanvas = document.createElement('canvas');
+                    cropCanvas.width = cropW;
+                    cropCanvas.height = cropH;
+                    const cropCtx = cropCanvas.getContext('2d');
                     
-                    // Cleanup memory
-                    setTimeout(() => URL.revokeObjectURL(url), 100);
-                };
+                    // Create an exact subset ImageData to avoid browser boundary drawing bugs with negative offsets
+                    const cropData = cropCtx.createImageData(cropW, cropH);
+                    const cropBuffer = new Uint32Array(cropData.data.buffer);
+                    
+                    for (let y = 0; y < cropH; y++) {
+                        const srcRow = (y + minY) * width4K;
+                        const dstRow = y * cropW;
+                        for (let x = 0; x < cropW; x++) {
+                            cropBuffer[dstRow + x] = buffer[srcRow + (x + minX)];
+                        }
+                    }
+                    cropCtx.putImageData(cropData, 0, 0);
 
-                mediaRecorder.start();
-                isRecording = true;
-                btn.innerText = "Stop & Save Video";
-                btn.classList.add('active');
-            } else {
-                mediaRecorder.stop();
-                isRecording = false;
-                btn.innerText = "Record Motion Video";
-                btn.classList.remove('active');
-            }
+                    const link = document.createElement('a');
+                    link.download = 'pixel-drift-4k.png';
+                    link.href = cropCanvas.toDataURL('image/png');
+                    link.click();
+
+                } catch (err) {
+                    console.error("Render failed:", err);
+                    alert("An error occurred during 4K export.");
+                } finally {
+                    btn.innerText = origText;
+                    btn.disabled = false;
+                }
+            }, 50);
         }
+
+        // Wait for the Google Font to load before the initial render to prevent fallback font flashing
+        document.fonts.ready.then(() => {
+            draw();
+        });
         
-        // Initial Render Call
-        draw();
     </script>
 </body>
 </html>
