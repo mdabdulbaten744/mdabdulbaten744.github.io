@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Wave Text Styler - Create Psychedelic Curved 70s Typography Online</title>
+    <meta name="description" content="Design melted, undulating text with our free wave text styler. Instantly warp typography into smooth sine curves perfect for retro posters, album art, and vintage branding. Export transparent 4X PNG files.">
+    <meta name="keywords" content="wave text styler, psychedelic typography, melted text effect, retro curved letters, sine wave text designer">
+    <link rel="canonical" href="https://callistra.design/tools/wave-text-styler">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#1b1a18">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://callistra.design/tools/wave-text-styler">
+    <meta property="og:title" content="Wave Text Styler - Psychedelic Curved Typography">
+    <meta property="og:description" content="Turn flat text into flowing, psychedelic waves. Perfect for retro design, vintage posters, and acid graphics.">
+    <meta property="og:image" content="https://callistra.design/assets/wave-text-styler.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://callistra.design/tools/wave-text-styler">
+    <meta name="twitter:title" content="Wave Text Styler - Make Psychedelic Curved Text">
+    <meta name="twitter:description" content="Transform typography into smooth, undulating curves with our free online wave text styler.">
+    <meta name="twitter:image" content="https://callistra.design/assets/groovy-wave-og.png">
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
+
+    <style>
+        /* Timeless & Neutral Color Palette */
+        :root {
+            --bg-color: #faf8f5;        
+            --panel-bg: #ffffff;        
+            --border-color: #eae5df;    
+            --text-primary: #1b1a18;    
+            --text-muted: #7c766e;      
+            --accent: #1b1a18;          
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Semantic Header & Navigation Styles */
+        header {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
+        .logo-link {
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        nav a {
+            font-family: sans-serif;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Tool Context Intro Details */
+        .tool-intro {
+            width: 100%;
+            max-width: 1100px;
+            margin-bottom: 25px;
+        }
+
+        header h1, .tool-intro h1 {
+            font-family: sans-serif;
+            font-weight: 700;
+            font-size: 1.75rem;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .tool-subtitle {
+            font-family: sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Two-Column Layout */
+        .app-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            width: 100%;
+            max-width: 1100px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
+            margin-bottom: 60px;
+        }
+
+        @media (max-width: 950px) {
+            .app-layout {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 20px;
+            }
+        }
+
+        /* Canvas container with scaling backdrops */
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 2 / 1;
+            border: 1px solid var(--border-color);
+            background-color: #ffffff;
+            background-image: conic-gradient(#f3f1ed 0.25turn, #ffffff 0.25turn 0.5turn, #f3f1ed 0.5turn 0.75turn, #ffffff 0.75turn);
+            background-size: 16px 16px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Control Panel elements */
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .controls-group {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .text-input-wrapper {
+            position: relative;
+        }
+
+        .text-input {
+            width: 100%;
+            font-size: 1.25rem;
+            padding: 12px 0;
+            border: none;
+            border-bottom: 2px solid var(--accent);
+            outline: none;
+            background: transparent;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            color: var(--text-primary);
+            letter-spacing: 0.02em;
+            resize: vertical;
+            min-height: 52px;
+            line-height: 1.2;
+        }
+
+        .text-input::placeholder {
+            color: #d1cbc4;
+        }
+
+        .control-row {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .control-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            font-family: sans-serif;
+        }
+
+        .value-display {
+            color: var(--text-primary);
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+
+        .value-display[contenteditable="true"] {
+            cursor: text;
+            outline: none;
+            border-bottom: 1px dashed var(--text-muted);
+            min-width: 40px;
+            display: inline-block;
+            text-align: right;
+            transition: border-bottom-color 0.2s ease;
+        }
+
+        .value-display[contenteditable="true"]:focus {
+            border-bottom-color: var(--accent);
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 2px;
+            background: #e2ded9;
+            outline: none;
+            margin: 10px 0;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.3);
+        }
+
+        /* Details & Advanced Options */
+        details.advanced-options {
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 0;
+            margin-top: 5px;
+        }
+
+        details.advanced-options summary {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            font-family: sans-serif;
+        }
+
+        details.advanced-options summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details.advanced-options summary::after {
+            content: "＋";
+            font-size: 0.8rem;
+        }
+
+        details.advanced-options[open] summary::after {
+            content: "－";
+        }
+
+        .advanced-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding-top: 20px;
+        }
+
+        .color-selector {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            padding: 4px;
+            gap: 10px;
+            background: var(--panel-bg);
+        }
+
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            background: none;
+        }
+
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        input[type="color"]::-webkit-color-swatch {
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-download {
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+            padding: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.15s ease, transform 0.1s ease;
+            width: 100%;
+            margin-top: 15px;
+            font-family: sans-serif;
+        }
+
+        .btn-download:hover {
+            opacity: 0.9;
+        }
+
+        .btn-download:active {
+            transform: scale(0.995);
+        }
+        
+        .btn-download:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Informative Content & Articles Area styling */
+        .content-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .content-container h2 {
+            font-family: sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+            color: var(--text-primary);
+        }
+
+        .content-container h3 {
+            font-family: sans-serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+            color: var(--text-primary);
+        }
+
+        .content-container p {
+            font-family: serif;
+            font-size: 1.05rem;
+            line-height: 1.65;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .content-container ul {
+            margin-left: 20px;
+            margin-bottom: 25px;
+        }
+
+        .content-container li {
+            font-family: serif;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        /* FAQ Semantic Accordion Elements */
+        .faq-section {
+            margin-top: 50px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 40px;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border-color);
+            padding: 18px 0;
+        }
+
+        .faq-item summary {
+            font-family: sans-serif;
+            font-weight: 600;
+            font-size: 1.05rem;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            color: var(--text-primary);
+        }
+
+        .faq-item summary::before {
+            content: "▲";
+            font-size: 0.65rem;
+            margin-right: 12px;
+            transform: rotate(90deg);
+            transition: transform 0.2s ease;
+            color: var(--text-primary);
+        }
+
+        .faq-item[open] summary::before {
+            transform: rotate(180deg);
+        }
+
+        .faq-item p {
+            font-family: serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-top: 12px;
+            color: var(--text-muted);
+            padding-left: 22px;
+        }
+
+        /* Related Tools Area */
+        .related-tools-section {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border-color);
+            margin-bottom: 60px;
+        }
+
+        .related-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .related-card {
+            display: block;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            background: var(--panel-bg);
+            text-decoration: none;
+            transition: border-color 0.15s ease;
+        }
+
+        .related-card:hover {
+            border-color: var(--text-primary);
+        }
+
+        .related-card h3 {
+            font-family: sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+            margin-top: 0;
+        }
+
+        .related-card p {
+            font-family: serif;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* Footer */
+        footer {
+            width: 100%;
+            max-width: 1100px;
+            border-top: 1px solid var(--border-color);
+            padding: 30px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        footer p {
+            font-family: sans-serif;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.02em;
+        }
+    </style>
+</head>
+<body>
+
+    <header role="banner">
+        <a href="/" class="logo-link">Callistra.design</a>
+        <nav role="navigation" aria-label="Main Navigation">
+            <a href="/tools">Tools</a>
+        </nav>
+    </header>
+
+    <main role="main">
+        <div class="tool-intro">
+            <h1>Free Wave Text Styler</h1>
+            <p class="tool-subtitle">Transform flat typography into flowing, undulating curves inspired by classic 70s psychedelic design. Real-time preview with instant 4X export.</p>
+        </div>
+
+        <div class="app-layout">
+            <div class="canvas-container">
+                <canvas id="canvas" width="800" height="400" aria-label="Typography preview canvas showcasing groovy wave text effects"></canvas>
+            </div>
+
+            <div class="control-panel">
+                <div class="controls-group">
+                    <div class="text-input-wrapper">
+                        <textarea id="textInput" class="text-input" placeholder="TYPE SOMETHING..." oninput="draw()" aria-label="Wave Text Input Source" rows="2">GROOVY</textarea>
+                    </div>
+
+                    <div class="control-row">
+                        <div class="control-header">
+                            <label for="waveHeight">Wave Height</label>
+                            <span id="v_waveHeight" class="value-display" contenteditable="true" oninput="updateFromText('waveHeight')" onblur="handleBlur('waveHeight')">24px</span>
+                        </div>
+                        <input type="range" id="waveHeight" min="0" max="24" step="1" value="24" oninput="draw()">
+                    </div>
+
+                    <div class="control-row">
+                        <div class="control-header">
+                            <label for="waveFreq">Wave Frequency</label>
+                            <span id="v_waveFreq" class="value-display" contenteditable="true" oninput="updateFromText('waveFreq')" onblur="handleBlur('waveFreq', '')">24</span>
+                        </div>
+                        <input type="range" id="waveFreq" min="1" max="24" step="1" value="24" oninput="draw()">
+                    </div>
+
+                    <div class="control-row">
+                        <div class="control-header">
+                            <label for="warpSlant">Warp Slant</label>
+                            <span id="v_warpSlant" class="value-display" contenteditable="true" oninput="updateFromText('warpSlant')" onblur="handleBlur('warpSlant')">15px</span>
+                        </div>
+                        <input type="range" id="warpSlant" min="-100" max="100" step="1" value="15" oninput="draw()">
+                    </div>
+
+                    <details class="advanced-options">
+                        <summary>Color and Size</summary>
+                        <div class="advanced-grid">
+                            <div class="control-row">
+                                <div class="control-header">
+                                    <label for="fontSize">Size</label>
+                                    <span id="v_fontSize" class="value-display" contenteditable="true" oninput="updateFromText('fontSize')" onblur="handleBlur('fontSize')">140px</span>
+                                </div>
+                                <input type="range" id="fontSize" min="30" max="250" value="140" oninput="draw()">
+                            </div>
+
+                            <div class="control-row">
+                                <div class="control-header">
+                                    <label for="textColor">Color</label>
+                                </div>
+                                <div class="color-selector">
+                                    <input type="color" id="textColor" value="#1b1a18" oninput="updateColorLabel(this.value)">
+                                    <span id="v_color" class="value-display" style="font-size: 0.75rem;">#1B1A18</span>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <div>
+                    <button class="btn-download" onclick="download4X()">DOWNLOAD PNG - 4X</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-container">
+            <p>Melted, warped text is the signature visual language of vintage psychedelia—and now you can generate it without touching Illustrator. Our <strong>wave text styler</strong> applies precise mathematical displacement to any text you type, creating smooth, rhythmic curves that feel organic and nostalgic. The entire process runs in-browser, so there's no account signup, no file uploads to servers, and no waiting.</p>
+
+            <h2>Getting Started: How Wave Text Works</h2>
+            <p>At its core, wave text styling applies a vertical displacement formula to each pixel in your typography. Imagine taking a ruler and gently pushing each letter up and down in a perfectly timed rhythm—that's essentially what's happening under the hood, powered by a sine wave function.</p>
+            <p>The tool layers a secondary effect: a horizontal skew or slant. This adds a sense of forward momentum and energy, making the text appear almost kinetic. Combined, these two transformations create the "melted" look that defined poster art, album covers, and fashion graphics throughout the psychedelic era.</p>
+
+            <h2>Design Scenarios Where Wave Text Shines</h2>
+            <p>The wavy, organic aesthetic isn't just nostalgia—it's a powerful visual communication tool when you know where to apply it:</p>
+            <ul>
+                <li><strong>Festival & Event Promotion:</strong> Concert posters, music festival announcements, and raves benefit from text that literally looks like sound waves. The effect signals energy and movement.</li>
+                <li><strong>Vintage Brand Identities:</strong> Indie coffee roasters, record labels, and vintage clothing brands use wavy typography to instantly convey authenticity and retro credibility.</li>
+                <li><strong>Streaming & Album Artwork:</strong> Music producers and podcast hosts use curved text in cover art to stand out on playlist feeds where rectangular, flat type blends in.</li>
+                <li><strong>Gaming & Esports:</strong> Retro gaming aesthetics have made a comeback, and wavy text fits perfectly into lo-fi synthwave and vaporwave visual styles.</li>
+                <li><strong>Social Media Content:</strong> TikTok, Instagram Reels, and YouTube thumbnails pull engagement when text is eye-catching. Curved, flowing typography stops the scroll.</li>
+                <li><strong>Packaging & Merch:</strong> Screen-printed apparel, vinyl sticker designs, and product labels gain visual interest and nostalgia appeal with melted type.</li>
+            </ul>
+
+            <h2>Technical Breakdown: What's Actually Happening</h2>
+            <p>The wave text styler operates using displacement mapping—a common technique in digital image processing. Here's the simplified pipeline: your text is rendered to an invisible buffer at ultra-high resolution, then each pixel is sampled from a slightly different position based on a sine wave curve. The "Wave Height" controls the amplitude (how far pixels move vertically), the "Wave Frequency" controls the wavelength (how tightly packed the peaks and valleys are), and the "Warp Slant" applies a shear transformation that tilts the entire wave pattern.</p>
+            <p>Because the calculation happens entirely on your device using Canvas 2D rendering, there's zero latency and zero data sent to any server. The 4X export multiplies your canvas dimensions by 4.8x before rendering, then automatically crops away excess whitespace, ensuring you get the tightest possible bounding box around your typography—no manual trimming needed.</p>
+
+            <h2>Pro Tips for Optimal Results</h2>
+            <p>Bold, heavy typefaces with strong character weights respond best to wave styling. Thin or light fonts can become nearly illegible once distorted. Keep your Wave Height somewhere between 15–30px (depending on your font size) and experiment with Frequency values between 12–20 for readable, harmonious waves. If your text looks too rigid or angular, increase the Warp Slant slightly (try 10–25px) to impart a kinetic, forward-tilting energy. For multiple lines, ensure adequate vertical spacing between rows so they don't overlap after the wave displacement is applied.</p>
+
+            <section class="faq-section">
+                <h2 id="faq-heading">Common Questions About Wave Text Styling</h2>
+                
+                <details class="faq-item">
+                    <summary>Why does my text look broken or unreadable after styling?</summary>
+                    <p>This typically happens when Wave Frequency is set too high relative to your font size. Imagine trying to fit 24 complete waves across 6 letters—the result is tiny, chaotic zig-zags that destroy legibility. Always start with a lower frequency (around 8–12), render it, and gradually increase until you hit the sweet spot. Bold fonts also render more clearly than thin ones, since there's more visual mass to work with.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Can I use this for commercial projects and client work?</summary>
+                    <p>Yes. Everything created with this tool is 100% yours to use commercially. There are no licensing restrictions, watermarks, or attribution requirements. You can use the exported PNGs in print design, web graphics, merchandise, social media, film production—anywhere. The tool runs entirely client-side with zero data collection, so we have no knowledge of what you create.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>What's the maximum text length before performance degrades?</summary>
+                    <p>The tool is designed to handle 2–3 lines of 20–30 characters comfortably. Extremely long single lines or 10+ wrapped sentences will work, but the real-time preview may become slightly slower as the pixel buffer expands. If you're rendering short phrases (which almost always looks better visually anyway), you won't experience any lag whatsoever.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>How do I get a sharp, crisp output instead of blurry text?</summary>
+                    <p>Always use the 4X download option, even if your display is standard resolution. The 4X render passes through the distortion algorithm at 3840×1920 pixels, then intelligently auto-crops the result. This produces vastly sharper, more detailed output than exporting at 1x resolution. The file size is larger, but the visual quality is professional-grade and suitable for print.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Is there a way to preview the effect without a checkerboard background?</summary>
+                    <p>The checkerboard pattern is simply a visual indicator that the export will have full transparency—it's not actually part of your design. When you hit the 4X download button, the tool renders a completely transparent PNG with zero background. You can drop it directly into Photoshop, Canva, Affinity Designer, or any design tool and layer it over any background you want.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Can I adjust the wave curve itself, or is it always a perfect sine wave?</summary>
+                    <p>Currently, the wave is mathematically pure sine—it creates the smoothest, most aesthetically pleasing undulation. In theory, you could use cosine or other trigonometric functions, but sine waves are universally considered the most organic-looking and are what vintage psychedelic designers would have approximated by hand. If you need more exotic distortions (like random noise, zigzags, or custom curves), those would require a different tool.</p>
+                </details>
+
+                <details class="faq-item">
+                    <summary>Do I need any special fonts, or will any typeface work?</summary>
+                    <p>Any font will technically work, but display-weight fonts (very bold, chunky faces) will yield dramatically better results than delicate, script, or ultra-thin fonts. "Montserrat Black," "Impact," "Gotham Bold," and similar heavyweight typefaces distort beautifully. Avoid serif fonts (unless they're very bold) and experimental fonts—they often break into illegible fragments once the sine wave displacement is applied.</p>
+                </details>
+            </section>
+
+            <section class="related-tools-section">
+                <h2>Explore More Typography Tools</h2>
+                <div class="related-links">
+                    <a href="/tools/glitch-slice-text-effect-maker" class="related-card">
+                        <h3>Glitch Slice Text Shredder</h3>
+                        <p>Fractured, offset text fragments for digital distortion aesthetics.</p>
+                    </a>
+                    <a href="/tools/pixel-drift-text-effect-maker" class="related-card">
+                        <h3>Pixel Drift Text Scatterer</h3>
+                        <p>Explode typography into floating pixelated particles.</p>
+                    </a>
+                    <a href="/tools/sphere-wrap" class="related-card">
+                        <h3>Spherical Text Wrapper</h3>
+                        <p>Bend flat type into volumetric 3D sphere surfaces.</p>
+                    </a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer role="contentinfo">
+        <p>&copy; 2026 Callistra.design. All creative tools processed purely client-side for maximum privacy.</p>
+    </footer>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://callistra.design/#website",
+          "url": "https://callistra.design/",
+          "name": "Callistra Design Studio"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://callistra.design/tools/wave-text-styler#webpage",
+          "url": "https://callistra.design/tools/wave-text-styler",
+          "name": "Wave Text Styler - Create Psychedelic Curved Typography Online",
+          "isPartOf": { "@id": "https://callistra.design/#website" },
+          "description": "Design melted, undulating text with smooth sine curves. Perfect for retro posters, album art, and psychedelic branding. Free 4X PNG export with transparent background."
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://callistra.design/tools/wave-text-styler#software",
+          "name": "Wave Text Styler",
+          "applicationCategory": "DesignApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires modern browser with HTML5 Canvas",
+          "url": "https://callistra.design/tools/wave-text-styler",
+          "offers": {
+            "@type": "Offer",
+            "price": "0.00",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Why does my text look broken or unreadable after styling?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "This typically happens when Wave Frequency is set too high relative to your font size. Always start with a lower frequency around 8–12 and gradually increase. Bold fonts render much more clearly than thin ones after distortion."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I use this for commercial projects?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, absolutely. Everything you create is yours with no licensing restrictions, watermarks, or attribution requirements. Use it freely in print, web, merchandise, and commercial projects."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What's the maximum text length before performance degrades?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The tool handles 2–3 lines of 20–30 characters very smoothly. Longer text works but may have slightly slower previews. Short phrases always look better visually and perform fastest."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I get a sharp, crisp output?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Always use the 4X download option. The tool renders at 3840×1920 pixels then auto-crops, producing professional-grade sharp output suitable for print."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        function updateColorLabel(colorVal) {
+            document.getElementById('v_color').innerText = colorVal.toUpperCase();
+            draw();
+        }
+
+        function updateFromText(id) {
+            const span = document.getElementById('v_' + id);
+            const input = document.getElementById(id);
+            let val = parseInt(span.innerText.replace(/[^0-9-]/g, ''));
+            if (!isNaN(val)) {
+                if ((id === 'waveHeight' || id === 'waveFreq') && val > 24) {
+                    val = 24;
+                }
+                input.value = val;
+                draw();
+            }
+        }
+        
+        function handleBlur(id, suffix = 'px') {
+            const span = document.getElementById('v_' + id);
+            const input = document.getElementById(id);
+            if ((id === 'waveHeight' || id === 'waveFreq') && parseInt(input.value) > 24) {
+                input.value = 24;
+            }
+            span.innerText = input.value + suffix;
+        }
+
+        let renderPending = false;
+
+        function draw() {
+            if (!renderPending) {
+                renderPending = true;
+                requestAnimationFrame(() => {
+                    try {
+                        performDraw();
+                    } finally {
+                        renderPending = false;
+                    }
+                });
+            }
+        }
+
+        function performDraw() {
+            renderToCanvas(ctx, canvas.width, canvas.height, 1);
+        }
+
+        function renderToCanvas(targetCtx, targetWidth, targetHeight, scale) {
+            const text = document.getElementById('textInput').value;
+            
+            let origWaveHeight = parseInt(document.getElementById('waveHeight').value);
+            if (isNaN(origWaveHeight)) origWaveHeight = 0;
+            if (origWaveHeight > 24) origWaveHeight = 24;
+            
+            let origWaveFreq = parseInt(document.getElementById('waveFreq').value);
+            if (origWaveFreq > 24) origWaveFreq = 24;
+
+            let origWarpSlant = parseInt(document.getElementById('warpSlant').value);
+            const origFontSize = parseInt(document.getElementById('fontSize').value);
+            const textColor = document.getElementById('textColor').value;
+
+            if (scale === 1) {
+                if (document.activeElement !== document.getElementById('v_waveHeight')) {
+                    document.getElementById('v_waveHeight').innerText = origWaveHeight + 'px';
+                }
+                if (document.activeElement !== document.getElementById('v_waveFreq')) {
+                    document.getElementById('v_waveFreq').innerText = origWaveFreq;
+                }
+                if (document.activeElement !== document.getElementById('v_warpSlant')) {
+                    document.getElementById('v_warpSlant').innerText = origWarpSlant + 'px';
+                }
+                if (document.activeElement !== document.getElementById('v_fontSize')) {
+                    document.getElementById('v_fontSize').innerText = origFontSize + 'px';
+                }
+            }
+
+            targetCtx.clearRect(0, 0, targetWidth, targetHeight);
+            
+            if (!text) return null;
+
+            const offscreen = document.createElement('canvas');
+            offscreen.width = targetWidth; 
+            offscreen.height = targetHeight;
+            const octx = offscreen.getContext('2d');
+            
+            const lines = text.split('\n');
+            const scaledWaveHeight = origWaveHeight * scale;
+            const scaledSlantAbs = Math.abs(origWarpSlant) * scale;
+            
+            const padding = (scaledWaveHeight * 2) + scaledSlantAbs + (40 * scale); 
+
+            const refSize = 100 * scale;
+            octx.font = `900 ${refSize}px "Montserrat", sans-serif`;
+            let maxRefWidth = 1; 
+            lines.forEach(line => {
+                let width = octx.measureText(line).width;
+                if (width > maxRefWidth) maxRefWidth = width;
+            });
+            
+            const refTotalHeight = lines.length * (refSize * 1.1);
+            
+            const availWidth = Math.max(10 * scale, targetWidth - padding);
+            const availHeight = Math.max(10 * scale, targetHeight - padding);
+            
+            const maxFontSizeW = (availWidth * refSize) / maxRefWidth;
+            const maxFontSizeH = (availHeight * refSize) / refTotalHeight;
+            const calculatedMaxFontSize = Math.min(maxFontSizeW, maxFontSizeH);
+            
+            const scaledFontSize = Math.max(10 * scale, Math.min(origFontSize * scale, calculatedMaxFontSize));
+            
+            octx.font = `900 ${scaledFontSize}px "Montserrat", sans-serif`;
+            octx.textAlign = 'center';
+            octx.textBaseline = 'middle';
+            octx.fillStyle = textColor;
+            
+            const lineHeight = scaledFontSize * 1.1; 
+            const totalHeight = lines.length * lineHeight;
+            let startY = (targetHeight / 2) - (totalHeight / 2) + (lineHeight / 2);
+
+            lines.forEach((line, index) => {
+                octx.fillText(line, (targetWidth / 2), startY + (index * lineHeight));
+            });
+
+            const sourceData = octx.getImageData(0, 0, targetWidth, targetHeight);
+            const targetData = targetCtx.createImageData(targetWidth, targetHeight);
+            const sourceBuffer = new Uint32Array(sourceData.data.buffer);
+            const targetBuffer = new Uint32Array(targetData.data.buffer);
+
+            const freqMultiplier = origWaveFreq * 0.003; 
+            const slantFactor = origWarpSlant * 0.01;
+            const centerY = targetHeight / 2;
+
+            for (let dy = 0; dy < targetHeight; dy++) {
+                const xShift = (centerY - dy) * slantFactor;
+
+                for (let dx = 0; dx < targetWidth; dx++) {
+                    const unscaledX = dx / scale;
+                    const yShift = Math.sin(unscaledX * freqMultiplier) * scaledWaveHeight;
+
+                    const sx = Math.round(dx - xShift);
+                    const sy = Math.round(dy - yShift);
+                    
+                    if (sx >= 0 && sx < targetWidth && sy >= 0 && sy < targetHeight) {
+                        const sourcePixel = sourceBuffer[sy * targetWidth + sx];
+                        if (sourcePixel !== 0) {
+                            targetBuffer[dy * targetWidth + dx] = sourcePixel;
+                        }
+                    }
+                }
+            }
+            
+            targetCtx.putImageData(targetData, 0, 0);
+            return targetData;
+        }
+
+        function download4X() {
+            const btn = document.querySelector('.btn-download');
+            const origText = btn.innerText;
+            btn.innerText = "RENDERING...";
+            btn.disabled = true;
+
+            setTimeout(() => {
+                try {
+                    const scale = 4.8; 
+                    const width4X = 800 * scale; 
+                    const height4X = 400 * scale; 
+
+                    const tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = width4X;
+                    tempCanvas.height = height4X;
+                    const tempCtx = tempCanvas.getContext('2d');
+
+                    const targetData = renderToCanvas(tempCtx, width4X, height4X, scale);
+
+                    if (!targetData) {
+                        btn.innerText = origText;
+                        btn.disabled = false;
+                        return;
+                    }
+
+                    const buffer = new Uint32Array(targetData.data.buffer);
+                    let minX = width4X, minY = height4X, maxX = 0, maxY = 0;
+                    let hasPixels = false;
+
+                    for (let y = 0; y < height4X; y++) {
+                        const rowOffset = y * width4X;
+                        for (let x = 0; x < width4X; x++) {
+                            if (buffer[rowOffset + x] !== 0) {
+                                if (x < minX) minX = x;
+                                if (x > maxX) maxX = x;
+                                if (y < minY) minY = y;
+                                if (y > maxY) maxY = y;
+                                hasPixels = true;
+                            }
+                        }
+                    }
+
+                    if (!hasPixels) {
+                        alert("No text to download.");
+                        btn.innerText = origText;
+                        btn.disabled = false;
+                        return;
+                    }
+
+                    const cropW = maxX - minX + 1;
+                    const cropH = maxY - minY + 1;
+
+                    const cropCanvas = document.createElement('canvas');
+                    cropCanvas.width = cropW;
+                    cropCanvas.height = cropH;
+                    const cropCtx = cropCanvas.getContext('2d');
+                    
+                    const cropData = cropCtx.createImageData(cropW, cropH);
+                    const cropBuffer = new Uint32Array(cropData.data.buffer);
+                    
+                    for (let y = 0; y < cropH; y++) {
+                        const srcRow = (y + minY) * width4X;
+                        const dstRow = y * cropW;
+                        for (let x = 0; x < cropW; x++) {
+                            cropBuffer[dstRow + x] = buffer[srcRow + (x + minX)];
+                        }
+                    }
+                    cropCtx.putImageData(cropData, 0, 0);
+
+                    const link = document.createElement('a');
+                    link.download = 'wave-text-styler-4x.png';
+                    link.href = cropCanvas.toDataURL('image/png');
+                    link.click();
+
+                } catch (err) {
+                    console.error("Render failed:", err);
+                    alert("An error occurred during 4X export.");
+                } finally {
+                    btn.innerText = origText;
+                    btn.disabled = false;
+                }
+            }, 50);
+        }
+
+        document.fonts.ready.then(() => {
+            draw();
+        });
+    </script>
+</body>
+</html>
