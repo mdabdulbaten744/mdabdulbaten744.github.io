@@ -248,17 +248,9 @@
     <header>
         <div class="header-top">
             <h1>Idea Archive</h1>
-            <div class="stats" id="stats-counter">0 left</div>
-        </div>
-        <div class="controls">
-            <input type="text" id="search-input" placeholder="Search ideas...">
-            <div class="row">
-                <select id="sort-select">
-                    <option value="number">Sort by Number</option>
-                    <option value="random">Sort by Random</option>
-                    <option value="text">Sort by Name (A-Z)</option>
-                </select>
-                <button id="menu-btn">⚙️ Tools</button>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="stats" id="stats-counter">0 left</div>
+                <button id="menu-btn" style="flex: none; padding: 6px 12px;">⚙️ Tools</button>
             </div>
         </div>
     </header>
@@ -433,17 +425,6 @@
             toast.classList.add('show');
             setTimeout(() => { toast.classList.remove('show'); }, 2000);
         }
-
-        // Event Listeners
-        document.getElementById('search-input').addEventListener('input', (e) => {
-            searchQuery = e.target.value;
-            updateView();
-        });
-
-        document.getElementById('sort-select').addEventListener('change', (e) => {
-            currentSort = e.target.value;
-            updateView();
-        });
 
         // Modals
         const toolsModal = document.getElementById('tools-modal');
