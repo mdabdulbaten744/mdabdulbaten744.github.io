@@ -347,7 +347,6 @@
             } else if (currentSort === 'text') {
                 renderList.sort((a, b) => a.title.localeCompare(b.title));
             } else if (currentSort === 'random') {
-                // Fix Random sort mutating the original array reference
                 let shuffled = [...renderList];
                 for (let i = shuffled.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
@@ -383,9 +382,9 @@
                 card.className = 'card';
                 card.id = `card-${item.id}`;
                 
-                const textBoxContent = `Name: ${item.title}\n\nAlgorithm: ${item.algo}\n\nSliders: ${item.sliders}`;
+                // Added Appearance to the copy box! Handles undefined safely for legacy items.
+                const textBoxContent = `Name: ${item.title}\n\nAppearance: ${item.appearance || 'N/A'}\n\nAlgorithm: ${item.algo}\n\nSliders: ${item.sliders}`;
 
-                // Displaying the visual sequential number, but keeping logic tied to the permanent ID
                 card.innerHTML = `
                     <div class="card-header">
                         <h2 class="card-title">${item.title}</h2>
@@ -457,27 +456,50 @@
             }
 
             let extracted = [];
-            const clean = (str) => str.replace(/[*#`]/g, '').trim();
+            const clean = (str) => str ? str.replace(/[*#`]/g, '').trim() : "N/A";
 
-            let m;
+            // Upgraded Slicer: Splits the text block by block first, preventing regex from skipping huge chunks
+            const blocks = text.split(/(?=###\s*\d+\.\s|<!--\s*PROMPT:\s*\d+\s*-->)/gi);
 
-            // 1. Slice ideas formatted like: ### 401. Title \n **Search Intent:** ... \n **The Algorithm:** ... \n **Sliders:**
-            const regex200to600 = /###\s*\d+\.\s*([^\n]+)[\s\S]*?Algorithm:\*?\*?\s*([\s\S]*?)\*?\*?Sliders:\*?\*?\s*([^\n]+)/gi;
-            while ((m = regex200to600.exec(text))) {
-                extracted.push({ title: clean(m[1]), algo: clean(m[2]), sliders: clean(m[3]) });
-            }
+            blocks.forEach(block => {
+                let m;
 
-            // 2. Slice ideas formatted like: ### 1. Title \n * Primary Controls: ... \n * Technical Algorithm Blueprint: ... 
-            const regex1to100 = /###\s*\d+\.\s*([^\n]+)[\s\S]*?Primary Controls(?:.*?):\s*([^\n]+)[\s\S]*?Technical Algorithm Blueprint(?:.*?):\s*([\s\S]*?)(?=\n###|\n---|$)/gi;
-            while ((m = regex1to100.exec(text))) {
-                extracted.push({ title: clean(m[1]), sliders: clean(m[2]), algo: clean(m[3]).replace(/^\s*\d+\.\s/gm, '- ') });
-            }
+                // 1A. Slices: ### 401. Title \n **Appearance:** ... \n **Algorithm:** ... \n **Sliders:**
+                if ((m = /###\s*\d+\.\s*([^\n]+)[\s\S]*?Appearance:\*?\*?\s*([\s\S]*?)\*?\*?Algorithm:\*?\*?\s*([\s\S]*?)\*?\*?Sliders:\*?\*?\s*([^\n]+)/i.exec(block))) {
+                    extracted.push({ title: clean(m[1]), appearance: clean(m[2]), algo: clean(m[3]), sliders: clean(m[4]) });
+                    return;
+                }
 
-            // 3. Slice ideas formatted like: <!-- PROMPT: 0001 -->
-            const regexPrompt = /<!--\s*PROMPT:\s*\d+\s*-->\s*([^\n]+)\s+([\s\S]*?)(?:-\s*)?Sliders:\s*([^\n]+)\s*<!--\s*END PROMPT\s*-->/gi;
-            while ((m = regexPrompt.exec(text))) {
-                extracted.push({ title: clean(m[1]), algo: clean(m[2]), sliders: clean(m[3]) });
-            }
+                // 1B. Fallback for older texts without Appearance
+                if ((m = /###\s*\d+\.\s*([^\n]+)[\s\S]*?Algorithm:\*?\*?\s*([\s\S]*?)\*?\*?Sliders:\*?\*?\s*([^\n]+)/i.exec(block))) {
+                    extracted.push({ title: clean(m[1]), appearance: "N/A", algo: clean(m[2]), sliders: clean(m[3]) });
+                    return;
+                }
+
+                // 2A. Slices: ### 1. Title \n * Appearance: ... \n * Primary Controls: ... \n * Technical Algorithm Blueprint: ... 
+                if ((m = /###\s*\d+\.\s*([^\n]+)[\s\S]*?Appearance(?:.*?):\s*([\s\S]*?)Primary Controls(?:.*?):\s*([^\n]+)[\s\S]*?Technical Algorithm Blueprint(?:.*?):\s*([\s\S]*)/i.exec(block))) {
+                    extracted.push({ title: clean(m[1]), appearance: clean(m[2]), sliders: clean(m[3]), algo: clean(m[4]).replace(/^\s*\d+\.\s/gm, '- ') });
+                    return;
+                }
+
+                // 2B. Fallback for older texts without Appearance
+                if ((m = /###\s*\d+\.\s*([^\n]+)[\s\S]*?Primary Controls(?:.*?):\s*([^\n]+)[\s\S]*?Technical Algorithm Blueprint(?:.*?):\s*([\s\S]*)/i.exec(block))) {
+                    extracted.push({ title: clean(m[1]), appearance: "N/A", sliders: clean(m[2]), algo: clean(m[3]).replace(/^\s*\d+\.\s/gm, '- ') });
+                    return;
+                }
+
+                // 3A. Slices PROMPTS with Appearance
+                if ((m = /<!--\s*PROMPT:\s*\d+\s*-->\s*([^\n]+)[\s\S]*?Appearance:\s*([\s\S]*?)(?:-\s*)?Algorithm:\s*([\s\S]*?)(?:-\s*)?Sliders:\s*([^\n]+?)(?=\s*<!--|$)/i.exec(block))) {
+                    extracted.push({ title: clean(m[1]), appearance: clean(m[2]), algo: clean(m[3]), sliders: clean(m[4]) });
+                    return;
+                }
+
+                // 3B. Original PROMPT fallback without Appearance
+                if ((m = /<!--\s*PROMPT:\s*\d+\s*-->\s*([^\n]+)\s+([\s\S]*?)(?:-\s*)?Sliders:\s*([^\n]+?)(?=\s*<!--|$)/i.exec(block))) {
+                    extracted.push({ title: clean(m[1]), appearance: "N/A", algo: clean(m[2]), sliders: clean(m[3]) });
+                    return;
+                }
+            });
 
             // Remove exact duplicates from the *newly* pasted batch
             const uniqueExtracts = Array.from(new Set(extracted.map(a => a.title)))
