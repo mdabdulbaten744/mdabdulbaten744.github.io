@@ -311,6 +311,7 @@
             padding: 4px;
             gap: 10px;
             background: var(--panel-bg);
+            justify-content: space-between;
         }
 
         input[type="color"] {
@@ -574,7 +575,7 @@
                                 </div>
                                 <div class="color-selector">
                                     <input type="color" id="textColor" value="#1b1a18" oninput="updateColorLabel(this.value)">
-                                    <span id="v_color" class="value-display" style="font-size: 0.75rem;">#1B1A18</span>
+                                    <span id="v_color" class="value-display" contenteditable="true" style="font-size: 0.75rem;" oninput="updateFromColorText()" onblur="handleColorBlur()">#1B1A18</span>
                                 </div>
                             </div>
                         </div>
@@ -777,8 +778,35 @@
         const ctx = canvas.getContext('2d');
 
         function updateColorLabel(colorVal) {
-            document.getElementById('v_color').innerText = colorVal.toUpperCase();
+            const span = document.getElementById('v_color');
+            if (document.activeElement !== span) {
+                span.innerText = colorVal.toUpperCase();
+            }
             draw();
+        }
+
+        function updateFromColorText() {
+            const span = document.getElementById('v_color');
+            const input = document.getElementById('textColor');
+            let val = span.innerText.trim();
+            if (!val.startsWith('#')) {
+                val = '#' + val;
+            }
+            // Expand 3-digit shorthand hex (#RGB) to 6-digit hex (#RRGGBB)
+            if (/^#([0-9A-Fa-f]{3})$/.test(val)) {
+                val = '#' + val[1] + val[1] + val[2] + val[2] + val[3] + val[3];
+            }
+            // Validate standard 6-digit hex
+            if (/^#([0-9A-Fa-f]{6})$/.test(val)) {
+                input.value = val;
+                draw();
+            }
+        }
+
+        function handleColorBlur() {
+            const span = document.getElementById('v_color');
+            const input = document.getElementById('textColor');
+            span.innerText = input.value.toUpperCase();
         }
 
         // Functions to handle editable values safely syncing with range inputs
@@ -837,7 +865,7 @@
             const origFontSize = parseInt(document.getElementById('fontSize').value);
             const textColor = document.getElementById('textColor').value;
 
-            // Update Slider UI Display Values if they are not actively being typed into
+            // Update UI Display Values if they are not actively being typed into
             if (scale === 1) {
                 if (document.activeElement !== document.getElementById('v_blockSize')) {
                     document.getElementById('v_blockSize').innerText = origBlockSize + 'px';
@@ -847,6 +875,9 @@
                 }
                 if (document.activeElement !== document.getElementById('v_fontSize')) {
                     document.getElementById('v_fontSize').innerText = origFontSize + 'px';
+                }
+                if (document.activeElement !== document.getElementById('v_color')) {
+                    document.getElementById('v_color').innerText = textColor.toUpperCase();
                 }
             }
 
