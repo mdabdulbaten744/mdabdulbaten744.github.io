@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Glitch Slice Text Generator - Typography Tool</title>
+   
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <meta name="theme-color" content="#faf8f5">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
+
+    <style>
+        /* Timeless & Neutral Color Palette */
+        :root {
+            --bg-color: #faf8f5;        
+            --panel-bg: #ffffff;        
+            --border-color: #eae5df;    
+            --text-primary: #1b1a18;    
+            --text-muted: #7c766e;      
+            --accent: #1b1a18;          
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Semantic Header & Navigation Styles */
+        header {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+
+        .logo-link {
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        nav a {
+            font-family: sans-serif;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        nav a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Tool Context Intro Details */
+        .tool-intro {
+            width: 100%;
+            max-width: 1100px;
+            margin-bottom: 25px;
+        }
+
+        header h1, .tool-intro h1 {
+            font-family: sans-serif;
+            font-weight: 700;
+            font-size: 1.75rem;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .tool-subtitle {
+            font-family: sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Two-Column Layout */
+        .app-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            width: 100%;
+            max-width: 1100px;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
+            margin-bottom: 60px;
+        }
+
+        @media (max-width: 950px) {
+            .app-layout {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 20px;
+            }
+        }
+
+        /* Canvas container with scaling backdrops */
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 2 / 1;
+            border: 1px solid var(--border-color);
+            background-color: #ffffff;
+            background-image: conic-gradient(#f3f1ed 0.25turn, #ffffff 0.25turn 0.5turn, #f3f1ed 0.5turn 0.75turn, #ffffff 0.75turn);
+            background-size: 16px 16px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Control Panel elements */
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .controls-group {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .text-input-wrapper {
+            position: relative;
+        }
+
+        .text-input {
+            width: 100%;
+            font-size: 1.25rem;
+            padding: 12px 0;
+            border: none;
+            border-bottom: 2px solid var(--accent);
+            outline: none;
+            background: transparent;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            color: var(--text-primary);
+            letter-spacing: 0.02em;
+            resize: vertical;
+            min-height: 52px;
+            line-height: 1.2;
+        }
+
+        .text-input::placeholder {
+            color: #d1cbc4;
+        }
+
+        .control-row {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .control-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            font-family: sans-serif;
+        }
+
+        .value-display {
+            color: var(--text-primary);
+            font-family: monospace;
+            font-size: 0.85rem;
+        }
+
+        .value-display[contenteditable="true"] {
+            cursor: text;
+            outline: none;
+            border-bottom: 1px dashed var(--text-muted);
+            min-width: 40px;
+            display: inline-block;
+            text-align: right;
+            transition: border-bottom-color 0.2s ease;
+        }
+
+        .value-display[contenteditable="true"]:focus {
+            border-bottom-color: var(--accent);
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 2px;
+            background: #e2ded9;
+            outline: none;
+            margin: 10px 0;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.3);
+        }
+
+        /* Details & Advanced Options */
+        details.advanced-options {
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 0;
+            margin-top: 5px;
+        }
+
+        details.advanced-options summary {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            font-family: sans-serif;
+        }
+
+        details.advanced-options summary::-webkit-details-marker {
+            display: none;
+        }
+
+        details.advanced-options summary::after {
+            content: "＋";
+            font-size: 0.8rem;
+        }
+
+        details.advanced-options[open] summary::after {
+            content: "－";
+        }
+
+        .advanced-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding-top: 20px;
+        }
+
+        .color-selector {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            padding: 4px;
+            gap: 10px;
+            background: var(--panel-bg);
+            justify-content: space-between;
+        }
+
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            background: none;
+        }
+
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        input[type="color"]::-webkit-color-swatch {
+            border: 1px solid var(--border-color);
+        }
+
+        .export-dropdown {
+            width: 100%;
+            padding: 6px;
+            font-family: sans-serif;
+            font-size: 0.85rem;
+            border: 1px solid var(--border-color);
+            background: var(--panel-bg);
+            color: var(--text-primary);
+            outline: none;
+            cursor: pointer;
+        }
+        
+        .export-dropdown:focus {
+            border-color: var(--text-muted);
+        }
+
+        .btn-download {
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+            padding: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.15s ease, transform 0.1s ease;
+            width: 100%;
+            margin-top: 15px;
+            font-family: sans-serif;
+        }
+
+        .btn-download:hover {
+            opacity: 0.9;
+        }
+
+        .btn-download:active {
+            transform: scale(0.995);
+        }
+        
+        .btn-download:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Layout Area styling for remaining sections */
+        .content-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .content-container h2 {
+            font-family: sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            letter-spacing: -0.01em;
+            color: var(--text-primary);
+        }
+
+        /* Related Tools Area */
+        .related-tools-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            margin-bottom: 60px;
+        }
+
+        .related-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .related-card {
+            display: block;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            background: var(--panel-bg);
+            text-decoration: none;
+            transition: border-color 0.15s ease;
+        }
+
+        .related-card:hover {
+            border-color: var(--text-primary);
+        }
+
+        .related-card h3 {
+            font-family: sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+            margin-top: 0;
+        }
+
+        .related-card p {
+            font-family: serif;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* Footer */
+        footer {
+            width: 100%;
+            max-width: 1100px;
+            border-top: 1px solid var(--border-color);
+            padding: 30px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        footer p {
+            font-family: sans-serif;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.02em;
+        }
+    </style>
+</head>
+<body>
+
+    <header role="banner">
+        <a href="https://callistra.design" class="logo-link">Callistra.design</a>
+    </header>
+
+    <main role="main">
+        <div class="tool-intro">
+            <h1>Glitch Slice Text Generator</h1>
+            <p class="tool-subtitle">Create bold, horizontally distorted typography instantly in your browser.</p>
+        </div>
+
+        <div class="app-layout">
+            <div class="canvas-container">
+                <canvas id="canvas" width="800" height="400" aria-label="Typography preview canvas showcasing kinetic glitch slice text effects"></canvas>
+            </div>
+
+            <div class="control-panel">
+                <div class="controls-group">
+                    <div class="text-input-wrapper">
+                        <textarea id="textInput" class="text-input" placeholder="TYPE SOMETHING..." oninput="draw()" aria-label="Slice Text Input Source" rows="2">SIGNAL</textarea>
+                    </div>
+
+                    <div class="control-row">
+                        <div class="control-header">
+                            <label for="fringe">Slice Thickness</label>
+                            <span id="v_fringe" class="value-display" contenteditable="true" oninput="updateFromText('fringe')" onblur="handleBlur('fringe')">8px</span>
+                        </div>
+                        <input type="range" id="fringe" min="1" max="40" step="1" value="8" oninput="draw()">
+                    </div>
+
+                    <div class="control-row">
+                        <div class="control-header">
+                            <label for="shear">Shear Offset</label>
+                            <span id="v_shear" class="value-display" contenteditable="true" oninput="updateFromText('shear')" onblur="handleBlur('shear')">60px</span>
+                        </div>
+                        <input type="range" id="shear" min="0" max="200" step="1" value="60" oninput="draw()">
+                    </div>
+
+                    <div class="control-row">
+                        <div class="control-header">
+                            <label for="chaos">Signal Chaos</label>
+                            <span id="v_chaos" class="value-display" contenteditable="true" oninput="updateFromText('chaos')" onblur="handleBlur('chaos', '%')">65%</span>
+                        </div>
+                        <input type="range" id="chaos" min="0" max="100" step="1" value="65" oninput="draw()">
+                    </div>
+
+                    <details class="advanced-options">
+                        <summary>Color and Size</summary>
+                        <div class="advanced-grid">
+                            <div class="control-row">
+                                <div class="control-header">
+                                    <label for="fontSize">Size</label>
+                                    <span id="v_fontSize" class="value-display" contenteditable="true" oninput="updateFromText('fontSize')" onblur="handleBlur('fontSize')">140px</span>
+                                </div>
+                                <input type="range" id="fontSize" min="30" max="250" value="140" oninput="draw()">
+                            </div>
+
+                            <div class="control-row">
+                                <div class="control-header">
+                                    <label for="textColor">Color</label>
+                                </div>
+                                <div class="color-selector">
+                                    <input type="color" id="textColor" value="#1b1a18" oninput="updateColorLabel(this.value)">
+                                    <span id="v_color" class="value-display" contenteditable="true" style="font-size: 0.75rem;" oninput="updateFromColorText()" onblur="handleColorBlur()">#1B1A18</span>
+                                </div>
+                            </div>
+                            
+                            <div class="control-row">
+                                <div class="control-header">
+                                    <label for="exportScale">Export Size</label>
+                                </div>
+                                <select id="exportScale" class="export-dropdown">
+                                    <option value="1">1x</option>
+                                    <option value="2">2x</option>
+                                    <option value="4" selected>4x</option>
+                                    <option value="8">8x</option>
+                                </select>
+                            </div>
+                        </div>
+                    </details>
+                </div>
+
+                <div>
+                    <button class="btn-download" onclick="downloadPNG()">DOWNLOAD PNG</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer role="contentinfo">
+        <p>&copy; 2026 Callistra.design. All creative tools processed purely client-side for maximum privacy.</p>
+    </footer>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        function updateColorLabel(colorVal) {
+            const span = document.getElementById('v_color');
+            if (document.activeElement !== span) {
+                span.innerText = colorVal.toUpperCase();
+            }
+            draw();
+        }
+
+        function updateFromColorText() {
+            const span = document.getElementById('v_color');
+            const input = document.getElementById('textColor');
+            let val = span.innerText.trim();
+            if (!val.startsWith('#')) {
+                val = '#' + val;
+            }
+            // Expand 3-digit shorthand hex (#RGB) to 6-digit hex (#RRGGBB)
+            if (/^#([0-9A-Fa-f]{3})$/.test(val)) {
+                val = '#' + val[1] + val[1] + val[2] + val[2] + val[3] + val[3];
+            }
+            // Validate standard 6-digit hex
+            if (/^#([0-9A-Fa-f]{6})$/.test(val)) {
+                input.value = val;
+                draw();
+            }
+        }
+
+        function handleColorBlur() {
+            const span = document.getElementById('v_color');
+            const input = document.getElementById('textColor');
+            span.innerText = input.value.toUpperCase();
+        }
+
+        // Functions to handle editable values safely syncing with range inputs
+        function updateFromText(id) {
+            const span = document.getElementById('v_' + id);
+            const input = document.getElementById(id);
+            let val = parseInt(span.innerText.replace(/[^0-9-]/g, ''));
+            if (!isNaN(val)) {
+                input.value = val;
+                draw();
+            }
+        }
+        
+        function handleBlur(id, suffix = 'px') {
+            const span = document.getElementById('v_' + id);
+            const input = document.getElementById(id);
+            span.innerText = input.value + suffix;
+        }
+
+        // Deterministic pseudo-random function based on spatial coordinates
+        function getSpatialRandom(x, y) {
+            let n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
+            return n - Math.floor(n);
+        }
+
+        // Performance guard: Debounces rapid UI input to safely limit rendering to 60 FPS
+        let renderPending = false;
+
+        function draw() {
+            if (!renderPending) {
+                renderPending = true;
+                requestAnimationFrame(() => {
+                    try {
+                        performDraw();
+                    } finally {
+                        renderPending = false;
+                    }
+                });
+            }
+        }
+
+        function performDraw() {
+            renderToCanvas(ctx, canvas.width, canvas.height, 1);
+        }
+
+        function renderToCanvas(targetCtx, targetWidth, targetHeight, scale) {
+            // Collect Main Parameters
+            const text = document.getElementById('textInput').value;
+            
+            let origFringe = parseInt(document.getElementById('fringe').value);
+            if (isNaN(origFringe) || origFringe < 1) origFringe = 1;
+            
+            const origShear = parseInt(document.getElementById('shear').value);
+            const origChaos = parseInt(document.getElementById('chaos').value) / 100; // 0.0 to 1.0
+            const origFontSize = parseInt(document.getElementById('fontSize').value);
+            const textColor = document.getElementById('textColor').value;
+
+            // Update Slider UI Display Values if they are not actively being typed into
+            if (scale === 1) {
+                if (document.activeElement !== document.getElementById('v_fringe')) {
+                    document.getElementById('v_fringe').innerText = origFringe + 'px';
+                }
+                if (document.activeElement !== document.getElementById('v_shear')) {
+                    document.getElementById('v_shear').innerText = origShear + 'px';
+                }
+                if (document.activeElement !== document.getElementById('v_chaos')) {
+                    document.getElementById('v_chaos').innerText = (origChaos * 100) + '%';
+                }
+                if (document.activeElement !== document.getElementById('v_fontSize')) {
+                    document.getElementById('v_fontSize').innerText = origFontSize + 'px';
+                }
+                if (document.activeElement !== document.getElementById('v_color')) {
+                    document.getElementById('v_color').innerText = textColor.toUpperCase();
+                }
+            }
+
+            // Clear target canvas
+            targetCtx.clearRect(0, 0, targetWidth, targetHeight);
+            
+            if (!text) return null;
+
+            // Create offscreen buffer for accurate text sampling
+            const offscreen = document.createElement('canvas');
+            offscreen.width = targetWidth; 
+            offscreen.height = targetHeight;
+            const octx = offscreen.getContext('2d');
+            
+            // Handle Multi-line Support & Auto-Scaling Logic
+            const lines = text.split('\n');
+            const scaledShear = origShear * scale;
+            
+            // Calculate padding needed to keep text and its scattered blocks inside bounds
+            const padding = scaledShear + (40 * scale); 
+
+            // Use a reference font size to cleanly measure text proportions
+            const refSize = 100 * scale;
+            octx.font = `900 ${refSize}px "Montserrat", sans-serif`;
+            let maxRefWidth = 1; // Prevent division by zero
+            lines.forEach(line => {
+                let width = octx.measureText(line).width;
+                if (width > maxRefWidth) maxRefWidth = width;
+            });
+            
+            const refTotalHeight = lines.length * (refSize * 1.1);
+            
+            // Establish the safe available canvas space
+            const availWidth = Math.max(10 * scale, targetWidth - padding);
+            const availHeight = Math.max(10 * scale, targetHeight - padding);
+            
+            // Determine maximum permitted font sizes based on width and height limits
+            const maxFontSizeW = (availWidth * refSize) / maxRefWidth;
+            const maxFontSizeH = (availHeight * refSize) / refTotalHeight;
+            const calculatedMaxFontSize = Math.min(maxFontSizeW, maxFontSizeH);
+            
+            // Shrink-to-fit: take the smaller of the user's selected slider size OR the maximum safe size
+            const scaledFontSize = Math.max(10 * scale, Math.min(origFontSize * scale, calculatedMaxFontSize));
+            
+            octx.font = `900 ${scaledFontSize}px "Montserrat", sans-serif`;
+            octx.textAlign = 'center';
+            octx.textBaseline = 'middle';
+            octx.fillStyle = textColor;
+            
+            const lineHeight = scaledFontSize * 1.1; 
+            const totalHeight = lines.length * lineHeight;
+            let startY = (targetHeight / 2) - (totalHeight / 2) + (lineHeight / 2);
+
+            lines.forEach((line, index) => {
+                octx.fillText(line, (targetWidth / 2), startY + (index * lineHeight));
+            });
+
+            const sourceData = octx.getImageData(0, 0, targetWidth, targetHeight);
+            const targetData = targetCtx.createImageData(targetWidth, targetHeight);
+            const sourceBuffer = new Uint32Array(sourceData.data.buffer);
+            const targetBuffer = new Uint32Array(targetData.data.buffer);
+
+            // Iterate through every row of the target canvas
+            for (let dy = 0; dy < targetHeight; dy++) {
+                
+                // Calculate mapping to original Y scale so the noise frequency remains identical across render scales
+                const unscaledY = dy / scale;
+                const band = Math.floor(unscaledY / origFringe);
+                
+                // Base direction: odd rows left (-1), even rows right (1)
+                const dir = (band % 2 === 0) ? 1 : -1;
+
+                // 1. Perfect mathematical wave (Chaos = 0)
+                const waveShift = Math.sin(band * 0.4) * origShear;
+
+                // 2. Unpredictable glitch clustering (Chaos = 1)
+                const macroClump = getSpatialRandom(0, Math.floor(band / 3)); // Clusters multiple bands together
+                const microNoise = getSpatialRandom(0, band);                 // High-frequency jitter
+                const chaosIntensity = (macroClump * 1.5 + microNoise * 0.5); // Ranges from 0.0 to roughly 2.0
+                const chaoticShift = dir * chaosIntensity * origShear;
+
+                // Blend based on slider
+                const shiftAmount = (waveShift * (1 - origChaos)) + (chaoticShift * origChaos);
+                const scaledShiftX = Math.round(shiftAmount * scale);
+
+                // Row copy
+                const rowOffset = dy * targetWidth;
+                for (let dx = 0; dx < targetWidth; dx++) {
+                    const sx = dx - scaledShiftX;
+                    
+                    // Keep bounds tight to prevent horizontal wrapping
+                    if (sx >= 0 && sx < targetWidth) {
+                        const sourcePixel = sourceBuffer[rowOffset + sx];
+                        if (sourcePixel !== 0) {
+                            targetBuffer[rowOffset + dx] = sourcePixel;
+                        }
+                    }
+                }
+            }
+            
+            targetCtx.putImageData(targetData, 0, 0);
+            return targetData;
+        }
+
+        // Variable Render and Exact Crop Download Architecture
+        function downloadPNG() {
+            const btn = document.querySelector('.btn-download');
+            const origText = btn.innerText;
+            btn.innerText = "RENDERING...";
+            btn.disabled = true;
+
+            // Small delay so the UI updates to show "RENDERING..." before heavy processing starts
+            setTimeout(() => {
+                try {
+                    // Pull scale dynamically from the dropdown
+                    const scale = parseInt(document.getElementById('exportScale').value) || 4; 
+                    
+                    const targetWidth = 800 * scale; 
+                    const targetHeight = 400 * scale; 
+
+                    const tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = targetWidth;
+                    tempCanvas.height = targetHeight;
+                    const tempCtx = tempCanvas.getContext('2d');
+
+                    const targetData = renderToCanvas(tempCtx, targetWidth, targetHeight, scale);
+
+                    if (!targetData) {
+                        btn.innerText = origText;
+                        btn.disabled = false;
+                        return;
+                    }
+
+                    const buffer = new Uint32Array(targetData.data.buffer);
+                    let minX = targetWidth, minY = targetHeight, maxX = 0, maxY = 0;
+                    let hasPixels = false;
+
+                    // Ultra-fast flat memory array scan to calculate non-transparent bounding box
+                    for (let y = 0; y < targetHeight; y++) {
+                        const rowOffset = y * targetWidth;
+                        for (let x = 0; x < targetWidth; x++) {
+                            if (buffer[rowOffset + x] !== 0) {
+                                if (x < minX) minX = x;
+                                if (x > maxX) maxX = x;
+                                if (y < minY) minY = y;
+                                if (y > maxY) maxY = y;
+                                hasPixels = true;
+                            }
+                        }
+                    }
+
+                    if (!hasPixels) {
+                        alert("No text to download.");
+                        btn.innerText = origText;
+                        btn.disabled = false;
+                        return;
+                    }
+
+                    const cropW = maxX - minX + 1;
+                    const cropH = maxY - minY + 1;
+
+                    // Dedicated output canvas dimensioned to exactly fit the text
+                    const cropCanvas = document.createElement('canvas');
+                    cropCanvas.width = cropW;
+                    cropCanvas.height = cropH;
+                    const cropCtx = cropCanvas.getContext('2d');
+                    
+                    // Create an exact subset ImageData to avoid browser boundary drawing bugs with negative offsets
+                    const cropData = cropCtx.createImageData(cropW, cropH);
+                    cropBuffer = new Uint32Array(cropData.data.buffer);
+                    
+                    for (let y = 0; y < cropH; y++) {
+                        const srcRow = (y + minY) * targetWidth;
+                        const dstRow = y * cropW;
+                        for (let x = 0; x < cropW; x++) {
+                            cropBuffer[dstRow + x] = buffer[srcRow + (x + minX)];
+                        }
+                    }
+                    cropCtx.putImageData(cropData, 0, 0);
+
+                    const link = document.createElement('a');
+                    link.download = `glitch-slice-${scale}x.png`;
+                    link.href = cropCanvas.toDataURL('image/png');
+                    link.click();
+
+                } catch (err) {
+                    console.error("Render failed:", err);
+                    alert("An error occurred during export.");
+                } finally {
+                    btn.innerText = origText;
+                    btn.disabled = false;
+                }
+            }, 50);
+        }
+
+        // Wait for the Google Font to load before the initial render to prevent fallback font flashing
+        document.fonts.ready.then(() => {
+            draw();
+        });
+        
+    </script>
+</body>
+</html>
