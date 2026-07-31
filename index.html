@@ -11,7 +11,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap" rel="stylesheet">
 
     <style>
         /* Timeless & Neutral Color Palette */
@@ -360,6 +360,85 @@
             transform: none;
         }
 
+        /* Modal Overlay for Saving */
+        .modal-overlay {
+            position: fixed;
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            background: rgba(27, 26, 24, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: var(--panel-bg);
+            padding: 25px;
+            border-radius: 8px;
+            max-width: 90vw;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .modal-content h3 {
+            font-family: sans-serif;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            text-align: center;
+            letter-spacing: 0.02em;
+        }
+
+        #exportedImage {
+            max-width: 100%;
+            max-height: 60vh;
+            border: 1px solid var(--border-color);
+            background-color: #ffffff;
+            background-image: conic-gradient(#f3f1ed 0.25turn, #ffffff 0.25turn 0.5turn, #f3f1ed 0.5turn 0.75turn, #ffffff 0.75turn);
+            background-size: 16px 16px;
+            user-select: auto;
+            -webkit-user-drag: auto;
+        }
+
+        .btn-close {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: transform 0.15s ease;
+        }
+
+        .btn-close:hover {
+            transform: scale(1.1);
+        }
+
         /* Layout Area styling for remaining sections */
         .content-container {
             width: 100%;
@@ -375,49 +454,6 @@
             margin-bottom: 16px;
             letter-spacing: -0.01em;
             color: var(--text-primary);
-        }
-
-        /* Related Tools Area */
-        .related-tools-section {
-            margin-top: 20px;
-            padding-top: 20px;
-            margin-bottom: 60px;
-        }
-
-        .related-links {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .related-card {
-            display: block;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            background: var(--panel-bg);
-            text-decoration: none;
-            transition: border-color 0.15s ease;
-        }
-
-        .related-card:hover {
-            border-color: var(--text-primary);
-        }
-
-        .related-card h3 {
-            font-family: sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 5px;
-            margin-top: 0;
-        }
-
-        .related-card p {
-            font-family: serif;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin: 0;
         }
 
         /* Footer */
@@ -514,12 +550,22 @@
                 </div>
 
                 <div>
-                    <button class="btn-download" onclick="downloadPNG()">DOWNLOAD PNG</button>
+                    <!-- Updated Button Text and OnClick -->
+                    <button class="btn-download" onclick="generateImage()">GENERATE IMAGE</button>
                 </div>
             </div>
         </div>
 
     </main>
+
+    <!-- Overlay Modal for Saving Image -->
+    <div id="exportModal" class="modal-overlay" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="btn-close" onclick="closeModal(event)">×</button>
+            <h3>Tap and hold (or right-click) to save image</h3>
+            <img id="exportedImage" src="" alt="Exported Pixel Drift Text" />
+        </div>
+    </div>
 
     <footer role="contentinfo">
         <p>&copy; 2026 Callistra.design. All creative tools processed purely client-side for maximum privacy.</p>
@@ -721,7 +767,8 @@
             return targetData;
         }
 
-        function downloadPNG() {
+        // Updated function to show image in modal instead of triggering download
+        function generateImage() {
             const btn = document.querySelector('.btn-download');
             const origText = btn.innerText;
             btn.innerText = "RENDERING...";
@@ -764,7 +811,7 @@
                     }
 
                     if (!hasPixels) {
-                        alert("No text to download.");
+                        alert("No text to generate.");
                         btn.innerText = origText;
                         btn.disabled = false;
                         return;
@@ -790,19 +837,27 @@
                     }
                     cropCtx.putImageData(cropData, 0, 0);
 
-                    const link = document.createElement('a');
-                    link.download = `pixel-drift-${scale}x.png`;
-                    link.href = cropCanvas.toDataURL('image/png');
-                    link.click();
+                    // Insert rendering result into the <img> tag and show modal
+                    const finalDataUrl = cropCanvas.toDataURL('image/png');
+                    document.getElementById('exportedImage').src = finalDataUrl;
+                    document.getElementById('exportModal').classList.add('active');
 
                 } catch (err) {
                     console.error("Render failed:", err);
-                    alert("An error occurred during export.");
+                    alert("An error occurred during generation.");
                 } finally {
                     btn.innerText = origText;
                     btn.disabled = false;
                 }
             }, 50);
+        }
+
+        // Close the modal function
+        function closeModal(event) {
+            if (event) {
+                event.preventDefault();
+            }
+            document.getElementById('exportModal').classList.remove('active');
         }
 
         document.fonts.ready.then(() => {
