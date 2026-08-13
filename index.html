@@ -1,814 +1,499 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Pixel Displace Text Effect Maker</title>
-    
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>CALLISTRA • Generative Design Suite</title>
+  <meta name="description" content="Precision design instruments for digital artisans. Launch Pixel Displace and ClearPostersAi.">
+  
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&amp;display=swap" rel="stylesheet">
+  <!-- Google Fonts matched directly from Callistra tools -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
 
-    <style>
-        /* Timeless & Neutral Color Palette */
-        :root {
-            --bg-color: #faf8f5;        
-            --panel-bg: #ffffff;        
-            --border-color: #eae5df;    
-            --text-primary: #1b1a18;    
-            --text-muted: #7c766e;      
-            --accent: #1b1a18;          
-        }
+  <style>
+    /* Exact Palette & Theme Engine shared across Callistra Tools */
+    :root {
+      --bg-color: #f7f5f0;
+      --panel-bg: var(--bg-color);
+      --text-primary: #121212;
+      --text-muted: #736e65;
+      --accent: #121212;
+      --accent-vibrant: #6366f1; /* Vibrant accent color for high CTA clickability */
+      --accent-vibrant-hover: #4f46e5;
+      --border-color: rgba(18, 18, 18, 0.12);
+      --border-strong: rgba(18, 18, 18, 0.35);
+      --card-bg: rgba(18, 18, 18, 0.025);
+      --card-hover: rgba(18, 18, 18, 0.05);
+      --font-editorial: 'Instrument Serif', serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius: 2px;
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-color: #0d0d0d;
+        --panel-bg: var(--bg-color);
+        --text-primary: #f0eee9;
+        --text-muted: #8c877e;
+        --accent: #f0eee9;
+        --accent-vibrant: #818cf8;
+        --accent-vibrant-hover: #a5b4fc;
+        --border-color: rgba(240, 238, 233, 0.15);
+        --border-strong: rgba(240, 238, 233, 0.4);
+        --card-bg: rgba(240, 238, 233, 0.03);
+        --card-hover: rgba(240, 238, 233, 0.06);
+      }
+    }
 
-        body {
-            font-family: sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 20px;
-            -webkit-font-smoothing: antialiased;
-        }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-        /* Semantic Header & Navigation Styles */
-        header {
-            width: 100%;
-            max-width: 1100px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 30px;
-        }
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-weight: 400;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
 
-        .logo-link {
-            font-family: monospace;
-            font-weight: bold;
-            font-size: 1.1rem;
-            color: var(--text-primary);
-            text-decoration: none;
-            letter-spacing: -0.02em;
-        }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 24px;
+    }
 
-        nav a {
-            font-family: sans-serif;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-decoration: none;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
+    /* Minimal Scrollbar */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: var(--radius); }
 
-        nav a:hover {
-            color: var(--text-primary);
-        }
+    /* LAYOUT WRAPPER */
+    .site-wrapper {
+      width: 100%;
+      max-width: 1100px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding: 32px 0 40px;
+    }
 
-        /* Tool Context Intro Details */
-        .tool-intro {
-            width: 100%;
-            max-width: 1100px;
-            margin-bottom: 25px;
-        }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-        header h1, .tool-intro h1 {
-            font-family: sans-serif;
-            font-weight: 700;
-            font-size: 1.75rem;
-            letter-spacing: -0.02em;
-            color: var(--text-primary);
-            margin-bottom: 6px;
-        }
+    /* HEADER */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 48px;
+    }
 
-        .tool-subtitle {
-            font-family: sans-serif;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
+    .brand-logo {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        /* Two-Column Layout */
-        .app-layout {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 40px;
-            width: 100%;
-            max-width: 1100px;
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
-            margin-bottom: 60px;
-        }
+    .brand-logo svg {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.5;
+    }
 
-        @media (max-width: 950px) {
-            .app-layout {
-                grid-template-columns: 1fr;
-                gap: 30px;
-                padding: 20px;
-            }
-        }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
 
-        /* Canvas container with scaling backdrops */
-        .canvas-container {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 2 / 1;
-            border: 1px solid var(--border-color);
-            background-color: #ffffff;
-            background-image: conic-gradient(#f3f1ed 0.25turn, #ffffff 0.25turn 0.5turn, #f3f1ed 0.5turn 0.75turn, #ffffff 0.75turn);
-            background-size: 16px 16px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      background-color: #34d399;
+      border-radius: 50%;
+    }
 
-        canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
+    /* HERO */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 52px;
+    }
 
-        /* Control Panel elements */
-        .control-panel {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            gap: 25px;
-        }
+    .hero-title {
+      font-family: var(--font-editorial);
+      font-size: clamp(2.8rem, 6vw, 4.8rem);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      max-width: 900px;
+    }
 
-        .controls-group {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+    .hero-title i {
+      font-style: italic;
+      color: var(--text-muted);
+    }
 
-        .text-input-wrapper {
-            position: relative;
-        }
+    .hero-sub {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      max-width: 580px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-        .text-input {
-            width: 100%;
-            font-size: 1.25rem;
-            padding: 12px 0;
-            border: none;
-            border-bottom: 2px solid var(--accent);
-            outline: none;
-            background: transparent;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            color: var(--text-primary);
-            letter-spacing: 0.02em;
-            resize: vertical;
-            min-height: 52px;
-            line-height: 1.2;
-        }
+    /* SVG ICON UTILITY */
+    .icon {
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.5;
+      flex-shrink: 0;
+    }
 
-        .text-input::placeholder {
-            color: #d1cbc4;
-        }
+    /* TOOLS LAUNCH GRID (PRIMARY UX FOCUS) */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 28px;
+      margin-bottom: 60px;
+    }
 
-        .control-row {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
+    .tool-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 32px;
+      transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+      position: relative;
+    }
 
-        .control-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--text-muted);
-            font-family: sans-serif;
-        }
+    .tool-card:hover {
+      border-color: var(--border-strong);
+      background: var(--card-hover);
+      transform: translateY(-2px);
+    }
 
-        .value-display {
-            color: var(--text-primary);
-            font-family: monospace;
-            font-size: 0.85rem;
-        }
+    .tool-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
 
-        .value-display[contenteditable="true"] {
-            cursor: text;
-            outline: none;
-            border-bottom: 1px dashed var(--text-muted);
-            min-width: 40px;
-            display: inline-block;
-            text-align: right;
-            transition: border-bottom-color 0.2s ease;
-        }
+    .tool-tag {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-        .value-display[contenteditable="true"]:focus {
-            border-bottom-color: var(--accent);
-        }
+    .tool-info {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-        input[type="range"] {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 100%;
-            height: 2px;
-            background: #e2ded9;
-            outline: none;
-            margin: 10px 0;
-        }
+    .tool-name {
+      font-family: var(--font-editorial);
+      font-size: 2.2rem;
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--text-primary);
+    }
 
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--accent);
-            cursor: pointer;
-            transition: transform 0.1s ease;
-        }
+    .tool-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
 
-        input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.3);
-        }
+    .tool-specs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
 
-        /* Details & Advanced Options */
-        details.advanced-options {
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-            padding: 15px 0;
-            margin-top: 5px;
-        }
+    .spec-pill {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 8px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      color: var(--text-muted);
+      background: var(--bg-color);
+    }
 
-        details.advanced-options summary {
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--text-muted);
-            cursor: pointer;
-            list-style: none;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            user-select: none;
-            font-family: sans-serif;
-        }
+    /* DIRECT CTA BUTTON WITH VIBRANT ACCENT BORDER */
+    .btn-launch {
+      background: var(--text-primary);
+      color: var(--bg-color);
+      border: 2px solid var(--accent-vibrant);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(99, 102, 241, 0.2);
+      transition: opacity 0.15s ease, transform 0.1s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
 
-        details.advanced-options summary::-webkit-details-marker {
-            display: none;
-        }
+    .btn-launch:hover {
+      opacity: 0.95;
+      border-color: var(--accent-vibrant-hover);
+      box-shadow: 0 0 16px rgba(99, 102, 241, 0.4);
+    }
 
-        details.advanced-options summary::after {
-            content: "＋";
-            font-size: 0.8rem;
-        }
+    .btn-launch:active {
+      transform: scale(0.99);
+    }
 
-        details.advanced-options[open] summary::after {
-            content: "－";
-        }
+    /* SPECS STRIP */
+    .specs-strip {
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+      padding: 24px 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 60px;
+    }
 
-        .advanced-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            padding-top: 20px;
-        }
+    .spec-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
 
-        .color-selector {
-            display: flex;
-            align-items: center;
-            border: 1px solid var(--border-color);
-            padding: 4px;
-            gap: 10px;
-            background: var(--panel-bg);
-            justify-content: space-between;
-        }
+    .spec-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-        input[type="color"] {
-            -webkit-appearance: none;
-            border: none;
-            width: 32px;
-            height: 32px;
-            cursor: pointer;
-            background: none;
-        }
+    .spec-val {
+      font-family: var(--font-editorial);
+      font-size: 1.35rem;
+      font-style: italic;
+      color: var(--text-primary);
+    }
 
-        input[type="color"]::-webkit-color-swatch-wrapper {
-            padding: 0;
-        }
+    /* FOOTER */
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 20px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
 
-        input[type="color"]::-webkit-color-swatch {
-            border: 1px solid var(--border-color);
-        }
+    .footer-links {
+      display: flex;
+      gap: 18px;
+    }
 
-        .export-dropdown {
-            width: 100%;
-            padding: 6px;
-            font-family: sans-serif;
-            font-size: 0.85rem;
-            border: 1px solid var(--border-color);
-            background: var(--panel-bg);
-            color: var(--text-primary);
-            outline: none;
-            cursor: pointer;
-        }
-        
-        .export-dropdown:focus {
-            border-color: var(--text-muted);
-        }
+    .footer-links a:hover {
+      color: var(--text-primary);
+    }
 
-        .btn-download {
-            background: var(--accent);
-            color: #ffffff;
-            border: none;
-            padding: 16px;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            font-size: 0.8rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity 0.15s ease, transform 0.1s ease;
-            width: 100%;
-            margin-top: 15px;
-            font-family: sans-serif;
-        }
-
-        .btn-download:hover {
-            opacity: 0.9;
-        }
-
-        .btn-download:active {
-            transform: scale(0.995);
-        }
-        
-        .btn-download:disabled {
-            background: var(--text-muted);
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Layout Area styling for remaining sections */
-        .content-container {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .content-container h2 {
-            font-family: sans-serif;
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-top: 40px;
-            margin-bottom: 16px;
-            letter-spacing: -0.01em;
-            color: var(--text-primary);
-        }
-
-        /* Related Tools Area */
-        .related-tools-section {
-            margin-top: 20px;
-            padding-top: 20px;
-            margin-bottom: 60px;
-        }
-
-        .related-links {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .related-card {
-            display: block;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            background: var(--panel-bg);
-            text-decoration: none;
-            transition: border-color 0.15s ease;
-        }
-
-        .related-card:hover {
-            border-color: var(--text-primary);
-        }
-
-        .related-card h3 {
-            font-family: sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 5px;
-            margin-top: 0;
-        }
-
-        .related-card p {
-            font-family: serif;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin: 0;
-        }
-
-        /* Footer */
-        footer {
-            width: 100%;
-            max-width: 1100px;
-            border-top: 1px solid var(--border-color);
-            padding: 30px 0;
-            text-align: center;
-            margin-top: auto;
-        }
-
-        footer p {
-            font-family: sans-serif;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            letter-spacing: 0.02em;
-        }
-    </style>
+    @media (max-width: 600px) {
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+      footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
 </head>
 <body>
 
+  <div class="site-wrapper">
+    
+    <!-- Header -->
     <header role="banner">
-        <a href="https://callistra.design" class="logo-link">Callistra.design</a>
+      <a href="/" class="brand-logo">
+        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        CALLISTRA
+      </a>
+
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        <span>2 Tools Online</span>
+      </div>
     </header>
 
-    <main role="main">
-        <div class="tool-intro">
-            <h1>Pixel Displace Text Effect Maker</h1>
-          <h3>image can't be downloaded on Instagram,  please use a browser</h3>
-            <p class="tool-subtitle">Shatter and displace your typography instantly right in your browser.</p>
-        </div>
+    <main>
+      <!-- Minimalist Hero -->
+      <section class="hero">
+        <h1 class="hero-title">
+          Generative visual instruments <i>for typography & posters.</i>
+        </h1>
+        <p class="hero-sub">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          No signups. Instant creation. Direct high quality downloads.
+        </p>
+      </section>
 
-        <div class="app-layout">
-            <div class="canvas-container">
-                <canvas id="canvas" width="800" height="400" aria-label="Typography preview canvas showcasing pixel drift text effects"></canvas>
+      <!-- Primary Tools Launch Grid -->
+      <section class="tools-grid">
+
+        <!-- TOOL 01: PIXEL DISPLACE -->
+        <article class="tool-card">
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div class="tool-header">
+              <span class="tool-tag">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                TOOL 01 // TEXT EFFECT
+              </span>
             </div>
 
-            <div class="control-panel">
-                <div class="controls-group">
-                    <div class="text-input-wrapper">
-                        <textarea id="textInput" class="text-input" placeholder="TYPE SOMETHING..." oninput="draw()" aria-label="Drift Text Input Source" rows="2">Drift</textarea>
-                    </div>
-
-                    <div class="control-row">
-                        <div class="control-header">
-                            <label for="blockSize">Grid Block Size</label>
-                            <span id="v_blockSize" class="value-display" contenteditable="true" oninput="updateFromText('blockSize')" onblur="handleBlur('blockSize')">20px</span>
-                        </div>
-                        <input type="range" id="blockSize" min="2" max="100" step="1" value="20" oninput="draw()">
-                    </div>
-
-                    <div class="control-row">
-                        <div class="control-header">
-                            <label for="drift">Scatter Amount</label>
-                            <span id="v_drift" class="value-display" contenteditable="true" oninput="updateFromText('drift')" onblur="handleBlur('drift')">15px</span>
-                        </div>
-                        <input type="range" id="drift" min="0" max="150" step="1" value="15" oninput="draw()">
-                    </div>
-
-                    <details class="advanced-options">
-                        <summary>Color and Size</summary>
-                        <div class="advanced-grid">
-                            <div class="control-row">
-                                <div class="control-header">
-                                    <label for="fontSize">Size</label>
-                                    <span id="v_fontSize" class="value-display" contenteditable="true" oninput="updateFromText('fontSize')" onblur="handleBlur('fontSize')">150px</span>
-                                </div>
-                                <input type="range" id="fontSize" min="30" max="250" value="150" oninput="draw()">
-                            </div>
-
-                            <div class="control-row">
-                                <div class="control-header">
-                                    <label for="textColor">Color</label>
-                                </div>
-                                <div class="color-selector">
-                                    <input type="color" id="textColor" value="#1b1a18" oninput="updateColorLabel(this.value)">
-                                    <span id="v_color" class="value-display" contenteditable="true" style="font-size: 0.75rem;" oninput="updateFromColorText()" onblur="handleColorBlur()">#1B1A18</span>
-                                </div>
-                            </div>
-
-                            <div class="control-row">
-                                <div class="control-header">
-                                    <label for="exportScale">Export Size</label>
-                                </div>
-                                <select id="exportScale" class="export-dropdown">
-                                    <option value="1">1x</option>
-                                    <option value="2">2x</option>
-                                    <option value="4" selected>4x</option>
-                                    <option value="8">8x</option>
-                                </select>
-                            </div>
-                        </div>
-                    </details>
-                </div>
-
-                <div>
-                    <button class="btn-download" onclick="downloadPNG()">DOWNLOAD PNG</button>
-                </div>
+            <div class="tool-info">
+              <h2 class="tool-name">Pixel Displace</h2>
+              <p class="tool-desc">Turn basic fonts into artworks with simple sliders and download ultra high quality PNGs.</p>
             </div>
+
+            <div class="tool-specs">
+              <span class="spec-pill">Simple Sliders</span>
+              <span class="spec-pill">Custom Fonts</span>
+              <span class="spec-pill">High Quality PNG</span>
+            </div>
+          </div>
+
+          <a href="/pixel-displace" class="btn-launch">
+            <span>LAUNCH PIXEL DISPLACE</span>
+            <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </article>
+
+        <!-- TOOL 02: CLEARPOSTERSAI -->
+        <article class="tool-card">
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div class="tool-header">
+              <span class="tool-tag">
+                <svg class="icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                TOOL 02 // AI COMPOSITION
+              </span>
+            </div>
+
+            <div class="tool-info">
+              <h2 class="tool-name">ClearPostersAi</h2>
+              <p class="tool-desc">Create high quality social media post designs with pixel-perfect fonts and direct Google Font integration.</p>
+            </div>
+
+            <div class="tool-specs">
+              <span class="spec-pill">Social Media Ready</span>
+              <span class="spec-pill">Google Fonts</span>
+              <span class="spec-pill">Pixel-Perfect</span>
+            </div>
+          </div>
+
+          <a href="/clearpostersai" class="btn-launch">
+            <span>LAUNCH CLEARPOSTERSAI</span>
+            <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </article>
+
+      </section>
+
+      <!-- Minimal Features Matrix -->
+      <section class="specs-strip">
+        <div class="spec-item">
+          <span class="spec-label">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Privacy First
+          </span>
+          <span class="spec-val">Zero Server Storage</span>
         </div>
 
+        <div class="spec-item">
+          <span class="spec-label">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            High Quality
+          </span>
+          <span class="spec-val">Print & Social Ready</span>
+        </div>
+
+        <div class="spec-item">
+          <span class="spec-label">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            Instant Speed
+          </span>
+          <span class="spec-val">No Installation</span>
+        </div>
+      </section>
     </main>
 
-    <footer role="contentinfo">
-        <p>&copy; 2026 Callistra.design. All creative tools processed purely client-side for maximum privacy.</p>
+    <!-- Footer -->
+    <footer>
+      <div>&copy; 2026 CALLISTRA DESIGN LABS</div>
+
+      <div class="footer-links">
+        <a href="https://x.com/abdulbatenhere" target="_blank" rel="noopener">X / Twitter</a>
+        <a href="https://github.com/mdabdulbaten744" target="_blank" rel="noopener">GitHub</a>
+      </div>
     </footer>
 
-    <script>
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
+  </div>
 
-        function updateColorLabel(colorVal) {
-            const span = document.getElementById('v_color');
-            if (document.activeElement !== span) {
-                span.innerText = colorVal.toUpperCase();
-            }
-            draw();
-        }
-
-        function updateFromColorText() {
-            const span = document.getElementById('v_color');
-            const input = document.getElementById('textColor');
-            let val = span.innerText.trim();
-            if (!val.startsWith('#')) {
-                val = '#' + val;
-            }
-            if (/^#([0-9A-Fa-f]{3})$/.test(val)) {
-                val = '#' + val[1] + val[1] + val[2] + val[2] + val[3] + val[3];
-            }
-            if (/^#([0-9A-Fa-f]{6})$/.test(val)) {
-                input.value = val;
-                draw();
-            }
-        }
-
-        function handleColorBlur() {
-            const span = document.getElementById('v_color');
-            const input = document.getElementById('textColor');
-            span.innerText = input.value.toUpperCase();
-        }
-
-        function updateFromText(id) {
-            const span = document.getElementById('v_' + id);
-            const input = document.getElementById(id);
-            let val = parseInt(span.innerText.replace(/[^0-9-]/g, ''));
-            if (!isNaN(val)) {
-                input.value = val;
-                draw();
-            }
-        }
-        
-        function handleBlur(id) {
-            const span = document.getElementById('v_' + id);
-            const input = document.getElementById(id);
-            span.innerText = input.value + 'px';
-        }
-
-        function getSpatialRandom(x, y) {
-            let n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
-            return n - Math.floor(n);
-        }
-
-        let renderPending = false;
-
-        function draw() {
-            if (!renderPending) {
-                renderPending = true;
-                requestAnimationFrame(() => {
-                    try {
-                        performDraw();
-                    } finally {
-                        renderPending = false;
-                    }
-                });
-            }
-        }
-
-        function performDraw() {
-            renderToCanvas(ctx, canvas.width, canvas.height, 1);
-        }
-
-        function renderToCanvas(targetCtx, targetWidth, targetHeight, scale) {
-            const text = document.getElementById('textInput').value;
-            
-            let origBlockSize = parseInt(document.getElementById('blockSize').value);
-            if (isNaN(origBlockSize) || origBlockSize < 1) origBlockSize = 1;
-            
-            const origDrift = parseInt(document.getElementById('drift').value);
-            const origFontSize = parseInt(document.getElementById('fontSize').value);
-            const textColor = document.getElementById('textColor').value;
-
-            if (scale === 1) {
-                if (document.activeElement !== document.getElementById('v_blockSize')) {
-                    document.getElementById('v_blockSize').innerText = origBlockSize + 'px';
-                }
-                if (document.activeElement !== document.getElementById('v_drift')) {
-                    document.getElementById('v_drift').innerText = origDrift + 'px';
-                }
-                if (document.activeElement !== document.getElementById('v_fontSize')) {
-                    document.getElementById('v_fontSize').innerText = origFontSize + 'px';
-                }
-                if (document.activeElement !== document.getElementById('v_color')) {
-                    document.getElementById('v_color').innerText = textColor.toUpperCase();
-                }
-            }
-
-            targetCtx.clearRect(0, 0, targetWidth, targetHeight);
-            
-            if (!text) return null;
-
-            const offscreen = document.createElement('canvas');
-            offscreen.width = targetWidth; 
-            offscreen.height = targetHeight;
-            const octx = offscreen.getContext('2d');
-            
-            const lines = text.split('\n');
-            const scaledDrift = origDrift * scale;
-            const padding = scaledDrift + (40 * scale); 
-
-            const refSize = 100 * scale;
-            octx.font = `900 ${refSize}px "Montserrat", sans-serif`;
-            let maxRefWidth = 1;
-            lines.forEach(line => {
-                let width = octx.measureText(line).width;
-                if (width > maxRefWidth) maxRefWidth = width;
-            });
-            
-            const refTotalHeight = lines.length * (refSize * 1.1);
-            
-            const availWidth = Math.max(10 * scale, targetWidth - padding);
-            const availHeight = Math.max(10 * scale, targetHeight - padding);
-            
-            const maxFontSizeW = (availWidth * refSize) / maxRefWidth;
-            const maxFontSizeH = (availHeight * refSize) / refTotalHeight;
-            const calculatedMaxFontSize = Math.min(maxFontSizeW, maxFontSizeH);
-            
-            const scaledFontSize = Math.max(10 * scale, Math.min(origFontSize * scale, calculatedMaxFontSize));
-            
-            octx.font = `900 ${scaledFontSize}px "Montserrat", sans-serif`;
-            octx.textAlign = 'center';
-            octx.textBaseline = 'middle';
-            octx.fillStyle = textColor;
-            
-            const lineHeight = scaledFontSize * 1.1; 
-            const totalHeight = lines.length * lineHeight;
-            let startY = (targetHeight / 2) - (totalHeight / 2) + (lineHeight / 2);
-
-            lines.forEach((line, index) => {
-                octx.fillText(line, (targetWidth / 2), startY + (index * lineHeight));
-            });
-
-            const sourceData = octx.getImageData(0, 0, targetWidth, targetHeight);
-            const targetData = targetCtx.createImageData(targetWidth, targetHeight);
-            const sourceBuffer = new Uint32Array(sourceData.data.buffer);
-            const targetBuffer = new Uint32Array(targetData.data.buffer);
-
-            for (let y = 0; y < 400; y += origBlockSize) {
-                for (let x = 0; x < 800; x += origBlockSize) {
-                    
-                    const randX = getSpatialRandom(x, y);
-                    const randY = getSpatialRandom(x + 100, y + 100);
-
-                    const driftOffsetX = Math.round((randX - 0.5) * scaledDrift);
-                    const driftOffsetY = Math.round((randY - 0.5) * scaledDrift);
-                    
-                    const scaledX = Math.round(x * scale);
-                    const scaledY = Math.round(y * scale);
-
-                    const destX = scaledX + driftOffsetX;
-                    const destY = scaledY + driftOffsetY;
-                    
-                    const nextScaledX = Math.round((x + origBlockSize) * scale);
-                    const nextScaledY = Math.round((y + origBlockSize) * scale);
-                    
-                    const blockW = Math.min(nextScaledX - scaledX, targetWidth - scaledX);
-                    const blockH = Math.min(nextScaledY - scaledY, targetHeight - scaledY);
-
-                    for (let by = 0; by < blockH; by++) {
-                        const sy = scaledY + by;
-                        const dy = destY + by;
-                        
-                        if (dy >= 0 && dy < targetHeight) {
-                            for (let bx = 0; bx < blockW; bx++) {
-                                const sx = scaledX + bx;
-                                const dx = destX + bx;
-                                
-                                if (dx >= 0 && dx < targetWidth && sy >= 0 && sx >= 0 && sy < targetHeight && sx < targetWidth) {
-                                    const sourcePixel = sourceBuffer[sy * targetWidth + sx];
-                                    
-                                    if (sourcePixel !== 0) {
-                                        targetBuffer[dy * targetWidth + dx] = sourcePixel;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            
-            targetCtx.putImageData(targetData, 0, 0);
-            return targetData;
-        }
-
-        function downloadPNG() {
-            const btn = document.querySelector('.btn-download');
-            const origText = btn.innerText;
-            btn.innerText = "RENDERING...";
-            btn.disabled = true;
-
-            setTimeout(() => {
-                try {
-                    const scale = parseInt(document.getElementById('exportScale').value) || 4; 
-                    const targetWidth = 800 * scale; 
-                    const targetHeight = 400 * scale; 
-
-                    const tempCanvas = document.createElement('canvas');
-                    tempCanvas.width = targetWidth;
-                    tempCanvas.height = targetHeight;
-                    const tempCtx = tempCanvas.getContext('2d');
-
-                    const targetData = renderToCanvas(tempCtx, targetWidth, targetHeight, scale);
-
-                    if (!targetData) {
-                        btn.innerText = origText;
-                        btn.disabled = false;
-                        return;
-                    }
-
-                    const buffer = new Uint32Array(targetData.data.buffer);
-                    let minX = targetWidth, minY = targetHeight, maxX = 0, maxY = 0;
-                    let hasPixels = false;
-
-                    for (let y = 0; y < targetHeight; y++) {
-                        const rowOffset = y * targetWidth;
-                        for (let x = 0; x < targetWidth; x++) {
-                            if (buffer[rowOffset + x] !== 0) {
-                                if (x < minX) minX = x;
-                                if (x > maxX) maxX = x;
-                                if (y < minY) minY = y;
-                                if (y > maxY) maxY = y;
-                                hasPixels = true;
-                            }
-                        }
-                    }
-
-                    if (!hasPixels) {
-                        alert("No text to download.");
-                        btn.innerText = origText;
-                        btn.disabled = false;
-                        return;
-                    }
-
-                    const cropW = maxX - minX + 1;
-                    const cropH = maxY - minY + 1;
-
-                    const cropCanvas = document.createElement('canvas');
-                    cropCanvas.width = cropW;
-                    cropCanvas.height = cropH;
-                    const cropCtx = cropCanvas.getContext('2d');
-                    
-                    const cropData = cropCtx.createImageData(cropW, cropH);
-                    const cropBuffer = new Uint32Array(cropData.data.buffer);
-                    
-                    for (let y = 0; y < cropH; y++) {
-                        const srcRow = (y + minY) * targetWidth;
-                        const dstRow = y * cropW;
-                        for (let x = 0; x < cropW; x++) {
-                            cropBuffer[dstRow + x] = buffer[srcRow + (x + minX)];
-                        }
-                    }
-                    cropCtx.putImageData(cropData, 0, 0);
-
-                    const link = document.createElement('a');
-                    link.download = `pixel-drift-${scale}x.png`;
-                    link.href = cropCanvas.toDataURL('image/png');
-                    link.click();
-
-                } catch (err) {
-                    console.error("Render failed:", err);
-                    alert("An error occurred during export.");
-                } finally {
-                    btn.innerText = origText;
-                    btn.disabled = false;
-                }
-            }, 50);
-        }
-
-        document.fonts.ready.then(() => {
-            draw();
-        });
-    </script>
 </body>
 </html>
