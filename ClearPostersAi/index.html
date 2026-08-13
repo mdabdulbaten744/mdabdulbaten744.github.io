@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Clearpostersai • AI designs - as clear as your eyes.</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Editorial Pixel Displace Theme Palette with Automatic Light/Dark Mode */
+    :root {
+      --bg-color: #f7f5f0;
+      --panel-bg: var(--bg-color);
+      --text-primary: #121212;
+      --text-muted: #736e65;
+      --accent: #121212;
+      --border-color: rgba(18, 18, 18, 0.12);
+      --canvas-bg: #ffffff;
+      --checker-1: #efece6;
+      --checker-2: #ffffff;
+      --input-underline: #121212;
+      --card-bg: rgba(18, 18, 18, 0.03);
+      --font-editorial: 'Instrument Serif', serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius: 2px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-color: #0d0d0d;
+        --panel-bg: var(--bg-color);
+        --text-primary: #f0eee9;
+        --text-muted: #8c877e;
+        --accent: #f0eee9;
+        --border-color: rgba(240, 238, 233, 0.15);
+        --canvas-bg: #141414;
+        --checker-1: #1a1a1a;
+        --checker-2: #101010;
+        --input-underline: #f0eee9;
+        --card-bg: rgba(240, 238, 233, 0.04);
+      }
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-weight: 400;
+      line-height: 1.5;
+      min-height: 100vh;
+      min-height: 100dvh;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Minimal Scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: var(--radius);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    /* App Layout Grid */
+    .app-wrapper {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 32px 24px;
+      gap: 36px;
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+
+    @media (min-width: 1024px) {
+      .app-wrapper {
+        display: grid;
+        grid-template-columns: minmax(340px, 420px) 1fr;
+        height: 100vh;
+        height: 100dvh;
+        padding: 40px;
+        gap: 50px;
+        overflow: hidden;
+      }
+    }
+
+    /* Control Panel (Left Column) */
+    .control-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      justify-content: space-between;
+      height: 100%;
+      overflow-y: auto;
+      width: 100%;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .brand-title {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+    }
+
+    .brand-subtitle {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-size: 1.35rem;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    .form-section {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      width: 100%;
+    }
+
+    /* Key Status Bar */
+    .key-state-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 10px 14px;
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      width: 100%;
+      letter-spacing: 0.05em;
+    }
+
+    .key-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-primary);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .key-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background-color: #34d399;
+      border-radius: 50%;
+    }
+
+    .btn-text {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      font-family: var(--font-mono);
+      transition: color 0.15s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .btn-text:hover {
+      color: var(--text-primary);
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .input-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .label-icon {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.5;
+      flex-shrink: 0;
+      opacity: 0.8;
+    }
+
+    textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--input-underline);
+      border-radius: 0;
+      padding: 8px 0;
+      color: var(--text-primary);
+      font-family: var(--font-editorial);
+      font-size: 1.8rem;
+      font-weight: 400;
+      line-height: 1.2;
+      outline: none;
+      min-height: 120px;
+      resize: vertical;
+      transition: border-color 0.2s ease;
+    }
+
+    textarea:focus {
+      border-bottom-color: var(--text-primary);
+    }
+
+    textarea::placeholder {
+      color: var(--text-muted);
+      opacity: 0.5;
+      font-style: italic;
+    }
+
+    .btn-action {
+      background: var(--text-primary);
+      color: var(--bg-color);
+      border: none;
+      border-radius: var(--radius);
+      padding: 14px 20px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      transition: opacity 0.15s ease, transform 0.1s ease;
+    }
+
+    .btn-action:hover {
+      opacity: 0.88;
+    }
+
+    .btn-action:active {
+      transform: scale(0.99);
+    }
+
+    .btn-action:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status-line {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      min-height: 24px;
+      text-align: center;
+      line-height: 1.4;
+      letter-spacing: 0.05em;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Right Preview Viewport (Checkerboard Canvas Container) */
+    .viewport {
+      flex: 1;
+      background-color: var(--canvas-bg);
+      background-image: conic-gradient(var(--checker-1) 0.25turn, var(--checker-2) 0.25turn 0.5turn, var(--checker-1) 0.5turn 0.75turn, var(--checker-2) 0.75turn);
+      background-size: 20px 20px;
+      border-radius: var(--radius);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 480px;
+      height: 100%;
+      width: 100%;
+      border: 1px solid var(--border-color);
+    }
+
+    @media (max-width: 1023px) {
+      .viewport {
+        min-height: 55vh;
+      }
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: transparent;
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+    }
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 32px;
+      z-index: 1;
+      max-width: 400px;
+    }
+
+    .empty-state h3 {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-size: 1.8rem;
+      font-weight: 400;
+      color: var(--text-primary);
+    }
+
+    .empty-state p {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* FULL-SCREEN ONBOARDING VIEW */
+    .key-screen-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: var(--bg-color);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 24px;
+      overflow-y: auto;
+      width: 100vw;
+    }
+
+    .key-screen-overlay.active {
+      display: flex;
+    }
+
+    .key-screen-container {
+      width: 100%;
+      max-width: 540px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .key-screen-header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .key-screen-card {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      width: 100%;
+    }
+
+    @media (max-width: 480px) {
+      .key-screen-card {
+        padding: 24px 18px;
+      }
+    }
+
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+
+    .step-number {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-content {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+
+    .mono-code {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 2px 6px;
+      border-radius: var(--radius);
+      display: inline-block;
+      margin: 2px 0;
+    }
+
+    .get-key-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      padding: 10px 16px;
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .get-key-btn:hover {
+      border-color: var(--text-primary);
+    }
+
+    .modal-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--input-underline);
+      border-radius: 0;
+      padding: 10px 0;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .modal-input:focus {
+      border-bottom-color: var(--text-primary);
+    }
+
+    .modal-input::placeholder {
+      color: var(--text-muted);
+      opacity: 0.5;
+    }
+
+    .privacy-note {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+      background: var(--card-bg);
+      border: 1px dashed var(--border-color);
+      padding: 12px 14px;
+      border-radius: var(--radius);
+    }
+
+    .privacy-note strong {
+      color: var(--text-primary);
+    }
+
+    footer {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: auto;
+      padding-top: 12px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Main Application Wrapper -->
+  <div class="app-wrapper">
+    <!-- Left Sidebar / Controls -->
+    <aside class="control-panel">
+      <header>
+        <h1 class="brand-title">CLEARPOSTERSAI</h1>
+        <div class="brand-subtitle">AI designs - as clear as your eyes.</div>
+      </header>
+
+      <main class="form-section">
+        <!-- API Key Saved Status Indicator -->
+        <div id="apiKeySlot"></div>
+
+        <div class="input-group">
+          <label class="input-label" for="posterPrompt">
+            <svg class="label-icon" viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            Poster Headline & Text Concept
+          </label>
+          <textarea id="posterPrompt" placeholder="Enter headline, quotes, date, event details, or visual mood..."></textarea>
+        </div>
+
+        <button id="generateBtn" class="btn-action">
+          <svg class="label-icon" style="width: 15px; height: 15px;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <span>GENERATE POSTER</span>
+        </button>
+
+        <div id="statusMessage" class="status-line">Ready to create.</div>
+      </main>
+
+      <footer>
+        Powered by Gemini Engine
+      </footer>
+    </aside>
+
+    <!-- Right Responsive Viewport -->
+    <section class="viewport" id="viewportContainer">
+      <div class="empty-state" id="emptyState">
+        <h3>Canvas Viewport</h3>
+        <p>Your high-resolution poster artwork will render here automatically with an embedded download button.</p>
+      </div>
+      <iframe id="posterFrame" title="Poster Preview Viewport" sandbox="allow-scripts allow-downloads allow-same-origin allow-popups allow-modals"></iframe>
+    </section>
+  </div>
+
+  <!-- Full-Screen Onboarding Setup Page -->
+  <div id="apiKeyModal" class="key-screen-overlay">
+    <div class="key-screen-container">
+      <header class="key-screen-header">
+        <h1 class="brand-title" style="font-size: 1.1rem;">CLEARPOSTERSAI</h1>
+        <div class="brand-subtitle">AI designs - as clear as your eyes.</div>
+      </header>
+
+      <div class="key-screen-card">
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <h2 style="font-family: var(--font-editorial); font-style: italic; font-size: 1.6rem; font-weight: 400; color: var(--text-primary);">Setup Free Gemini API Key</h2>
+          <p style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: 400; color: var(--text-muted);">
+            Clearpostersai uses your own Google Gemini API key to render artwork directly in your browser.
+          </p>
+        </div>
+
+        <!-- Step by Step Guide with Clear Monospace Highlights -->
+        <div class="steps-list">
+          <div class="step-item">
+            <span class="step-number">1</span>
+            <div class="step-content">
+              Go to <strong style="color: var(--text-primary);">Google AI Studio</strong> to access key creation.
+              <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" class="get-key-btn">
+                <span>OPEN GOOGLE AI STUDIO</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-number">2</span>
+            <div class="step-content">
+              Click the <span class="mono-code">"Create API Key"</span> button inside Google AI Studio.
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-number">3</span>
+            <div class="step-content">
+              Select <span class="mono-code">"Create API key in new project"</span> (or choose an existing project).
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-number">4</span>
+            <div class="step-content">
+              Copy your generated key (starts with <span class="mono-code">AQ.Ab...</span> or <span class="mono-code">AQ...</span>) and paste it below.
+            </div>
+          </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-group">
+          <label class="input-label" for="modalApiKeyInput">Paste API Key Here</label>
+          <input type="password" id="modalApiKeyInput" class="modal-input" placeholder="AQ.Ab..." autocomplete="off">
+        </div>
+
+        <button id="saveKeyBtn" class="btn-action">
+          <span>START CREATING</span>
+        </button>
+
+        <div class="privacy-note">
+          🔒 <strong>Strict Privacy Clarification:</strong> Your API key is saved strictly inside your browser's local storage (<code style="font-family: var(--font-mono);">localStorage</code>). It never leaves your browser, never goes to external servers, and is only sent directly to official Google API endpoints.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // HARDCODED GEMINI MODEL AS REQUESTED
+    const TARGET_MODEL = 'gemini-3.6-flash';
+    const STORAGE_KEY = 'clearposters_gemini_key';
+
+    // System Prompt asking AI to generate single standalone HTML with working download button & dynamic responsive canvas
+    const MASTER_SYSTEM_PROMPT = `
+You are an autonomous Graphic Design Engine.
+Your goal is to generate a single-file, production-ready standalone HTML document that renders a dynamic HTML5 Canvas poster based on user text.
+
+### STRICT HTML OUTPUT RULES:
+1. Return ONLY valid, complete raw HTML starting with <!DOCTYPE html> and ending with </html>.
+2. DO NOT wrap the output in markdown backticks (\`\`\`html ... \`\`\`).
+3. Include an embedded script with Google Fonts (use document.fonts.ready before rendering).
+4. Create a 2160x2700 canvas (<canvas id="posterCanvas" width="2160" height="2700"></canvas>).
+
+### IN-PAGE DOWNLOAD BUTTON & LAYOUT (MANDATORY):
+The output HTML file MUST include a styled download button directly below the canvas so the user can save the PNG file instantly.
+
+Example CSS to include inside the output HTML:
+\`\`\`css
+html, body {
+  margin: 0; padding: 0; width: 100%; height: 100%;
+  background: #08080a; color: #ffffff;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  font-family: system-ui, -apple-system, sans-serif;
+  overflow: hidden; padding: 16px; box-sizing: border-box;
+}
+.wrapper {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 16px; max-width: 100%; max-height: 100%;
+}
+canvas {
+  max-width: 88vw; max-height: 72vh; width: auto; height: auto;
+  aspect-ratio: 4 / 5; box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+  border-radius: 12px; object-fit: contain; background: #000;
+}
+.download-btn {
+  padding: 12px 28px; font-size: 13px; font-weight: 700;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  background: #ffffff; color: #000000; border: none;
+  border-radius: 30px; cursor: pointer;
+  box-shadow: 0 4px 15px rgba(255,255,255,0.15);
+  transition: transform 0.15s, opacity 0.15s;
+}
+.download-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+.download-btn:active { transform: translateY(0); }
+\`\`\`
+
+Example Download Script to include inside output HTML:
+\`\`\`javascript
+document.getElementById('downloadBtn').addEventListener('click', function() {
+  const canvas = document.getElementById('posterCanvas');
+  canvas.toBlob(function(blob) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'graphic-poster.png';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, 'image/png');
+});
+\`\`\`
+
+Render high-end graphic design with grain, clean alignment, bold typography, shapes, subtle color accents, and automatic visual hierarchy.
+`;
+
+    // Rotating Pro Progress Copywriting Phrases
+    const PROGRESS_PHRASES = [
+      "Analyzing poster concept & mood...",
+      "Curating editorial color palette...",
+      "Setting high-impact typography scale...",
+      "Balancing grid composition & geometry...",
+      "Injecting dynamic texture & fine detail...",
+      "Synthesizing high-resolution canvas elements...",
+      "Polishing visual contrast & alignment...",
+      "Finalizing high-res poster rendering..."
+    ];
+
+    // DOM Elements
+    const apiKeySlot = document.getElementById('apiKeySlot');
+    const apiKeyModal = document.getElementById('apiKeyModal');
+    const modalApiKeyInput = document.getElementById('modalApiKeyInput');
+    const saveKeyBtn = document.getElementById('saveKeyBtn');
+    const posterPrompt = document.getElementById('posterPrompt');
+    const generateBtn = document.getElementById('generateBtn');
+    const statusMessage = document.getElementById('statusMessage');
+    const posterFrame = document.getElementById('posterFrame');
+    const emptyState = document.getElementById('emptyState');
+    const viewportContainer = document.getElementById('viewportContainer');
+
+    let progressTimer = null;
+
+    // Check API key state on app startup
+    function checkApiKeyOnLoad() {
+      const savedKey = localStorage.getItem(STORAGE_KEY);
+      if (!savedKey) {
+        apiKeyModal.classList.add('active');
+      } else {
+        apiKeyModal.classList.remove('active');
+      }
+      renderApiKeyStatus();
+    }
+
+    // Render status bar inside control panel
+    function renderApiKeyStatus() {
+      const savedKey = localStorage.getItem(STORAGE_KEY);
+      if (savedKey) {
+        apiKeySlot.innerHTML = `
+          <div class="key-state-card">
+            <span class="key-badge">API KEY ACTIVE</span>
+            <button type="button" class="btn-text" id="changeKeyBtn">Change Key</button>
+          </div>
+        `;
+        document.getElementById('changeKeyBtn').addEventListener('click', () => {
+          modalApiKeyInput.value = savedKey;
+          apiKeyModal.classList.add('active');
+        });
+      } else {
+        apiKeySlot.innerHTML = '';
+      }
+    }
+
+    // Save key from setup screen
+    saveKeyBtn.addEventListener('click', () => {
+      const key = modalApiKeyInput.value.trim();
+      if (!key) {
+        alert('Please paste your Gemini API key to continue.');
+        return;
+      }
+      localStorage.setItem(STORAGE_KEY, key);
+      apiKeyModal.classList.remove('active');
+      renderApiKeyStatus();
+    });
+
+    // Clean AI HTML output
+    function cleanHtmlOutput(rawText) {
+      let cleaned = rawText.trim();
+      if (cleaned.startsWith('```html')) {
+        cleaned = cleaned.replace(/^```html\s*/i, '');
+      } else if (cleaned.startsWith('```')) {
+        cleaned = cleaned.replace(/^```\s*/i, '');
+      }
+      if (cleaned.endsWith('```')) {
+        cleaned = cleaned.replace(/```\s*$/i, '');
+      }
+      return cleaned.trim();
+    }
+
+    // Dynamic Progress Copywriter Loader
+    function startProgressAnimation() {
+      let phraseIdx = 0;
+      statusMessage.textContent = PROGRESS_PHRASES[0];
+      progressTimer = setInterval(() => {
+        phraseIdx = (phraseIdx + 1) % PROGRESS_PHRASES.length;
+        statusMessage.textContent = PROGRESS_PHRASES[phraseIdx];
+      }, 4500);
+    }
+
+    function stopProgressAnimation(finalText) {
+      if (progressTimer) {
+        clearInterval(progressTimer);
+        progressTimer = null;
+      }
+      statusMessage.textContent = finalText;
+    }
+
+    // Main AI Generation Handler
+    async function handleGeneration() {
+      const apiKey = localStorage.getItem(STORAGE_KEY);
+      const userText = posterPrompt.value.trim();
+
+      if (!apiKey) {
+        apiKeyModal.classList.add('active');
+        return;
+      }
+
+      if (!userText) {
+        statusMessage.textContent = '⚠️ Please enter your poster headline or idea.';
+        posterPrompt.focus();
+        return;
+      }
+
+      // Clear previous artwork immediately upon generation
+      posterFrame.srcdoc = '';
+      emptyState.style.display = 'flex';
+      emptyState.querySelector('h3').textContent = 'Creating Artwork...';
+      emptyState.querySelector('p').textContent = 'Generating layout, typography, and visual structure.';
+
+      generateBtn.disabled = true;
+      generateBtn.innerHTML = '<span>DESIGNING...</span>';
+
+      startProgressAnimation();
+
+      try {
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${TARGET_MODEL}:generateContent?key=${encodeURIComponent(apiKey)}`;
+
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{
+              role: 'user',
+              parts: [{ text: `${MASTER_SYSTEM_PROMPT}\n\n### USER POSTER TEXT:\n${userText}` }]
+            }],
+            generationConfig: { temperature: 0.7 }
+          })
+        });
+
+        if (!response.ok) {
+          const errData = await response.json().catch(() => ({}));
+          throw new Error(errData.error?.message || `HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+        const rawContent = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        if (!rawContent) {
+          throw new Error('Received empty artwork response.');
+        }
+
+        const finalHtml = cleanHtmlOutput(rawContent);
+
+        // Render into Sandbox Viewport
+        emptyState.style.display = 'none';
+        posterFrame.srcdoc = finalHtml;
+        stopProgressAnimation('✨ Poster complete!');
+
+        // Scroll smoothly to viewport on mobile devices
+        if (window.innerWidth < 1024) {
+          viewportContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+      } catch (err) {
+        console.error(err);
+        emptyState.querySelector('h3').textContent = 'Canvas Viewport';
+        emptyState.querySelector('p').textContent = 'Your high-resolution poster artwork will render here automatically with an embedded download button.';
+        stopProgressAnimation(`❌ Error: ${err.message}`);
+      } finally {
+        generateBtn.disabled = false;
+        generateBtn.innerHTML = '<span>GENERATE POSTER</span>';
+      }
+    }
+
+    // Event Listeners
+    generateBtn.addEventListener('click', handleGeneration);
+
+    // Initial load check
+    checkApiKeyOnLoad();
+  </script>
+</body>
+</html>
