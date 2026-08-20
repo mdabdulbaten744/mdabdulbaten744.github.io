@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Image Resizer & Compressor</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #334155;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 16px;
+      min-height: 100vh;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    header {
+      text-align: center;
+      padding: 8px 0;
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 4px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+
+    .drop-zone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 24px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+
+    .drop-zone:active, .drop-zone.dragover {
+      border-color: var(--accent);
+      background-color: rgba(59, 130, 246, 0.05);
+    }
+
+    .drop-zone svg {
+      width: 40px;
+      height: 40px;
+      fill: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .drop-zone p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .drop-zone span {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    .preview-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .img-wrapper {
+      width: 100%;
+      max-height: 250px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .img-wrapper img {
+      max-width: 100%;
+      max-height: 250px;
+      object-fit: contain;
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .control-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .control-label span.value {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--border);
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+    }
+
+    .dimension-inputs {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .dimension-inputs div {
+      flex: 1;
+    }
+
+    .dimension-inputs label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .dimension-inputs input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px;
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: var(--bg);
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .stat-item .title {
+      color: var(--text-muted);
+    }
+
+    .stat-item .val {
+      font-weight: 600;
+    }
+
+    .stat-item .saved {
+      color: #10b981;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: var(--radius);
+      background: var(--accent);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn:active {
+      background: var(--accent-hover);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <header>
+      <h1>Image Compressor</h1>
+      <p>Resize & compress photos directly on your device</p>
+    </header>
+
+    <div class="card" id="uploadCard">
+      <div class="drop-zone" id="dropZone">
+        <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+        <p>Tap to select an image or drag it here</p>
+      </div>
+      <input type="file" id="fileInput" accept="image/jpeg, image/png, image/webp">
+    </div>
+
+    <div class="card hidden" id="editorCard">
+      <div class="preview-container">
+        <div class="img-wrapper">
+          <img id="previewImg" alt="Preview">
+        </div>
+      </div>
+
+      <div class="controls" style="margin-top: 16px;">
+        <div class="control-group">
+          <div class="control-label">
+            <span>Quality</span>
+            <span class="value" id="qualityVal">80%</span>
+          </div>
+          <input type="range" id="qualityInput" min="10" max="100" value="80">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Resize Scale</span>
+            <span class="value" id="scaleVal">100%</span>
+          </div>
+          <input type="range" id="scaleInput" min="10" max="100" value="100">
+        </div>
+
+        <div class="dimension-inputs">
+          <div>
+            <label for="widthInput">Width (px)</label>
+            <input type="number" id="widthInput">
+          </div>
+          <div>
+            <label for="heightInput">Height (px)</label>
+            <input type="number" id="heightInput">
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat-item">
+            <span class="title">Original Size</span>
+            <span class="val" id="origSize">-</span>
+          </div>
+          <div class="stat-item">
+            <span class="title">New Size (Est.)</span>
+            <span class="val" id="newSize">-</span>
+          </div>
+          <div class="stat-item">
+            <span class="title">Original Dim.</span>
+            <span class="val" id="origDim">-</span>
+          </div>
+          <div class="stat-item">
+            <span class="title">Reduction</span>
+            <span class="val saved" id="reductionVal">-</span>
+          </div>
+        </div>
+
+        <button class="btn" id="downloadBtn">Download Compressed</button>
+        <button class="btn" id="resetBtn" style="background: transparent; border: 1px solid var(--border); color: var(--text-muted); margin-top: -8px;">Select Another Image</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const dropZone = document.getElementById('dropZone');
+    const uploadCard = document.getElementById('uploadCard');
+    const editorCard = document.getElementById('editorCard');
+    const previewImg = document.getElementById('previewImg');
+    
+    const qualityInput = document.getElementById('qualityInput');
+    const qualityVal = document.getElementById('qualityVal');
+    const scaleInput = document.getElementById('scaleInput');
+    const scaleVal = document.getElementById('scaleVal');
+    const widthInput = document.getElementById('widthInput');
+    const heightInput = document.getElementById('heightInput');
+    
+    const origSizeEl = document.getElementById('origSize');
+    const newSizeEl = document.getElementById('newSize');
+    const origDimEl = document.getElementById('origDim');
+    const reductionValEl = document.getElementById('reductionVal');
+    
+    const downloadBtn = document.getElementById('downloadBtn');
+    const resetBtn = document.getElementById('resetBtn');
+
+    let originalImage = null;
+    let originalFile = null;
+    let aspectRatio = 1;
+    let compressedBlob = null;
+    let debounceTimer = null;
+
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      if (e.dataTransfer.files.length) {
+        handleFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length) {
+        handleFile(e.target.files[0]);
+      }
+    });
+
+    function formatBytes(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    function handleFile(file) {
+      if (!file.type.match(/image.*/)) {
+        alert('Please select an image file (JPEG, PNG, WebP).');
+        return;
+      }
+
+      originalFile = file;
+      origSizeEl.textContent = formatBytes(file.size);
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        originalImage = new Image();
+        originalImage.onload = () => {
+          aspectRatio = originalImage.width / originalImage.height;
+          origDimEl.textContent = `${originalImage.width}×${originalImage.height}`;
+          
+          widthInput.value = originalImage.width;
+          heightInput.value = originalImage.height;
+          scaleInput.value = 100;
+          scaleVal.textContent = '100%';
+
+          uploadCard.classList.add('hidden');
+          editorCard.classList.remove('hidden');
+
+          processImage();
+        };
+        originalImage.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    qualityInput.addEventListener('input', (e) => {
+      qualityVal.textContent = `${e.target.value}%`;
+      debouncedProcess();
+    });
+
+    scaleInput.addEventListener('input', (e) => {
+      const scale = e.target.value / 100;
+      scaleVal.textContent = `${e.target.value}%`;
+      widthInput.value = Math.round(originalImage.width * scale);
+      heightInput.value = Math.round(originalImage.height * scale);
+      debouncedProcess();
+    });
+
+    widthInput.addEventListener('input', () => {
+      if (widthInput.value && originalImage) {
+        heightInput.value = Math.round(widthInput.value / aspectRatio);
+        updateScaleFromDimensions();
+        debouncedProcess();
+      }
+    });
+
+    heightInput.addEventListener('input', () => {
+      if (heightInput.value && originalImage) {
+        widthInput.value = Math.round(heightInput.value * aspectRatio);
+        updateScaleFromDimensions();
+        debouncedProcess();
+      }
+    });
+
+    function updateScaleFromDimensions() {
+      const scale = Math.round((widthInput.value / originalImage.width) * 100);
+      scaleInput.value = Math.min(Math.max(scale, 10), 100);
+      scaleVal.textContent = `${scaleInput.value}%`;
+    }
+
+    function debouncedProcess() {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(processImage, 100);
+    }
+
+    function processImage() {
+      if (!originalImage) return;
+
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+
+      const targetWidth = parseInt(widthInput.value) || originalImage.width;
+      const targetHeight = parseInt(heightInput.value) || originalImage.height;
+
+      canvas.width = targetWidth;
+      canvas.height = targetHeight;
+
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(originalImage, 0, 0, targetWidth, targetHeight);
+
+      const quality = parseInt(qualityInput.value) / 100;
+
+      canvas.toBlob((blob) => {
+        if (!blob) return;
+        compressedBlob = blob;
+
+        previewImg.src = URL.createObjectURL(blob);
+        newSizeEl.textContent = formatBytes(blob.size);
+
+        const savedPercent = Math.round(((originalFile.size - blob.size) / originalFile.size) * 100);
+        if (savedPercent > 0) {
+          reductionValEl.textContent = `-${savedPercent}%`;
+          reductionValEl.style.color = '#10b981';
+        } else {
+          reductionValEl.textContent = `+${Math.abs(savedPercent)}%`;
+          reductionValEl.style.color = '#ef4444';
+        }
+      }, 'image/jpeg', quality);
+    }
+
+    downloadBtn.addEventListener('click', () => {
+      if (!compressedBlob) return;
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(compressedBlob);
+      
+      const originalName = originalFile.name.substring(0, originalFile.name.lastIndexOf('.')) || 'image';
+      link.download = `${originalName}_compressed.jpg`;
+      
+      link.click();
+    });
+
+    resetBtn.addEventListener('click', () => {
+      originalImage = null;
+      originalFile = null;
+      compressedBlob = null;
+      fileInput.value = '';
+      editorCard.classList.add('hidden');
+      uploadCard.classList.remove('hidden');
+    });
+  </script>
+</body>
+</html>
