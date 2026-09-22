@@ -28,6 +28,11 @@
             --input-underline: #121212;
             --font-editorial: 'Instrument Serif', serif;
             --font-mono: 'JetBrains Mono', monospace;
+            
+            /* Accent & Gradient definitions */
+            --accent-blue: #6366f1;
+            --accent-purple: #a855f7;
+            --gradient-border: linear-gradient(135deg, #6366f1, #a855f7, #ec4899, #6366f1);
         }
 
         @media (prefers-color-scheme: dark) {
@@ -63,6 +68,31 @@
             padding: 40px 24px;
             -webkit-font-smoothing: antialiased;
             transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Border Animation Keyframes */
+        @keyframes borderGradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Animated Border Base Utility Style */
+        .btn-animated-border {
+            position: relative;
+            background-clip: padding-box;
+            border: 1px solid transparent !important;
+        }
+
+        .btn-animated-border::before {
+            content: '';
+            position: absolute;
+            top: -1px; left: -1px; right: -1px; bottom: -1px;
+            background: var(--gradient-border);
+            background-size: 300% 300%;
+            z-index: -1;
+            border-radius: inherit;
+            animation: borderGradientMove 4s ease infinite;
         }
 
         /* Semantic Header & Navigation Styles */
@@ -270,7 +300,18 @@
             transition: transform 0.15s ease;
         }
 
-        input[type="range"]::-webkit-slider-thumb:hover {
+        input[type="range"]::-moz-range-thumb {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--text-primary);
+            border: none;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover,
+        input[type="range"]::-moz-range-thumb:hover {
             transform: scale(1.4);
         }
 
@@ -349,12 +390,10 @@
 
         .export-dropdown, .btn-custom-font {
             width: 100%;
-            padding: 8px 0;
+            padding: 8px 12px;
             font-family: var(--font-mono);
             font-size: 0.75rem;
-            border: none;
-            border-bottom: 1px solid var(--border-color);
-            background: transparent;
+            background: var(--bg-color);
             color: var(--text-primary);
             outline: none;
             cursor: pointer;
@@ -366,18 +405,13 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            border-radius: 0;
-        }
-        
-        .export-dropdown:focus, .btn-custom-font:hover {
-            border-color: var(--text-primary);
+            border-radius: 2px;
         }
 
         /* Clean Editorial Download CTA */
         .btn-download {
             background: var(--text-primary);
             color: var(--bg-color);
-            border: none;
             padding: 14px 20px;
             text-transform: uppercase;
             letter-spacing: 0.12em;
@@ -493,8 +527,11 @@
         }
 
         .gumroad-btn svg {
-            width: 14px;
-            height: 14px;
+            width: 18px;
+            height: 18px;
+            stroke-width: 2.5;
+            flex-shrink: 0;
+            color: var(--accent-purple);
         }
 
         .premium-section {
@@ -538,7 +575,7 @@
 
         .premium-card img {
             width: 100%;
-            aspect-ratio: 4/3;
+            aspect-ratio: 25 / 12;
             object-fit: cover;
             border-radius: 2px;
             background: var(--canvas-bg);
@@ -567,8 +604,11 @@
         }
 
         .card-action-btn svg {
-            width: 14px;
-            height: 14px;
+            width: 18px;
+            height: 18px;
+            stroke-width: 2.5;
+            flex-shrink: 0;
+            color: var(--accent-purple);
         }
     </style>
 </head>
@@ -576,9 +616,9 @@
 
     <header role="banner">
         <a href="https://callistra.design" class="logo-link">Callistra.design</a>
-        <a href="https://callistra.gumroad.com" target="_blank" class="gumroad-btn">
+        <a href="https://callistra.gumroad.com" target="_blank" class="gumroad-btn btn-animated-border">
             Visit Gumroad Store
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="7" y1="17" x2="17" y2="7"></line>
                 <polyline points="7 7 17 7 17 17"></polyline>
             </svg>
@@ -653,7 +693,7 @@
                                         Custom Font
                                     </label>
                                 </div>
-                                <label for="fontInput" class="btn-custom-font" id="fontLabel">Upload Font</label>
+                                <label for="fontInput" class="btn-custom-font btn-animated-border" id="fontLabel">Upload Font</label>
                                 <input type="file" id="fontInput" accept=".ttf,.otf,.woff,.woff2" onchange="handleFontUpload(event)" style="display: none;">
                             </div>
 
@@ -664,7 +704,7 @@
                                         Export Size
                                     </label>
                                 </div>
-                                <select id="exportScale" class="export-dropdown">
+                                <select id="exportScale" class="export-dropdown btn-animated-border">
                                     <option value="1">1x</option>
                                     <option value="2">2x</option>
                                     <option value="4" selected>4x</option>
@@ -676,7 +716,7 @@
                 </div>
 
                 <div>
-                    <button class="btn-download" onclick="downloadPNG()">
+                    <button class="btn-download btn-animated-border" onclick="downloadPNG()">
                         <svg class="label-icon" style="width: 15px; height: 15px;" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                         DOWNLOAD PNG
                     </button>
@@ -688,9 +728,9 @@
             <div class="premium-grid">
                 <a href="https://callistra.gumroad.com/l/001" target="_blank" class="premium-card">
                     <img src="001.webp" alt="Glitch Slice">
-                    <span class="card-action-btn">
+                    <span class="card-action-btn btn-animated-border">
                         Glitch Slice
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="7" y1="17" x2="17" y2="7"></line>
                             <polyline points="7 7 17 7 17 17"></polyline>
                         </svg>
@@ -698,9 +738,9 @@
                 </a>
                 <a href="https://callistra.gumroad.com/l/002" target="_blank" class="premium-card">
                     <img src="002.webp" alt="Broken Glass">
-                    <span class="card-action-btn">
+                    <span class="card-action-btn btn-animated-border">
                         Broken Glass
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="7" y1="17" x2="17" y2="7"></line>
                             <polyline points="7 7 17 7 17 17"></polyline>
                         </svg>
@@ -708,9 +748,9 @@
                 </a>
                 <a href="https://callistra.gumroad.com/l/003" target="_blank" class="premium-card">
                     <img src="003.webp" alt="Folded Paper">
-                    <span class="card-action-btn">
+                    <span class="card-action-btn btn-animated-border">
                         Folded Paper
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="7" y1="17" x2="17" y2="7"></line>
                             <polyline points="7 7 17 7 17 17"></polyline>
                         </svg>
@@ -718,9 +758,9 @@
                 </a>
                 <a href="https://callistra.gumroad.com/l/004" target="_blank" class="premium-card">
                     <img src="004.webp" alt="Ink Bleed">
-                    <span class="card-action-btn">
+                    <span class="card-action-btn btn-animated-border">
                         Ink Bleed
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="7" y1="17" x2="17" y2="7"></line>
                             <polyline points="7 7 17 7 17 17"></polyline>
                         </svg>
@@ -728,9 +768,9 @@
                 </a>
                 <a href="https://callistra.gumroad.com/l/005" target="_blank" class="premium-card">
                     <img src="005.webp" alt="Star Distortion">
-                    <span class="card-action-btn">
+                    <span class="card-action-btn btn-animated-border">
                         Star Distortion
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="7" y1="17" x2="17" y2="7"></line>
                             <polyline points="7 7 17 7 17 17"></polyline>
                         </svg>
@@ -738,9 +778,9 @@
                 </a>
                 <a href="https://callistra.gumroad.com/l/006" target="_blank" class="premium-card">
                     <img src="006.webp" alt="Reeded Glass">
-                    <span class="card-action-btn">
+                    <span class="card-action-btn btn-animated-border">
                         Reeded Glass
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="7" y1="17" x2="17" y2="7"></line>
                             <polyline points="7 7 17 7 17 17"></polyline>
                         </svg>
@@ -748,9 +788,9 @@
                 </a>
                 <a href="https://callistra.gumroad.com/l/007" target="_blank" class="premium-card">
                     <img src="007.webp" alt="Optic Shear">
-                    <span class="card-action-btn">
+                    <span class="card-action-btn btn-animated-border">
                         Optic Shear
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="7" y1="17" x2="17" y2="7"></line>
                             <polyline points="7 7 17 7 17 17"></polyline>
                         </svg>
@@ -758,9 +798,9 @@
                 </a>
                 <a href="https://callistra.gumroad.com/l/008" target="_blank" class="premium-card">
                     <img src="008.webp" alt="Wave Fracture">
-                    <span class="card-action-btn">
+                    <span class="card-action-btn btn-animated-border">
                         Wave Fracture
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="7" y1="17" x2="17" y2="7"></line>
                             <polyline points="7 7 17 7 17 17"></polyline>
                         </svg>
