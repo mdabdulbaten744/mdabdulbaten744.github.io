@@ -4,22 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Pixel Displace Text Effect Maker</title>
+    <title>Pixel Displace Text Effect Maker — Callistra</title>
     
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
 
     <script defer src="https://cloud.umami.is/script.js" data-website-id="d189c235-e044-404e-a1bc-94e3cc73ad48"></script>
     
     <style>
-        /* Editorial Theme Palette with Automatic Light/Dark Mode */
+        /* Editorial Theme Palette */
         :root {
             --bg-color: #f7f5f0;
             --panel-bg: var(--bg-color);
+            --card-bg: rgba(18, 18, 18, 0.02);
             --text-primary: #121212;
             --text-muted: #736e65;
             --accent: #121212;
@@ -31,9 +32,6 @@
             --font-editorial: 'Instrument Serif', serif;
             --font-mono: 'JetBrains Mono', monospace;
             
-            /* Accent & Gradient definitions */
-            --accent-blue: #6366f1;
-            --accent-purple: #a855f7;
             --gradient-border: linear-gradient(135deg, #6366f1, #a855f7, #ec4899, #6366f1);
         }
 
@@ -41,6 +39,7 @@
             :root {
                 --bg-color: #0d0d0d;
                 --panel-bg: var(--bg-color);
+                --card-bg: rgba(255, 255, 255, 0.02);
                 --text-primary: #f0eee9;
                 --text-muted: #8c877e;
                 --accent: #f0eee9;
@@ -67,19 +66,17 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding: 40px 24px;
+            padding: 0 20px 40px;
             -webkit-font-smoothing: antialiased;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* Border Animation Keyframes */
         @keyframes borderGradientMove {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* Animated Border Base Utility Style */
         .btn-animated-border {
             position: relative;
             background-clip: padding-box;
@@ -97,47 +94,87 @@
             animation: borderGradientMove 4s ease infinite;
         }
 
-        /* Semantic Header & Navigation Styles */
+        /* 1. TOP STANDALONE GUMROAD ROW */
+        .top-cta-bar {
+            width: 100%;
+            max-width: 1100px;
+            padding: 24px 0 16px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .main-gumroad-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            background-color: var(--text-primary);
+            color: var(--bg-color);
+            padding: 16px 24px;
+            text-decoration: none;
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            border-radius: 3px;
+            transition: opacity 0.15s ease, transform 0.1s ease;
+        }
+
+        .main-gumroad-btn:hover {
+            opacity: 0.9;
+        }
+
+        .main-gumroad-btn:active {
+            transform: scale(0.99);
+        }
+
+        .main-gumroad-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke-width: 1.8;
+            stroke: currentColor;
+            fill: none;
+            flex-shrink: 0;
+        }
+
+        /* 2. HEADER & BRAND */
         header {
             width: 100%;
             max-width: 1100px;
             display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 12px 0 32px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 36px;
+        }
+
+        .brand-row {
+            display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
-            margin-bottom: 40px;
         }
 
         .logo-link {
             font-family: var(--font-mono);
-            font-weight: 500;
-            font-size: 0.85rem;
+            font-weight: 600;
+            font-size: 0.9rem;
             color: var(--text-primary);
             text-decoration: none;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
         }
 
-        nav a {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
+        .edition-badge {
+            font-size: 0.72rem;
             color: var(--text-muted);
-            text-decoration: none;
             letter-spacing: 0.08em;
             text-transform: uppercase;
         }
 
-        nav a:hover {
-            color: var(--text-primary);
-        }
-
-        .tool-intro {
-            width: 100%;
-            max-width: 1100px;
-            margin-bottom: 24px;
-        }
-
-        .tool-subtitle {
+        .header-subtext {
             font-family: var(--font-editorial);
             font-style: italic;
             font-size: 1.35rem;
@@ -145,26 +182,31 @@
             line-height: 1.3;
         }
 
-        /* Borderless App Layout */
-        .app-layout {
-            display: grid;
-            grid-template-columns: 1.3fr 1fr;
-            gap: 50px;
+        main {
             width: 100%;
             max-width: 1100px;
-            background: var(--panel-bg);
-            padding: 0;
-            margin-bottom: 60px;
+            display: flex;
+            flex-direction: column;
         }
 
-        @media (max-width: 950px) {
+        /* 3. INTERACTIVE EFFECT GENERATOR */
+        .app-layout {
+            display: grid;
+            grid-template-columns: 1.35fr 1fr;
+            gap: 48px;
+            width: 100%;
+            background: var(--panel-bg);
+            padding-bottom: 50px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 960px) {
             .app-layout {
                 grid-template-columns: 1fr;
-                gap: 35px;
+                gap: 32px;
             }
         }
 
-        /* Canvas Container */
         .canvas-container {
             position: relative;
             width: 100%;
@@ -176,7 +218,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 2px;
+            border-radius: 3px;
+            border: 1px solid var(--border-color);
         }
 
         canvas {
@@ -185,18 +228,17 @@
             display: block;
         }
 
-        /* Control Panel */
         .control-panel {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 28px;
+            gap: 24px;
         }
 
         .controls-group {
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 22px;
         }
 
         .text-input-wrapper {
@@ -216,7 +258,7 @@
             color: var(--text-primary);
             letter-spacing: 0.01em;
             resize: vertical;
-            min-height: 56px;
+            min-height: 54px;
             line-height: 1.1;
         }
 
@@ -229,7 +271,7 @@
         .control-row {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .control-header {
@@ -250,14 +292,15 @@
             gap: 8px;
         }
 
-        .label-icon {
+        .thin-icon {
             width: 14px;
             height: 14px;
             stroke: currentColor;
             fill: none;
             stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
             flex-shrink: 0;
-            opacity: 0.8;
         }
 
         .value-display {
@@ -273,14 +316,12 @@
             min-width: 36px;
             display: inline-block;
             text-align: right;
-            transition: border-bottom-color 0.2s ease;
         }
 
         .value-display[contenteditable="true"]:focus {
             border-bottom-color: var(--accent);
         }
 
-        /* Minimalistic Range Slider */
         input[type="range"] {
             -webkit-appearance: none;
             appearance: none;
@@ -288,7 +329,7 @@
             height: 1px;
             background: var(--border-color);
             outline: none;
-            margin: 12px 0 6px 0;
+            margin: 10px 0 4px 0;
         }
 
         input[type="range"]::-webkit-slider-thumb {
@@ -314,14 +355,12 @@
 
         input[type="range"]::-webkit-slider-thumb:hover,
         input[type="range"]::-moz-range-thumb:hover {
-            transform: scale(1.4);
+            transform: scale(1.35);
         }
 
-        /* Advanced Options */
         details.advanced-options {
             border-top: 1px solid var(--border-color);
             padding-top: 16px;
-            margin-top: 4px;
         }
 
         details.advanced-options summary {
@@ -346,7 +385,6 @@
         details.advanced-options summary::after {
             content: "＋";
             font-size: 0.75rem;
-            font-weight: 300;
         }
 
         details.advanced-options[open] summary::after {
@@ -356,8 +394,14 @@
         .advanced-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px 18px;
-            padding-top: 20px;
+            gap: 18px 16px;
+            padding-top: 18px;
+        }
+
+        @media (max-width: 480px) {
+            .advanced-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .color-selector {
@@ -366,19 +410,17 @@
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 6px;
             gap: 10px;
-            background: transparent;
             justify-content: space-between;
         }
 
         input[type="color"] {
             -webkit-appearance: none;
             border: none;
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             cursor: pointer;
             background: none;
             border-radius: 50%;
-            overflow: hidden;
         }
 
         input[type="color"]::-webkit-color-swatch-wrapper {
@@ -392,7 +434,7 @@
 
         .export-dropdown, .btn-custom-font {
             width: 100%;
-            padding: 8px 12px;
+            padding: 8px 10px;
             font-family: var(--font-mono);
             font-size: 0.75rem;
             background: var(--bg-color);
@@ -400,21 +442,16 @@
             outline: none;
             cursor: pointer;
             text-align: left;
-            box-sizing: border-box;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 8px;
             border-radius: 2px;
         }
 
-        /* Clean Editorial Download CTA */
         .btn-download {
             background: var(--text-primary);
             color: var(--bg-color);
-            padding: 14px 20px;
+            padding: 13px 20px;
             text-transform: uppercase;
             letter-spacing: 0.12em;
             font-size: 0.75rem;
@@ -434,216 +471,211 @@
             opacity: 0.88;
         }
 
-        .btn-download:active {
-            transform: scale(0.99);
-        }
-        
         .btn-download:disabled {
             background: var(--text-muted);
             cursor: not-allowed;
-            transform: none;
         }
 
-        /* Layout Area styling */
-        .content-container {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
+        /* 4. CLEAN PRODUCT OVERVIEW */
+        .product-overview {
+            padding: 60px 0 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
         }
 
-        .related-tools-section {
-            margin-top: 20px;
-            padding-top: 20px;
-            margin-bottom: 60px;
+        .overview-header {
+            max-width: 680px;
         }
 
-        .related-links {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .related-card {
+        .overview-tag {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            margin-bottom: 8px;
             display: block;
-            padding: 20px 0;
-            border-top: 1px solid var(--border-color);
-            background: transparent;
-            text-decoration: none;
-            transition: border-color 0.15s ease;
         }
 
-        .related-card:hover {
-            border-color: var(--text-primary);
-        }
-
-        .related-card h3 {
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            font-weight: 500;
+        .overview-title {
+            font-family: var(--font-editorial);
+            font-size: 2.3rem;
+            font-weight: 400;
+            line-height: 1.15;
             color: var(--text-primary);
-            margin-bottom: 6px;
-            margin-top: 0;
+            margin-bottom: 12px;
         }
 
-        .related-card p {
+        .overview-subtitle {
             font-family: var(--font-editorial);
             font-style: italic;
-            font-size: 0.95rem;
+            font-size: 1.25rem;
             color: var(--text-muted);
-            margin: 0;
+            line-height: 1.4;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        @media (max-width: 860px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 540px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .feature-card {
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            padding: 24px 20px;
+            border-radius: 3px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .feature-icon-wrapper {
+            width: 34px;
+            height: 34px;
+            display: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .feature-icon-wrapper svg {
+            width: 17px;
+            height: 17px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .feature-heading {
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: var(--text-primary);
+            text-transform: uppercase;
+        }
+
+        .feature-desc {
+            font-size: 0.78rem;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+
+        .bottom-cta-container {
+            margin-top: 20px;
+            padding: 36px 30px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            border-radius: 3px;
+            background: var(--card-bg);
+        }
+
+        @media (max-width: 768px) {
+            .bottom-cta-container {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 24px 20px;
+            }
+            .bottom-cta-container .main-gumroad-btn {
+                width: 100%;
+            }
+        }
+
+        .bottom-cta-text h3 {
+            font-family: var(--font-editorial);
+            font-size: 1.6rem;
+            font-weight: 400;
+            margin-bottom: 4px;
+        }
+
+        .bottom-cta-text p {
+            font-size: 0.78rem;
+            color: var(--text-muted);
         }
 
         footer {
             width: 100%;
             max-width: 1100px;
-            padding: 20px 0;
-            text-align: center;
-            margin-top: auto;
-        }
-
-        /* Gumroad Button & Premium Products Grid */
-        .gumroad-btn {
-            display: inline-flex;
+            padding: 30px 0 10px;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
-            background-color: var(--text-primary);
-            color: var(--bg-color);
-            padding: 8px 16px;
-            text-decoration: none;
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            border-radius: 2px;
-            transition: opacity 0.15s ease, transform 0.1s ease;
-        }
-
-        .gumroad-btn:hover {
-            opacity: 0.88;
-        }
-
-        .gumroad-btn:active {
-            transform: scale(0.99);
-        }
-
-        .gumroad-btn svg {
-            width: 18px;
-            height: 18px;
-            stroke-width: 2.5;
-            flex-shrink: 0;
-            color: var(--accent-purple);
-        }
-
-        .premium-section {
-            width: 100%;
-            max-width: 1100px;
-            margin: 0 auto 60px auto;
+            font-size: 0.72rem;
+            color: var(--text-muted);
             border-top: 1px solid var(--border-color);
-            padding-top: 40px;
-        }
-
-        .premium-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-        }
-
-        @media (max-width: 950px) {
-            .premium-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            margin-top: 40px;
         }
 
         @media (max-width: 500px) {
-            .premium-grid {
-                grid-template-columns: 1fr;
+            footer {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
             }
-        }
-
-        .premium-card {
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            transition: transform 0.2s ease, opacity 0.2s ease;
-        }
-
-        .premium-card:hover {
-            transform: translateY(-2px);
-            opacity: 0.9;
-        }
-
-        .premium-card img {
-            width: 100%;
-            aspect-ratio: 25 / 12;
-            object-fit: cover;
-            border-radius: 2px;
-            background: var(--canvas-bg);
-            border: 1px solid var(--border-color);
-        }
-
-        .card-action-btn {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: var(--text-primary);
-            color: var(--bg-color);
-            padding: 12px 16px;
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            border-radius: 2px;
-            width: 100%;
-            transition: opacity 0.15s ease, transform 0.1s ease;
-        }
-
-        .premium-card:hover .card-action-btn {
-            opacity: 0.88;
-        }
-
-        .card-action-btn svg {
-            width: 18px;
-            height: 18px;
-            stroke-width: 2.5;
-            flex-shrink: 0;
-            color: var(--accent-purple);
         }
     </style>
 </head>
 <body>
 
-    <header role="banner">
-        <a href="https://callistra.design" class="logo-link">Callistra.design</a>
-        <a href="https://callistra.gumroad.com" target="_blank" class="gumroad-btn btn-animated-border">
-            Visit Gumroad Store
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="7" y1="17" x2="17" y2="7"></line>
-                <polyline points="7 7 17 7 17 17"></polyline>
+    <!-- 1. FULL WIDTH / STANDALONE TOP GUMROAD ACTION ROW -->
+    <div class="top-cta-bar">
+        <a href="https://callistra.gumroad.com" target="_blank" class="main-gumroad-btn btn-animated-border">
+            <span>Get Text Effect Makers — Volume 1 (26 Effects) on Gumroad</span>
+            <svg viewBox="0 0 24 24">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
         </a>
+    </div>
+
+    <!-- 2. BRAND & EDITION HEADER -->
+    <header role="banner">
+        <div class="brand-row">
+            <a href="https://callistra.design" class="logo-link">Callistra.design</a>
+            <span class="edition-badge">Free Interactive Maker Demo</span>
+        </div>
+        <p class="header-subtext">Experience Pixel Displace below — adjust sliders, type your wordmark, or upload custom fonts in real-time.</p>
     </header>
 
     <main role="main">
-        <div class="app-layout">
+        <!-- 3. INTERACTIVE EFFECT GENERATOR -->
+        <section class="app-layout" aria-label="Interactive Text Effect Editor">
             <div class="canvas-container">
-                <canvas id="canvas" width="800" height="400" aria-label="Typography preview canvas showcasing pixel drift text effects"></canvas>
+                <canvas id="canvas" width="800" height="400" aria-label="Typography preview canvas"></canvas>
             </div>
 
             <div class="control-panel">
                 <div class="controls-group">
                     <div class="text-input-wrapper">
-                        <textarea id="textInput" class="text-input" placeholder="TYPE SOMETHING..." oninput="draw()" aria-label="Drift Text Input Source" rows="2">Drift</textarea>
+                        <textarea id="textInput" class="text-input" placeholder="TYPE SOMETHING..." oninput="draw()" aria-label="Text Input" rows="2">Drift</textarea>
                     </div>
 
                     <div class="control-row">
                         <div class="control-header">
                             <label for="blockSize" class="label-with-icon">
-                                <svg class="label-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                                Grid Block Size
+                                <svg class="thin-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                                Block Size
                             </label>
                             <span id="v_blockSize" class="value-display" contenteditable="true" oninput="updateFromText('blockSize')" onblur="handleBlur('blockSize')">20px</span>
                         </div>
@@ -653,7 +685,7 @@
                     <div class="control-row">
                         <div class="control-header">
                             <label for="drift" class="label-with-icon">
-                                <svg class="label-icon" viewBox="0 0 24 24"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+                                <svg class="thin-icon" viewBox="0 0 24 24"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
                                 Scatter Amount
                             </label>
                             <span id="v_drift" class="value-display" contenteditable="true" oninput="updateFromText('drift')" onblur="handleBlur('drift')">15px</span>
@@ -662,13 +694,13 @@
                     </div>
 
                     <details class="advanced-options">
-                        <summary>Color and Size</summary>
+                        <summary>Color, Font & Export Options</summary>
                         <div class="advanced-grid">
                             <div class="control-row">
                                 <div class="control-header">
                                     <label for="fontSize" class="label-with-icon">
-                                        <svg class="label-icon" viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
-                                        Size
+                                        <svg class="thin-icon" viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
+                                        Font Size
                                     </label>
                                     <span id="v_fontSize" class="value-display" contenteditable="true" oninput="updateFromText('fontSize')" onblur="handleBlur('fontSize')">150px</span>
                                 </div>
@@ -678,7 +710,7 @@
                             <div class="control-row">
                                 <div class="control-header">
                                     <label for="textColor" class="label-with-icon">
-                                        <svg class="label-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z"/></svg>
+                                        <svg class="thin-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z"/></svg>
                                         Color
                                     </label>
                                 </div>
@@ -691,26 +723,26 @@
                             <div class="control-row">
                                 <div class="control-header">
                                     <label class="label-with-icon">
-                                        <svg class="label-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
-                                        Custom Font
+                                        <svg class="thin-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                                        Upload Font
                                     </label>
                                 </div>
-                                <label for="fontInput" class="btn-custom-font btn-animated-border" id="fontLabel">Upload Font</label>
+                                <label for="fontInput" class="btn-custom-font btn-animated-border" id="fontLabel">Custom (.ttf, .otf, .woff)</label>
                                 <input type="file" id="fontInput" accept=".ttf,.otf,.woff,.woff2" onchange="handleFontUpload(event)" style="display: none;">
                             </div>
 
                             <div class="control-row">
                                 <div class="control-header">
                                     <label for="exportScale" class="label-with-icon">
-                                        <svg class="label-icon" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                                        Export Size
+                                        <svg class="thin-icon" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                        Export Scale
                                     </label>
                                 </div>
                                 <select id="exportScale" class="export-dropdown btn-animated-border">
-                                    <option value="1">1x</option>
-                                    <option value="2">2x</option>
-                                    <option value="4" selected>4x</option>
-                                    <option value="8">8x</option>
+                                    <option value="1">1x (800×400)</option>
+                                    <option value="2">2x (1600×800)</option>
+                                    <option value="4" selected>4x (3200×1600)</option>
+                                    <option value="8">8x (6400×3200)</option>
                                 </select>
                             </div>
                         </div>
@@ -719,106 +751,98 @@
 
                 <div>
                     <button class="btn-download btn-animated-border" onclick="downloadPNG()">
-                        <svg class="label-icon" style="width: 15px; height: 15px;" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                        DOWNLOAD PNG
+                        <svg class="thin-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                        DOWNLOAD TRANSPARENT PNG
                     </button>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="premium-section">
-            <div class="premium-grid">
-                <a href="https://callistra.gumroad.com/l/001" target="_blank" class="premium-card">
-                    <img src="001.webp" alt="Glitch Slice">
-                    <span class="card-action-btn btn-animated-border">
-                        Glitch Slice
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="7" y1="17" x2="17" y2="7"></line>
-                            <polyline points="7 7 17 7 17 17"></polyline>
-                        </svg>
-                    </span>
-                </a>
-                <a href="https://callistra.gumroad.com/l/002" target="_blank" class="premium-card">
-                    <img src="002.webp" alt="Broken Glass">
-                    <span class="card-action-btn btn-animated-border">
-                        Broken Glass
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="7" y1="17" x2="17" y2="7"></line>
-                            <polyline points="7 7 17 7 17 17"></polyline>
-                        </svg>
-                    </span>
-                </a>
-                <a href="https://callistra.gumroad.com/l/003" target="_blank" class="premium-card">
-                    <img src="003.webp" alt="Folded Paper">
-                    <span class="card-action-btn btn-animated-border">
-                        Folded Paper
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="7" y1="17" x2="17" y2="7"></line>
-                            <polyline points="7 7 17 7 17 17"></polyline>
-                        </svg>
-                    </span>
-                </a>
-                <a href="https://callistra.gumroad.com/l/004" target="_blank" class="premium-card">
-                    <img src="004.webp" alt="Ink Bleed">
-                    <span class="card-action-btn btn-animated-border">
-                        Ink Bleed
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="7" y1="17" x2="17" y2="7"></line>
-                            <polyline points="7 7 17 7 17 17"></polyline>
-                        </svg>
-                    </span>
-                </a>
-                <a href="https://callistra.gumroad.com/l/005" target="_blank" class="premium-card">
-                    <img src="005.webp" alt="Star Distortion">
-                    <span class="card-action-btn btn-animated-border">
-                        Star Distortion
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="7" y1="17" x2="17" y2="7"></line>
-                            <polyline points="7 7 17 7 17 17"></polyline>
-                        </svg>
-                    </span>
-                </a>
-                <a href="https://callistra.gumroad.com/l/006" target="_blank" class="premium-card">
-                    <img src="006.webp" alt="Reeded Glass">
-                    <span class="card-action-btn btn-animated-border">
-                        Reeded Glass
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="7" y1="17" x2="17" y2="7"></line>
-                            <polyline points="7 7 17 7 17 17"></polyline>
-                        </svg>
-                    </span>
-                </a>
-                <a href="https://callistra.gumroad.com/l/007" target="_blank" class="premium-card">
-                    <img src="007.webp" alt="Optic Shear">
-                    <span class="card-action-btn btn-animated-border">
-                        Optic Shear
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="7" y1="17" x2="17" y2="7"></line>
-                            <polyline points="7 7 17 7 17 17"></polyline>
-                        </svg>
-                    </span>
-                </a>
-                <a href="https://callistra.gumroad.com/l/008" target="_blank" class="premium-card">
-                    <img src="008.webp" alt="Wave Fracture">
-                    <span class="card-action-btn btn-animated-border">
-                        Wave Fracture
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="7" y1="17" x2="17" y2="7"></line>
-                            <polyline points="7 7 17 7 17 17"></polyline>
-                        </svg>
-                    </span>
+        <!-- 4. CLEAN PRODUCT OVERVIEW & SUITE BREAKDOWN -->
+        <section class="product-overview" aria-label="About the Full Collection">
+            <div class="overview-header">
+                <span class="overview-tag">Text Effect Makers by Callistra — Volume 1</span>
+                <h2 class="overview-title">26 Standalone Typography Engines. Zero Setup.</h2>
+                <p class="overview-subtitle">Every tool in the full collection works exactly like this live demo: instant in-browser generation with total control over distortions, typefaces, and resolution.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                    </div>
+                    <h3 class="feature-heading">26 Standalone Tools</h3>
+                    <p class="feature-desc">Receive 26 independent lightweight HTML files. Open any maker in your browser and design offline or online without installation.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <svg viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+                    </div>
+                    <h3 class="feature-heading">Real-Time Controls</h3>
+                    <p class="feature-desc">Fine-tune block grids, wave shearing, ink bleeding, and displacements interactively with instantaneous canvas updates.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+                    </div>
+                    <h3 class="feature-heading">Use Any Local Font</h3>
+                    <p class="feature-desc">Comes loaded with bespoke editorial typography and supports your own <code>.ttf</code>, <code>.otf</code>, <code>.woff</code>, or <code>.woff2</code> fonts directly.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                    </div>
+                    <h3 class="feature-heading">Up to 8x Ultra Export</h3>
+                    <p class="feature-desc">Export transparent cropped PNGs up to 6400 × 3200px—ready for high-definition print, posters, streetwear, and cover art.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    </div>
+                    <h3 class="feature-heading">100% Private & In-Browser</h3>
+                    <p class="feature-desc">Entirely client-side execution. Your text, custom typefaces, and generated graphics never touch an external server.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon-wrapper">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                    </div>
+                    <h3 class="feature-heading">Commercial License</h3>
+                    <p class="feature-desc">Full commercial rights included for all exported assets. Use freely across client designs, branding, album art, and merchandise.</p>
+                </div>
+            </div>
+
+            <!-- Bottom Call to Action Box -->
+            <div class="bottom-cta-container">
+                <div class="bottom-cta-text">
+                    <h3>Unlock All 26 Typography Makers</h3>
+                    <p>Instant digital download via Gumroad. Includes lifetime access and standalone browser tools.</p>
+                </div>
+                <a href="https://callistra.gumroad.com" target="_blank" class="main-gumroad-btn btn-animated-border" style="width: auto; padding: 14px 28px;">
+                    <span>Visit Gumroad Store</span>
+                    <svg viewBox="0 0 24 24">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
                 </a>
             </div>
-        </div>
-
+        </section>
     </main>
 
-    <footer role="contentinfo"></footer>
+    <footer role="contentinfo">
+        <span>&copy; Callistra.design. All rights reserved.</span>
+        <span>Commercial License included with Volume 1</span>
+    </footer>
 
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        let customFontFamily = '"Instrument Serif", serif';
+        let customFontFamily = '"Barlow Semi Condensed", sans-serif';
+        let customFontWeight = '900';
 
         function initThemeColor() {
             const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -841,12 +865,13 @@
                 const font = new FontFace(fontName, e.target.result);
                 font.load().then(function(loadedFont) {
                     document.fonts.add(loadedFont);
-                    customFontFamily = `"${fontName}", "Instrument Serif", serif`;
+                    customFontFamily = `"${fontName}", "Barlow Semi Condensed", sans-serif`;
+                    customFontWeight = '400';
                     const label = document.getElementById('fontLabel');
                     if (label) label.innerText = file.name;
                     draw();
                 }).catch(function(err) {
-                    console.error("Error loading custom font:", err);
+                    console.error("Font error:", err);
                     alert("Could not load custom font file.");
                 });
             };
@@ -865,9 +890,7 @@
             const span = document.getElementById('v_color');
             const input = document.getElementById('textColor');
             let val = span.innerText.trim();
-            if (!val.startsWith('#')) {
-                val = '#' + val;
-            }
+            if (!val.startsWith('#')) val = '#' + val;
             if (/^#([0-9A-Fa-f]{3})$/.test(val)) {
                 val = '#' + val[1] + val[1] + val[2] + val[2] + val[3] + val[3];
             }
@@ -962,7 +985,7 @@
             const padding = scaledDrift + (40 * scale); 
 
             const refSize = 100 * scale;
-            octx.font = `400 ${refSize}px ${customFontFamily}`;
+            octx.font = `${customFontWeight} ${refSize}px ${customFontFamily}`;
             let maxRefWidth = 1;
             lines.forEach(line => {
                 let width = octx.measureText(line).width;
@@ -970,7 +993,6 @@
             });
             
             const refTotalHeight = lines.length * (refSize * 1.1);
-            
             const availWidth = Math.max(10 * scale, targetWidth - padding);
             const availHeight = Math.max(10 * scale, targetHeight - padding);
             
@@ -980,7 +1002,7 @@
             
             const scaledFontSize = Math.max(10 * scale, Math.min(origFontSize * scale, calculatedMaxFontSize));
             
-            octx.font = `400 ${scaledFontSize}px ${customFontFamily}`;
+            octx.font = `${customFontWeight} ${scaledFontSize}px ${customFontFamily}`;
             octx.textAlign = 'center';
             octx.textBaseline = 'middle';
             octx.fillStyle = textColor;
@@ -1000,7 +1022,6 @@
 
             for (let y = 0; y < 400; y += origBlockSize) {
                 for (let x = 0; x < 800; x += origBlockSize) {
-                    
                     const randX = getSpatialRandom(x, y);
                     const randY = getSpatialRandom(x + 100, y + 100);
 
@@ -1030,7 +1051,6 @@
                                 
                                 if (dx >= 0 && dx < targetWidth && sy >= 0 && sx >= 0 && sy < targetHeight && sx < targetWidth) {
                                     const sourcePixel = sourceBuffer[sy * targetWidth + sx];
-                                    
                                     if (sourcePixel !== 0) {
                                         targetBuffer[dy * targetWidth + dx] = sourcePixel;
                                     }
@@ -1115,12 +1135,12 @@
                     cropCtx.putImageData(cropData, 0, 0);
 
                     const link = document.createElement('a');
-                    link.download = `pixel-drift-${scale}x.png`;
+                    link.download = `pixel-displace-${scale}x.png`;
                     link.href = cropCanvas.toDataURL('image/png');
                     link.click();
 
                 } catch (err) {
-                    console.error("Render failed:", err);
+                    console.error("Render error:", err);
                     alert("An error occurred during export.");
                 } finally {
                     btn.innerHTML = origText;
@@ -1129,7 +1149,9 @@
             }, 50);
         }
 
+        // Initialize theme colors and trigger immediate draw
         initThemeColor();
+        draw();
 
         if (window.matchMedia) {
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
@@ -1138,9 +1160,11 @@
             });
         }
 
-        document.fonts.ready.then(() => {
-            draw();
-        });
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(() => {
+                draw();
+            });
+        }
     </script>
 </body>
 </html>
