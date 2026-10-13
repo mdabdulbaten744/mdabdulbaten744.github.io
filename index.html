@@ -11,7 +11,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&family=Montserrat:wght@900&display=swap" rel="stylesheet">
 
     <script defer src="https://cloud.umami.is/script.js" data-website-id="d189c235-e044-404e-a1bc-94e3cc73ad48"></script>
     
@@ -677,9 +677,9 @@
                                 <svg class="thin-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
                                 Block Size
                             </label>
-                            <span id="v_blockSize" class="value-display" contenteditable="true" oninput="updateFromText('blockSize')" onblur="handleBlur('blockSize')">20px</span>
+                            <span id="v_blockSize" class="value-display" contenteditable="true" oninput="updateFromText('blockSize')" onblur="handleBlur('blockSize')">46px</span>
                         </div>
-                        <input type="range" id="blockSize" min="2" max="100" step="1" value="20" oninput="draw()">
+                        <input type="range" id="blockSize" min="2" max="100" step="1" value="46" oninput="draw()">
                     </div>
 
                     <div class="control-row">
@@ -688,9 +688,9 @@
                                 <svg class="thin-icon" viewBox="0 0 24 24"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
                                 Scatter Amount
                             </label>
-                            <span id="v_drift" class="value-display" contenteditable="true" oninput="updateFromText('drift')" onblur="handleBlur('drift')">15px</span>
+                            <span id="v_drift" class="value-display" contenteditable="true" oninput="updateFromText('drift')" onblur="handleBlur('drift')">6px</span>
                         </div>
-                        <input type="range" id="drift" min="0" max="60" step="1" value="15" oninput="draw()">
+                        <input type="range" id="drift" min="0" max="10" step="1" value="6" oninput="draw()">
                     </div>
 
                     <details class="advanced-options">
@@ -702,9 +702,9 @@
                                         <svg class="thin-icon" viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
                                         Font Size
                                     </label>
-                                    <span id="v_fontSize" class="value-display" contenteditable="true" oninput="updateFromText('fontSize')" onblur="handleBlur('fontSize')">150px</span>
+                                    <span id="v_fontSize" class="value-display" contenteditable="true" oninput="updateFromText('fontSize')" onblur="handleBlur('fontSize')">250px</span>
                                 </div>
-                                <input type="range" id="fontSize" min="30" max="250" value="150" oninput="draw()">
+                                <input type="range" id="fontSize" min="30" max="250" value="250" oninput="draw()">
                             </div>
 
                             <div class="control-row">
@@ -841,7 +841,7 @@
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        let customFontFamily = '"Barlow Semi Condensed", sans-serif';
+        let customFontFamily = '"Montserrat", sans-serif';
         let customFontWeight = '900';
 
         function initThemeColor() {
@@ -865,7 +865,7 @@
                 const font = new FontFace(fontName, e.target.result);
                 font.load().then(function(loadedFont) {
                     document.fonts.add(loadedFont);
-                    customFontFamily = `"${fontName}", "Barlow Semi Condensed", sans-serif`;
+                    customFontFamily = `"${fontName}", "Montserrat", sans-serif`;
                     customFontWeight = '400';
                     const label = document.getElementById('fontLabel');
                     if (label) label.innerText = file.name;
