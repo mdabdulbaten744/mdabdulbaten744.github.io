@@ -4,23 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Pixel Displace Text Effect Maker — Callistra</title>
+    <title>Guilloche Engrave Text Effect Maker</title>
     
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&family=Montserrat:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
 
-    <script defer src="https://cloud.umami.is/script.js" data-website-id="d189c235-e044-404e-a1bc-94e3cc73ad48"></script>
-    
     <style>
-        /* Editorial Theme Palette */
+        /* Editorial Theme Palette with Automatic Light/Dark Mode */
         :root {
             --bg-color: #f7f5f0;
             --panel-bg: var(--bg-color);
-            --card-bg: rgba(18, 18, 18, 0.02);
             --text-primary: #121212;
             --text-muted: #736e65;
             --accent: #121212;
@@ -31,15 +28,12 @@
             --input-underline: #121212;
             --font-editorial: 'Instrument Serif', serif;
             --font-mono: 'JetBrains Mono', monospace;
-            
-            --gradient-border: linear-gradient(135deg, #6366f1, #a855f7, #ec4899, #6366f1);
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
                 --bg-color: #0d0d0d;
                 --panel-bg: var(--bg-color);
-                --card-bg: rgba(255, 255, 255, 0.02);
                 --text-primary: #f0eee9;
                 --text-muted: #8c877e;
                 --accent: #f0eee9;
@@ -66,147 +60,65 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding: 0 20px 40px;
+            padding: 40px 24px;
             -webkit-font-smoothing: antialiased;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        @keyframes borderGradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .btn-animated-border {
-            position: relative;
-            background-clip: padding-box;
-            border: 1px solid transparent !important;
-        }
-
-        .btn-animated-border::before {
-            content: '';
-            position: absolute;
-            top: -1px; left: -1px; right: -1px; bottom: -1px;
-            background: var(--gradient-border);
-            background-size: 300% 300%;
-            z-index: -1;
-            border-radius: inherit;
-            animation: borderGradientMove 4s ease infinite;
-        }
-
-        /* 1. TOP STANDALONE GUMROAD ROW */
-        .top-cta-bar {
-            width: 100%;
-            max-width: 1100px;
-            padding: 24px 0 16px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .main-gumroad-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            width: 100%;
-            background-color: var(--text-primary);
-            color: var(--bg-color);
-            padding: 16px 24px;
-            text-decoration: none;
-            font-family: var(--font-mono);
-            font-size: 0.82rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            border-radius: 3px;
-            transition: opacity 0.15s ease, transform 0.1s ease;
-        }
-
-        .main-gumroad-btn:hover {
-            opacity: 0.9;
-        }
-
-        .main-gumroad-btn:active {
-            transform: scale(0.99);
-        }
-
-        .main-gumroad-btn svg {
-            width: 16px;
-            height: 16px;
-            stroke-width: 1.8;
-            stroke: currentColor;
-            fill: none;
-            flex-shrink: 0;
-        }
-
-        /* 2. HEADER & BRAND */
+        /* Semantic Header */
         header {
             width: 100%;
             max-width: 1100px;
             display: flex;
-            flex-direction: column;
-            gap: 6px;
-            padding: 12px 0 32px;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 36px;
-        }
-
-        .brand-row {
-            display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 10px 0;
+            margin-bottom: 40px;
         }
 
         .logo-link {
             font-family: var(--font-mono);
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 500;
+            font-size: 0.85rem;
             color: var(--text-primary);
             text-decoration: none;
-            letter-spacing: 0.12em;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
         }
 
-        .edition-badge {
-            font-size: 0.72rem;
+        nav a {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
             color: var(--text-muted);
+            text-decoration: none;
             letter-spacing: 0.08em;
             text-transform: uppercase;
         }
 
-        .header-subtext {
-            font-family: var(--font-editorial);
-            font-style: italic;
-            font-size: 1.35rem;
-            color: var(--text-muted);
-            line-height: 1.3;
+        nav a:hover {
+            color: var(--text-primary);
         }
 
-        main {
-            width: 100%;
-            max-width: 1100px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* 3. INTERACTIVE EFFECT GENERATOR */
+        /* App Layout */
         .app-layout {
             display: grid;
-            grid-template-columns: 1.35fr 1fr;
-            gap: 48px;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 50px;
             width: 100%;
+            max-width: 1100px;
             background: var(--panel-bg);
-            padding-bottom: 50px;
-            border-bottom: 1px solid var(--border-color);
+            padding: 0;
+            margin-bottom: 60px;
         }
 
-        @media (max-width: 960px) {
+        @media (max-width: 950px) {
             .app-layout {
                 grid-template-columns: 1fr;
-                gap: 32px;
+                gap: 35px;
             }
         }
 
+        /* Canvas Container */
         .canvas-container {
             position: relative;
             width: 100%;
@@ -218,8 +130,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 3px;
-            border: 1px solid var(--border-color);
+            border-radius: 2px;
         }
 
         canvas {
@@ -228,17 +139,18 @@
             display: block;
         }
 
+        /* Control Panel */
         .control-panel {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            gap: 24px;
+            gap: 28px;
         }
 
         .controls-group {
             display: flex;
             flex-direction: column;
-            gap: 22px;
+            gap: 24px;
         }
 
         .text-input-wrapper {
@@ -258,7 +170,7 @@
             color: var(--text-primary);
             letter-spacing: 0.01em;
             resize: vertical;
-            min-height: 54px;
+            min-height: 56px;
             line-height: 1.1;
         }
 
@@ -271,7 +183,7 @@
         .control-row {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
         }
 
         .control-header {
@@ -292,15 +204,14 @@
             gap: 8px;
         }
 
-        .thin-icon {
+        .label-icon {
             width: 14px;
             height: 14px;
             stroke: currentColor;
             fill: none;
             stroke-width: 1.5;
-            stroke-linecap: round;
-            stroke-linejoin: round;
             flex-shrink: 0;
+            opacity: 0.8;
         }
 
         .value-display {
@@ -316,12 +227,14 @@
             min-width: 36px;
             display: inline-block;
             text-align: right;
+            transition: border-bottom-color 0.2s ease;
         }
 
         .value-display[contenteditable="true"]:focus {
             border-bottom-color: var(--accent);
         }
 
+        /* Range Slider */
         input[type="range"] {
             -webkit-appearance: none;
             appearance: none;
@@ -329,7 +242,7 @@
             height: 1px;
             background: var(--border-color);
             outline: none;
-            margin: 10px 0 4px 0;
+            margin: 12px 0 6px 0;
         }
 
         input[type="range"]::-webkit-slider-thumb {
@@ -343,24 +256,15 @@
             transition: transform 0.15s ease;
         }
 
-        input[type="range"]::-moz-range-thumb {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--text-primary);
-            border: none;
-            cursor: pointer;
-            transition: transform 0.15s ease;
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.4);
         }
 
-        input[type="range"]::-webkit-slider-thumb:hover,
-        input[type="range"]::-moz-range-thumb:hover {
-            transform: scale(1.35);
-        }
-
+        /* Advanced Options */
         details.advanced-options {
             border-top: 1px solid var(--border-color);
             padding-top: 16px;
+            margin-top: 4px;
         }
 
         details.advanced-options summary {
@@ -385,6 +289,7 @@
         details.advanced-options summary::after {
             content: "＋";
             font-size: 0.75rem;
+            font-weight: 300;
         }
 
         details.advanced-options[open] summary::after {
@@ -394,14 +299,8 @@
         .advanced-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 18px 16px;
-            padding-top: 18px;
-        }
-
-        @media (max-width: 480px) {
-            .advanced-grid {
-                grid-template-columns: 1fr;
-            }
+            gap: 20px 18px;
+            padding-top: 20px;
         }
 
         .color-selector {
@@ -410,17 +309,19 @@
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 6px;
             gap: 10px;
+            background: transparent;
             justify-content: space-between;
         }
 
         input[type="color"] {
             -webkit-appearance: none;
             border: none;
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             cursor: pointer;
             background: none;
             border-radius: 50%;
+            overflow: hidden;
         }
 
         input[type="color"]::-webkit-color-swatch-wrapper {
@@ -434,24 +335,36 @@
 
         .export-dropdown, .btn-custom-font {
             width: 100%;
-            padding: 8px 10px;
+            padding: 8px 0;
             font-family: var(--font-mono);
             font-size: 0.75rem;
-            background: var(--bg-color);
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            background: transparent;
             color: var(--text-primary);
             outline: none;
             cursor: pointer;
             text-align: left;
+            box-sizing: border-box;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 0;
+        }
+        
+        .export-dropdown:focus, .btn-custom-font:hover {
+            border-color: var(--text-primary);
         }
 
+        /* Download Button */
         .btn-download {
             background: var(--text-primary);
             color: var(--bg-color);
-            padding: 13px 20px;
+            border: none;
+            padding: 14px 20px;
             text-transform: uppercase;
             letter-spacing: 0.12em;
             font-size: 0.75rem;
@@ -471,278 +384,86 @@
             opacity: 0.88;
         }
 
+        .btn-download:active {
+            transform: scale(0.99);
+        }
+        
         .btn-download:disabled {
             background: var(--text-muted);
             cursor: not-allowed;
-        }
-
-        /* 4. CLEAN PRODUCT OVERVIEW */
-        .product-overview {
-            padding: 60px 0 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
-        }
-
-        .overview-header {
-            max-width: 680px;
-        }
-
-        .overview-tag {
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .overview-title {
-            font-family: var(--font-editorial);
-            font-size: 2.3rem;
-            font-weight: 400;
-            line-height: 1.15;
-            color: var(--text-primary);
-            margin-bottom: 12px;
-        }
-
-        .overview-subtitle {
-            font-family: var(--font-editorial);
-            font-style: italic;
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 28px;
-        }
-
-        @media (max-width: 860px) {
-            .features-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 20px;
-            }
-        }
-
-        @media (max-width: 540px) {
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .feature-card {
-            border: 1px solid var(--border-color);
-            background: var(--card-bg);
-            padding: 24px 20px;
-            border-radius: 3px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .feature-icon-wrapper {
-            width: 34px;
-            height: 34px;
-            display: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-        }
-
-        .feature-icon-wrapper svg {
-            width: 17px;
-            height: 17px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 1.5;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        .feature-heading {
-            font-size: 0.82rem;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            color: var(--text-primary);
-            text-transform: uppercase;
-        }
-
-        .feature-desc {
-            font-size: 0.78rem;
-            line-height: 1.5;
-            color: var(--text-muted);
-        }
-
-        .bottom-cta-container {
-            margin-top: 20px;
-            padding: 36px 30px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 24px;
-            border-radius: 3px;
-            background: var(--card-bg);
-        }
-
-        @media (max-width: 768px) {
-            .bottom-cta-container {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 24px 20px;
-            }
-            .bottom-cta-container .main-gumroad-btn {
-                width: 100%;
-            }
-        }
-
-        .bottom-cta-text h3 {
-            font-family: var(--font-editorial);
-            font-size: 1.6rem;
-            font-weight: 400;
-            margin-bottom: 4px;
-        }
-
-        .bottom-cta-text p {
-            font-size: 0.78rem;
-            color: var(--text-muted);
+            transform: none;
         }
 
         footer {
             width: 100%;
             max-width: 1100px;
-            padding: 30px 0 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border-color);
-            margin-top: 40px;
-        }
-
-        @media (max-width: 500px) {
-            footer {
-                flex-direction: column;
-                gap: 10px;
-                text-align: center;
-            }
+            padding: 20px 0;
+            text-align: center;
+            margin-top: auto;
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. FULL WIDTH / STANDALONE TOP GUMROAD ACTION ROW -->
-    <div class="top-cta-bar">
-        <a href="https://callistra.gumroad.com" target="_blank" class="main-gumroad-btn btn-animated-border">
-            <span>Get Text Effect Makers — Volume 1 (26 Effects) on Gumroad</span>
-            <svg viewBox="0 0 24 24">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-        </a>
-    </div>
-
-    <!-- 2. BRAND & EDITION HEADER -->
     <header role="banner">
-        <div class="brand-row">
-            <a href="https://callistra.design" class="logo-link">Callistra.design</a>
-            <span class="edition-badge">Free Interactive Maker Demo</span>
-        </div>
-        <p class="header-subtext">Experience Pixel Displace below — adjust sliders, type your wordmark, or upload custom fonts in real-time.</p>
+        <a href="https://callistra.design" class="logo-link">Callistra.design</a>
     </header>
 
     <main role="main">
-        <!-- 3. INTERACTIVE EFFECT GENERATOR -->
-        <section class="app-layout" aria-label="Interactive Text Effect Editor">
+        <div class="app-layout">
             <div class="canvas-container">
-                <canvas id="canvas" width="800" height="400" aria-label="Typography preview canvas"></canvas>
+                <canvas id="canvas" width="800" height="400" aria-label="Typography preview canvas showcasing guilloche engraved text effects"></canvas>
             </div>
 
             <div class="control-panel">
                 <div class="controls-group">
                     <div class="text-input-wrapper">
-                        <textarea id="textInput" class="text-input" placeholder="TYPE SOMETHING..." oninput="draw()" aria-label="Text Input" rows="2">Drift</textarea>
+                        <textarea id="textInput" class="text-input" placeholder="TYPE SOMETHING..." aria-label="Guilloche Engrave Text Input Source" rows="2">GUILLOCHE</textarea>
                     </div>
 
-                    <div class="control-row">
-                        <div class="control-header">
-                            <label for="blockSize" class="label-with-icon">
-                                <svg class="thin-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                                Block Size
-                            </label>
-                            <span id="v_blockSize" class="value-display" contenteditable="true" oninput="updateFromText('blockSize')" onblur="handleBlur('blockSize')">46px</span>
-                        </div>
-                        <input type="range" id="blockSize" min="2" max="100" step="1" value="46" oninput="draw()">
-                    </div>
-
-                    <div class="control-row">
-                        <div class="control-header">
-                            <label for="drift" class="label-with-icon">
-                                <svg class="thin-icon" viewBox="0 0 24 24"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
-                                Scatter Amount
-                            </label>
-                            <span id="v_drift" class="value-display" contenteditable="true" oninput="updateFromText('drift')" onblur="handleBlur('drift')">6px</span>
-                        </div>
-                        <input type="range" id="drift" min="0" max="10" step="1" value="6" oninput="draw()">
-                    </div>
+                    <div id="mainSliders"></div>
 
                     <details class="advanced-options">
-                        <summary>Color, Font & Export Options</summary>
+                        <summary>Color and Size</summary>
                         <div class="advanced-grid">
-                            <div class="control-row">
-                                <div class="control-header">
-                                    <label for="fontSize" class="label-with-icon">
-                                        <svg class="thin-icon" viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
-                                        Font Size
-                                    </label>
-                                    <span id="v_fontSize" class="value-display" contenteditable="true" oninput="updateFromText('fontSize')" onblur="handleBlur('fontSize')">250px</span>
-                                </div>
-                                <input type="range" id="fontSize" min="30" max="250" value="250" oninput="draw()">
-                            </div>
+                            <div id="advSliders" style="display: contents;"></div>
 
                             <div class="control-row">
                                 <div class="control-header">
                                     <label for="textColor" class="label-with-icon">
-                                        <svg class="thin-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z"/></svg>
+                                        <svg class="label-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z"/></svg>
                                         Color
                                     </label>
                                 </div>
                                 <div class="color-selector">
-                                    <input type="color" id="textColor" value="#000000" oninput="updateColorLabel(this.value)">
-                                    <span id="v_color" class="value-display" contenteditable="true" style="font-size: 0.75rem;" oninput="updateFromColorText()" onblur="handleColorBlur()">#000000</span>
+                                    <input type="color" id="textColor" value="#000000">
+                                    <span id="v_color" class="value-display" contenteditable="true" style="font-size: 0.75rem;">#000000</span>
                                 </div>
                             </div>
 
                             <div class="control-row">
                                 <div class="control-header">
                                     <label class="label-with-icon">
-                                        <svg class="thin-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
-                                        Upload Font
+                                        <svg class="label-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                                        Custom Font
                                     </label>
                                 </div>
-                                <label for="fontInput" class="btn-custom-font btn-animated-border" id="fontLabel">Custom (.ttf, .otf, .woff)</label>
-                                <input type="file" id="fontInput" accept=".ttf,.otf,.woff,.woff2" onchange="handleFontUpload(event)" style="display: none;">
+                                <label for="fontInput" class="btn-custom-font" id="fontLabel">Upload Font</label>
+                                <input type="file" id="fontInput" accept=".ttf,.otf,.woff,.woff2" style="display: none;">
                             </div>
 
                             <div class="control-row">
                                 <div class="control-header">
                                     <label for="exportScale" class="label-with-icon">
-                                        <svg class="thin-icon" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                                        Export Scale
+                                        <svg class="label-icon" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                                        Export Size
                                     </label>
                                 </div>
-                                <select id="exportScale" class="export-dropdown btn-animated-border">
-                                    <option value="1">1x (800×400)</option>
-                                    <option value="2">2x (1600×800)</option>
-                                    <option value="4" selected>4x (3200×1600)</option>
-                                    <option value="8">8x (6400×3200)</option>
+                                <select id="exportScale" class="export-dropdown">
+                                    <option value="1">1x</option>
+                                    <option value="2">2x</option>
+                                    <option value="4" selected>4x</option>
+                                    <option value="8">8x</option>
                                 </select>
                             </div>
                         </div>
@@ -750,408 +471,301 @@
                 </div>
 
                 <div>
-                    <button class="btn-download btn-animated-border" onclick="downloadPNG()">
-                        <svg class="thin-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                        DOWNLOAD TRANSPARENT PNG
+                    <button class="btn-download" id="btnDownload">
+                        <svg class="label-icon" style="width: 15px; height: 15px;" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                        DOWNLOAD PNG
                     </button>
                 </div>
             </div>
-        </section>
-
-        <!-- 4. CLEAN PRODUCT OVERVIEW & SUITE BREAKDOWN -->
-        <section class="product-overview" aria-label="About the Full Collection">
-            <div class="overview-header">
-                <span class="overview-tag">Text Effect Makers by Callistra — Volume 1</span>
-                <h2 class="overview-title">26 Standalone Typography Engines. Zero Setup.</h2>
-                <p class="overview-subtitle">Every tool in the full collection works exactly like this live demo: instant in-browser generation with total control over distortions, typefaces, and resolution.</p>
-            </div>
-
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon-wrapper">
-                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-                    </div>
-                    <h3 class="feature-heading">26 Standalone Tools</h3>
-                    <p class="feature-desc">Receive 26 independent lightweight HTML files. Open any maker in your browser and design offline or online without installation.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon-wrapper">
-                        <svg viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
-                    </div>
-                    <h3 class="feature-heading">Real-Time Controls</h3>
-                    <p class="feature-desc">Fine-tune block grids, wave shearing, ink bleeding, and displacements interactively with instantaneous canvas updates.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon-wrapper">
-                        <svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
-                    </div>
-                    <h3 class="feature-heading">Use Any Local Font</h3>
-                    <p class="feature-desc">Comes loaded with bespoke editorial typography and supports your own <code>.ttf</code>, <code>.otf</code>, <code>.woff</code>, or <code>.woff2</code> fonts directly.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon-wrapper">
-                        <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-                    </div>
-                    <h3 class="feature-heading">Up to 8x Ultra Export</h3>
-                    <p class="feature-desc">Export transparent cropped PNGs up to 6400 × 3200px—ready for high-definition print, posters, streetwear, and cover art.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon-wrapper">
-                        <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                    </div>
-                    <h3 class="feature-heading">100% Private & In-Browser</h3>
-                    <p class="feature-desc">Entirely client-side execution. Your text, custom typefaces, and generated graphics never touch an external server.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon-wrapper">
-                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-                    </div>
-                    <h3 class="feature-heading">Commercial License</h3>
-                    <p class="feature-desc">Full commercial rights included for all exported assets. Use freely across client designs, branding, album art, and merchandise.</p>
-                </div>
-            </div>
-
-            <!-- Bottom Call to Action Box -->
-            <div class="bottom-cta-container">
-                <div class="bottom-cta-text">
-                    <h3>Unlock All 26 Typography Makers</h3>
-                    <p>Instant digital download via Gumroad. Includes lifetime access and standalone browser tools.</p>
-                </div>
-                <a href="https://callistra.gumroad.com" target="_blank" class="main-gumroad-btn btn-animated-border" style="width: auto; padding: 14px 28px;">
-                    <span>Visit Gumroad Store</span>
-                    <svg viewBox="0 0 24 24">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                </a>
-            </div>
-        </section>
+        </div>
     </main>
 
-    <footer role="contentinfo">
-        <span>&copy; Callistra.design. All rights reserved.</span>
-        <span>Commercial License included with Volume 1</span>
-    </footer>
+    <footer role="contentinfo"></footer>
 
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        let customFontFamily = '"Montserrat", sans-serif';
-        let customFontWeight = '900';
+        const DEFAULT_FONT = '"Archivo Black", "Arial Black", sans-serif';
+        let customFontFamily = DEFAULT_FONT;
+
+        // Slider config: id, label, min, max, step, value, suffix, icon path, group
+        const SLIDERS = [
+            { id: 'pitch',  label: 'Line Pitch',  min: 2,  max: 16, step: 0.5, value: 4,   suffix: 'px', main: true, icon: 'M3 5h18M3 10h18M3 15h18M3 20h18' },
+            { id: 'depth',  label: 'Wave Depth',  min: 0,  max: 70, step: 1,   value: 12,  suffix: 'px', main: true, icon: 'M2 12c3-8 5-8 8 0s5 8 8 0 3-4 4-4' },
+            { id: 'cycles', label: 'Wave Cycles', min: 1,  max: 24, step: 0.5, value: 3,   suffix: '',   main: true, icon: 'M2 12c2-6 4-6 6 0s4 6 6 0 4-6 6 0' },
+            { id: 'twist',  label: 'Twist',       min: 0,  max: 2,  step: 0.05,value: 0.35,suffix: '',   main: true, icon: 'M4 4c8 0 8 8 16 8M4 12c8 0 8 8 16 8' },
+            { id: 'outline',label: 'Outline',     min: 0,  max: 8,  step: 0.5, value: 2,   suffix: 'px', main: true, icon: 'M5 5h14v14H5z' },
+            { id: 'weight', label: 'Line Weight', min: 0.3,max: 3,  step: 0.1, value: 0.9, suffix: 'px', main: false, icon: 'M4 12h16' },
+            { id: 'weave',  label: 'Weave',       min: 0,  max: 1,  step: 0.05,value: 1,   suffix: '',   main: false, icon: 'M4 4l16 16M20 4L4 20' },
+            { id: 'fontSize',label:'Size',        min: 30, max: 260,step: 1,   value: 150, suffix: 'px', main: false, icon: 'M4 7V4h16v3M9 20h6M12 4v16' }
+        ];
+
+        function buildSliders() {
+            SLIDERS.forEach(c => {
+                const row = document.createElement('div');
+                row.className = 'control-row';
+                row.innerHTML = `
+                    <div class="control-header">
+                        <label for="${c.id}" class="label-with-icon">
+                            <svg class="label-icon" viewBox="0 0 24 24"><path d="${c.icon}"/></svg>
+                            ${c.label}
+                        </label>
+                        <span id="v_${c.id}" class="value-display" contenteditable="true">${c.value}${c.suffix}</span>
+                    </div>
+                    <input type="range" id="${c.id}" min="${c.min}" max="${c.max}" step="${c.step}" value="${c.value}">`;
+                const host = document.getElementById(c.main ? 'mainSliders' : 'advSliders');
+                if (c.main) {
+                    row.style.marginBottom = '24px';
+                }
+                host.appendChild(row);
+
+                const input = row.querySelector('input');
+                const span = row.querySelector('.value-display');
+                input.addEventListener('input', draw);
+                span.addEventListener('input', () => {
+                    const v = parseFloat(span.innerText.replace(/[^0-9.-]/g, ''));
+                    if (!isNaN(v)) { input.value = v; draw(); }
+                });
+                span.addEventListener('blur', () => { span.innerText = input.value + c.suffix; });
+            });
+            document.getElementById('mainSliders').style.cssText = 'display:flex;flex-direction:column;';
+            document.getElementById('mainSliders').lastElementChild.style.marginBottom = '0';
+        }
 
         function initThemeColor() {
             const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const defaultColor = isDark ? '#FFFFFF' : '#000000';
-            const textColorInput = document.getElementById('textColor');
-            const colorSpan = document.getElementById('v_color');
-            if (textColorInput && colorSpan) {
-                textColorInput.value = defaultColor;
-                colorSpan.innerText = defaultColor;
-            }
+            const c = isDark ? '#FFFFFF' : '#000000';
+            document.getElementById('textColor').value = c;
+            document.getElementById('v_color').innerText = c;
         }
 
-        function handleFontUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const fontName = 'CustomFont_' + Date.now();
-                const font = new FontFace(fontName, e.target.result);
-                font.load().then(function(loadedFont) {
-                    document.fonts.add(loadedFont);
-                    customFontFamily = `"${fontName}", "Montserrat", sans-serif`;
-                    customFontWeight = '400';
-                    const label = document.getElementById('fontLabel');
-                    if (label) label.innerText = file.name;
-                    draw();
-                }).catch(function(err) {
-                    console.error("Font error:", err);
-                    alert("Could not load custom font file.");
-                });
-            };
-            reader.readAsArrayBuffer(file);
-        }
-
-        function updateColorLabel(colorVal) {
-            const span = document.getElementById('v_color');
-            if (document.activeElement !== span) {
-                span.innerText = colorVal.toUpperCase();
-            }
-            draw();
-        }
-
-        function updateFromColorText() {
-            const span = document.getElementById('v_color');
+        function bindColor() {
             const input = document.getElementById('textColor');
-            let val = span.innerText.trim();
-            if (!val.startsWith('#')) val = '#' + val;
-            if (/^#([0-9A-Fa-f]{3})$/.test(val)) {
-                val = '#' + val[1] + val[1] + val[2] + val[2] + val[3] + val[3];
-            }
-            if (/^#([0-9A-Fa-f]{6})$/.test(val)) {
-                input.value = val;
-                draw();
-            }
-        }
-
-        function handleColorBlur() {
             const span = document.getElementById('v_color');
-            const input = document.getElementById('textColor');
-            span.innerText = input.value.toUpperCase();
-        }
-
-        function updateFromText(id) {
-            const span = document.getElementById('v_' + id);
-            const input = document.getElementById(id);
-            let val = parseInt(span.innerText.replace(/[^0-9-]/g, ''));
-            if (!isNaN(val)) {
-                input.value = val;
+            input.addEventListener('input', () => {
+                if (document.activeElement !== span) span.innerText = input.value.toUpperCase();
                 draw();
-            }
-        }
-        
-        function handleBlur(id) {
-            const span = document.getElementById('v_' + id);
-            const input = document.getElementById(id);
-            span.innerText = input.value + 'px';
+            });
+            span.addEventListener('input', () => {
+                let val = span.innerText.trim();
+                if (!val.startsWith('#')) val = '#' + val;
+                if (/^#([0-9A-Fa-f]{3})$/.test(val)) val = '#' + val[1] + val[1] + val[2] + val[2] + val[3] + val[3];
+                if (/^#([0-9A-Fa-f]{6})$/.test(val)) { input.value = val; draw(); }
+            });
+            span.addEventListener('blur', () => { span.innerText = input.value.toUpperCase(); });
         }
 
-        function getSpatialRandom(x, y) {
-            let n = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453;
-            return n - Math.floor(n);
+        function bindFont() {
+            document.getElementById('fontInput').addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const fontName = 'CustomFont_' + Date.now();
+                    const font = new FontFace(fontName, e.target.result);
+                    font.load().then((loaded) => {
+                        document.fonts.add(loaded);
+                        customFontFamily = `"${fontName}", ${DEFAULT_FONT}`;
+                        document.getElementById('fontLabel').innerText = file.name;
+                        draw();
+                    }).catch((err) => {
+                        console.error('Error loading custom font:', err);
+                        alert('Could not load custom font file.');
+                    });
+                };
+                reader.readAsArrayBuffer(file);
+            });
         }
 
         let renderPending = false;
-
         function draw() {
-            if (!renderPending) {
-                renderPending = true;
-                requestAnimationFrame(() => {
-                    try {
-                        performDraw();
-                    } finally {
-                        renderPending = false;
-                    }
-                });
-            }
+            if (renderPending) return;
+            renderPending = true;
+            requestAnimationFrame(() => {
+                try { renderToCanvas(ctx, canvas.width, canvas.height, 1); }
+                finally { renderPending = false; }
+            });
         }
 
-        function performDraw() {
-            renderToCanvas(ctx, canvas.width, canvas.height, 1);
-        }
+        function val(id) { return parseFloat(document.getElementById(id).value); }
 
-        function renderToCanvas(targetCtx, targetWidth, targetHeight, scale) {
+        function renderToCanvas(targetCtx, W, H, scale) {
             const text = document.getElementById('textInput').value;
-            
-            let origBlockSize = parseInt(document.getElementById('blockSize').value);
-            if (isNaN(origBlockSize) || origBlockSize < 1) origBlockSize = 1;
-            
-            const origDrift = parseInt(document.getElementById('drift').value);
-            const origFontSize = parseInt(document.getElementById('fontSize').value);
-            const textColor = document.getElementById('textColor').value;
+            const pitch = Math.max(1, val('pitch')) * scale;
+            const depth = val('depth') * scale;
+            const cycles = val('cycles');
+            const twist = val('twist');
+            const outline = val('outline') * scale;
+            const weight = val('weight') * scale;
+            const weave = val('weave');
+            const userSize = val('fontSize');
+            const color = document.getElementById('textColor').value;
 
             if (scale === 1) {
-                if (document.activeElement !== document.getElementById('v_blockSize')) {
-                    document.getElementById('v_blockSize').innerText = origBlockSize + 'px';
-                }
-                if (document.activeElement !== document.getElementById('v_drift')) {
-                    document.getElementById('v_drift').innerText = origDrift + 'px';
-                }
-                if (document.activeElement !== document.getElementById('v_fontSize')) {
-                    document.getElementById('v_fontSize').innerText = origFontSize + 'px';
-                }
-                if (document.activeElement !== document.getElementById('v_color')) {
-                    document.getElementById('v_color').innerText = textColor.toUpperCase();
-                }
+                SLIDERS.forEach(c => {
+                    const span = document.getElementById('v_' + c.id);
+                    if (document.activeElement !== span) span.innerText = document.getElementById(c.id).value + c.suffix;
+                });
+                const cs = document.getElementById('v_color');
+                if (document.activeElement !== cs) cs.innerText = color.toUpperCase();
             }
 
-            targetCtx.clearRect(0, 0, targetWidth, targetHeight);
-            
-            if (!text) return null;
+            targetCtx.clearRect(0, 0, W, H);
+            if (!text.trim()) return null;
 
-            const offscreen = document.createElement('canvas');
-            offscreen.width = targetWidth; 
-            offscreen.height = targetHeight;
-            const octx = offscreen.getContext('2d');
-            
+            // Step 1: lay out text into a mask buffer
+            const mask = document.createElement('canvas');
+            mask.width = W; mask.height = H;
+            const mctx = mask.getContext('2d');
+
             const lines = text.split('\n');
-            const scaledDrift = origDrift * scale;
-            const padding = scaledDrift + (40 * scale); 
-
+            const padding = 40 * scale + outline * 2;
             const refSize = 100 * scale;
-            octx.font = `${customFontWeight} ${refSize}px ${customFontFamily}`;
+            mctx.font = `400 ${refSize}px ${customFontFamily}`;
             let maxRefWidth = 1;
-            lines.forEach(line => {
-                let width = octx.measureText(line).width;
-                if (width > maxRefWidth) maxRefWidth = width;
-            });
-            
-            const refTotalHeight = lines.length * (refSize * 1.1);
-            const availWidth = Math.max(10 * scale, targetWidth - padding);
-            const availHeight = Math.max(10 * scale, targetHeight - padding);
-            
-            const maxFontSizeW = (availWidth * refSize) / maxRefWidth;
-            const maxFontSizeH = (availHeight * refSize) / refTotalHeight;
-            const calculatedMaxFontSize = Math.min(maxFontSizeW, maxFontSizeH);
-            
-            const scaledFontSize = Math.max(10 * scale, Math.min(origFontSize * scale, calculatedMaxFontSize));
-            
-            octx.font = `${customFontWeight} ${scaledFontSize}px ${customFontFamily}`;
-            octx.textAlign = 'center';
-            octx.textBaseline = 'middle';
-            octx.fillStyle = textColor;
-            
-            const lineHeight = scaledFontSize * 1.1; 
-            const totalHeight = lines.length * lineHeight;
-            let startY = (targetHeight / 2) - (totalHeight / 2) + (lineHeight / 2);
+            lines.forEach(l => { maxRefWidth = Math.max(maxRefWidth, mctx.measureText(l).width); });
+            const refTotalHeight = lines.length * refSize * 1.1;
+            const fitW = (Math.max(10 * scale, W - padding) * refSize) / maxRefWidth;
+            const fitH = (Math.max(10 * scale, H - padding) * refSize) / refTotalHeight;
+            const fontSize = Math.max(10 * scale, Math.min(userSize * scale, fitW, fitH));
 
-            lines.forEach((line, index) => {
-                octx.fillText(line, (targetWidth / 2), startY + (index * lineHeight));
-            });
+            mctx.font = `400 ${fontSize}px ${customFontFamily}`;
+            mctx.textAlign = 'center';
+            mctx.textBaseline = 'middle';
+            mctx.fillStyle = '#000';
+            const lineHeight = fontSize * 1.1;
+            const startY = H / 2 - (lines.length * lineHeight) / 2 + lineHeight / 2;
+            lines.forEach((l, i) => mctx.fillText(l, W / 2, startY + i * lineHeight));
 
-            const sourceData = octx.getImageData(0, 0, targetWidth, targetHeight);
-            const targetData = targetCtx.createImageData(targetWidth, targetHeight);
-            const sourceBuffer = new Uint32Array(sourceData.data.buffer);
-            const targetBuffer = new Uint32Array(targetData.data.buffer);
-
-            for (let y = 0; y < 400; y += origBlockSize) {
-                for (let x = 0; x < 800; x += origBlockSize) {
-                    const randX = getSpatialRandom(x, y);
-                    const randY = getSpatialRandom(x + 100, y + 100);
-
-                    const driftOffsetX = Math.round((randX - 0.5) * scaledDrift);
-                    const driftOffsetY = Math.round((randY - 0.5) * scaledDrift);
-                    
-                    const scaledX = Math.round(x * scale);
-                    const scaledY = Math.round(y * scale);
-
-                    const destX = scaledX + driftOffsetX;
-                    const destY = scaledY + driftOffsetY;
-                    
-                    const nextScaledX = Math.round((x + origBlockSize) * scale);
-                    const nextScaledY = Math.round((y + origBlockSize) * scale);
-                    
-                    const blockW = Math.min(nextScaledX - scaledX, targetWidth - scaledX);
-                    const blockH = Math.min(nextScaledY - scaledY, targetHeight - scaledY);
-
-                    for (let by = 0; by < blockH; by++) {
-                        const sy = scaledY + by;
-                        const dy = destY + by;
-                        
-                        if (dy >= 0 && dy < targetHeight) {
-                            for (let bx = 0; bx < blockW; bx++) {
-                                const sx = scaledX + bx;
-                                const dx = destX + bx;
-                                
-                                if (dx >= 0 && dx < targetWidth && sy >= 0 && sx >= 0 && sy < targetHeight && sx < targetWidth) {
-                                    const sourcePixel = sourceBuffer[sy * targetWidth + sx];
-                                    if (sourcePixel !== 0) {
-                                        targetBuffer[dy * targetWidth + dx] = sourcePixel;
-                                    }
-                                }
-                            }
-                        }
+            // Step 2: tight bounding box of the glyphs
+            const md = mctx.getImageData(0, 0, W, H);
+            const mb = new Uint32Array(md.data.buffer);
+            let minX = W, minY = H, maxX = 0, maxY = 0, has = false;
+            for (let y = 0; y < H; y++) {
+                const row = y * W;
+                for (let x = 0; x < W; x++) {
+                    if (mb[row + x] !== 0) {
+                        if (x < minX) minX = x;
+                        if (x > maxX) maxX = x;
+                        if (y < minY) minY = y;
+                        if (y > maxY) maxY = y;
+                        has = true;
                     }
                 }
             }
-            
-            targetCtx.putImageData(targetData, 0, 0);
-            return targetData;
+            if (!has) return null;
+
+            // Step 3: engrave interlaced sine ribbons on a layer
+            const layer = document.createElement('canvas');
+            layer.width = W; layer.height = H;
+            const lctx = layer.getContext('2d');
+            lctx.strokeStyle = color;
+            lctx.lineWidth = weight;
+            lctx.lineJoin = 'round';
+
+            const w = Math.max(1, maxX - minX);
+            const k = (Math.PI * 2 * cycles) / w;
+            const xStep = Math.max(1, Math.round(2 * scale));
+            const top = minY - depth - pitch;
+            const bottom = maxY + depth + pitch;
+            const count = Math.ceil((bottom - top) / pitch);
+
+            function family(sign, alpha) {
+                lctx.globalAlpha = alpha;
+                for (let i = 0; i <= count; i++) {
+                    const y0 = top + i * pitch;
+                    const ph = sign * i * twist;
+                    lctx.beginPath();
+                    for (let x = minX - xStep; x <= maxX + xStep; x += xStep) {
+                        const y = y0 + Math.sin((x - minX) * k + ph) * depth;
+                        if (x === minX - xStep) lctx.moveTo(x, y); else lctx.lineTo(x, y);
+                    }
+                    lctx.stroke();
+                }
+            }
+            family(1, 1);
+            if (weave > 0) family(-1, weave);
+            lctx.globalAlpha = 1;
+
+            // Step 4: clip engraving to the letterforms
+            lctx.globalCompositeOperation = 'destination-in';
+            lctx.drawImage(mask, 0, 0);
+
+            targetCtx.drawImage(layer, 0, 0);
+
+            // Step 5: crisp engraved outline around the letters
+            if (outline > 0) {
+                targetCtx.save();
+                targetCtx.font = `400 ${fontSize}px ${customFontFamily}`;
+                targetCtx.textAlign = 'center';
+                targetCtx.textBaseline = 'middle';
+                targetCtx.strokeStyle = color;
+                targetCtx.lineWidth = outline;
+                targetCtx.lineJoin = 'round';
+                lines.forEach((l, i) => targetCtx.strokeText(l, W / 2, startY + i * lineHeight));
+                targetCtx.restore();
+            }
+
+            return scale === 1 ? null : targetCtx.getImageData(0, 0, W, H);
         }
 
         function downloadPNG() {
-            const btn = document.querySelector('.btn-download');
-            const origText = btn.innerHTML;
-            btn.innerText = "RENDERING...";
+            const btn = document.getElementById('btnDownload');
+            const origHTML = btn.innerHTML;
+            btn.innerText = 'RENDERING...';
             btn.disabled = true;
 
             setTimeout(() => {
                 try {
-                    const scale = parseInt(document.getElementById('exportScale').value) || 4; 
-                    const targetWidth = 800 * scale; 
-                    const targetHeight = 400 * scale; 
+                    const scale = parseInt(document.getElementById('exportScale').value) || 4;
+                    const W = 800 * scale, H = 400 * scale;
+                    const tmp = document.createElement('canvas');
+                    tmp.width = W; tmp.height = H;
+                    const tctx = tmp.getContext('2d');
+                    const data = renderToCanvas(tctx, W, H, scale);
+                    if (!data) { alert('No text to download.'); return; }
 
-                    const tempCanvas = document.createElement('canvas');
-                    tempCanvas.width = targetWidth;
-                    tempCanvas.height = targetHeight;
-                    const tempCtx = tempCanvas.getContext('2d');
-
-                    const targetData = renderToCanvas(tempCtx, targetWidth, targetHeight, scale);
-
-                    if (!targetData) {
-                        btn.innerHTML = origText;
-                        btn.disabled = false;
-                        return;
-                    }
-
-                    const buffer = new Uint32Array(targetData.data.buffer);
-                    let minX = targetWidth, minY = targetHeight, maxX = 0, maxY = 0;
-                    let hasPixels = false;
-
-                    for (let y = 0; y < targetHeight; y++) {
-                        const rowOffset = y * targetWidth;
-                        for (let x = 0; x < targetWidth; x++) {
-                            if (buffer[rowOffset + x] !== 0) {
+                    const buf = new Uint32Array(data.data.buffer);
+                    let minX = W, minY = H, maxX = 0, maxY = 0, has = false;
+                    for (let y = 0; y < H; y++) {
+                        const row = y * W;
+                        for (let x = 0; x < W; x++) {
+                            if (buf[row + x] !== 0) {
                                 if (x < minX) minX = x;
                                 if (x > maxX) maxX = x;
                                 if (y < minY) minY = y;
                                 if (y > maxY) maxY = y;
-                                hasPixels = true;
+                                has = true;
                             }
                         }
                     }
+                    if (!has) { alert('No text to download.'); return; }
 
-                    if (!hasPixels) {
-                        alert("No text to download.");
-                        btn.innerHTML = origText;
-                        btn.disabled = false;
-                        return;
-                    }
-
-                    const cropW = maxX - minX + 1;
-                    const cropH = maxY - minY + 1;
-
-                    const cropCanvas = document.createElement('canvas');
-                    cropCanvas.width = cropW;
-                    cropCanvas.height = cropH;
-                    const cropCtx = cropCanvas.getContext('2d');
-                    
-                    const cropData = cropCtx.createImageData(cropW, cropH);
-                    const cropBuffer = new Uint32Array(cropData.data.buffer);
-                    
-                    for (let y = 0; y < cropH; y++) {
-                        const srcRow = (y + minY) * targetWidth;
-                        const dstRow = y * cropW;
-                        for (let x = 0; x < cropW; x++) {
-                            cropBuffer[dstRow + x] = buffer[srcRow + (x + minX)];
-                        }
-                    }
-                    cropCtx.putImageData(cropData, 0, 0);
+                    const cw = maxX - minX + 1, ch = maxY - minY + 1;
+                    const crop = document.createElement('canvas');
+                    crop.width = cw; crop.height = ch;
+                    crop.getContext('2d').drawImage(tmp, minX, minY, cw, ch, 0, 0, cw, ch);
 
                     const link = document.createElement('a');
-                    link.download = `pixel-displace-${scale}x.png`;
-                    link.href = cropCanvas.toDataURL('image/png');
+                    link.download = `guilloche-engrave-${scale}x.png`;
+                    link.href = crop.toDataURL('image/png');
                     link.click();
-
                 } catch (err) {
-                    console.error("Render error:", err);
-                    alert("An error occurred during export.");
+                    console.error('Render failed:', err);
+                    alert('An error occurred during export.');
                 } finally {
-                    btn.innerHTML = origText;
+                    btn.innerHTML = origHTML;
                     btn.disabled = false;
                 }
             }, 50);
         }
 
-        // Initialize theme colors and trigger immediate draw
+        buildSliders();
+        bindColor();
+        bindFont();
         initThemeColor();
-        draw();
+        document.getElementById('textInput').addEventListener('input', draw);
+        document.getElementById('btnDownload').addEventListener('click', downloadPNG);
 
         if (window.matchMedia) {
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
@@ -1160,11 +774,11 @@
             });
         }
 
-        if (document.fonts && document.fonts.ready) {
-            document.fonts.ready.then(() => {
-                draw();
-            });
-        }
+        draw();
+        Promise.all([
+            document.fonts.load('400 100px "Archivo Black"'),
+            document.fonts.ready
+        ]).then(draw).catch(draw);
     </script>
 </body>
 </html>
