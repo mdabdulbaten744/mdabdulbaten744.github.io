@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Topographic Contour Text Effect Maker</title>
+    <title>Gridfill Text Effect Maker</title>
     
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@900&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
 
     <style>
         /* Editorial Theme Palette with Automatic Light/Dark Mode */
@@ -26,7 +26,7 @@
             --checker-1: #efece6;
             --checker-2: #ffffff;
             --input-underline: #121212;
-            --font-editorial: 'Barlow Condensed', sans-serif;
+            --font-editorial: 'Barlow Semi Condensed', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
         }
 
@@ -65,7 +65,7 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* Semantic Header */
+        /* Semantic Header Navigation */
         header {
             width: 100%;
             max-width: 1100px;
@@ -168,7 +168,7 @@
             font-family: var(--font-editorial);
             font-weight: 900;
             color: var(--text-primary);
-            letter-spacing: 0.02em;
+            letter-spacing: 0.01em;
             resize: vertical;
             min-height: 56px;
             line-height: 1.1;
@@ -413,73 +413,90 @@
     <main role="main">
         <div class="app-layout">
             <div class="canvas-container">
-                <canvas id="canvas" width="800" height="400" aria-label="Typography preview canvas showcasing topographic contour elevation text effects"></canvas>
+                <canvas id="canvas" width="800" height="400" aria-label="Typography preview canvas showcasing geometric gridfill text effects"></canvas>
             </div>
 
             <div class="control-panel">
                 <div class="controls-group">
                     <div class="text-input-wrapper">
-                        <textarea id="textInput" class="text-input" placeholder="TYPE SOMETHING..." oninput="draw()" aria-label="Topographic Text Input Source" rows="2">SUMMIT</textarea>
+                        <textarea id="textInput" class="text-input" placeholder="TYPE SOMETHING..." oninput="draw()" aria-label="Gridfill Text Input Source" rows="2">GRIDFILL</textarea>
                     </div>
 
+                    <!-- SLIDER 01: CELL SIZE -->
                     <div class="control-row">
                         <div class="control-header">
-                            <label for="contourInterval" class="label-with-icon">
-                                <svg class="label-icon" viewBox="0 0 24 24"><path d="M2 7c4-2 8 2 12 0s6-2 8 0M2 12c4-2 8 2 12 0s6-2 8 0M2 17c4-2 8 2 12 0s6-2 8 0"/></svg>
-                                Contour Interval
+                            <label for="cellSize" class="label-with-icon">
+                                <svg class="label-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+                                Cell Size
                             </label>
-                            <span id="v_contourInterval" class="value-display" contenteditable="true" oninput="updateFromText('contourInterval')" onblur="handleBlur('contourInterval')">8px</span>
+                            <span id="v_cellSize" class="value-display" contenteditable="true" oninput="updateFromText('cellSize')" onblur="handleBlur('cellSize', 'px')">16px</span>
                         </div>
-                        <input type="range" id="contourInterval" min="4" max="24" step="1" value="8" oninput="draw()">
+                        <input type="range" id="cellSize" min="6" max="48" step="1" value="16" oninput="draw()">
                     </div>
 
+                    <!-- SLIDER 02: GRID SPACING -->
                     <div class="control-row">
                         <div class="control-header">
-                            <label for="surveyRange" class="label-with-icon">
-                                <svg class="label-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>
-                                Survey Range
+                            <label for="gridSpacing" class="label-with-icon">
+                                <svg class="label-icon" viewBox="0 0 24 24"><rect x="3" y="5" width="6" height="14"/><rect x="15" y="5" width="6" height="14"/><path d="M9 12h6M11 10l-2 2 2 2M13 10l2 2-2 2"/></svg>
+                                Grid Spacing
                             </label>
-                            <span id="v_surveyRange" class="value-display" contenteditable="true" oninput="updateFromText('surveyRange')" onblur="handleBlur('surveyRange')">55px</span>
+                            <span id="v_gridSpacing" class="value-display" contenteditable="true" oninput="updateFromText('gridSpacing')" onblur="handleBlur('gridSpacing', '%')">12%</span>
                         </div>
-                        <input type="range" id="surveyRange" min="10" max="120" step="1" value="55" oninput="draw()">
+                        <input type="range" id="gridSpacing" min="0" max="40" step="1" value="12" oninput="draw()">
                     </div>
 
+                    <!-- SLIDER 03: ALTERNATE OFFSET -->
                     <div class="control-row">
                         <div class="control-header">
-                            <label for="ruggedness" class="label-with-icon">
-                                <svg class="label-icon" viewBox="0 0 24 24"><path d="M3 19L8.5 9l4 7 3.5-5 5 8H3z"/></svg>
-                                Ridge Ruggedness
+                            <label for="alternateOffset" class="label-with-icon">
+                                <svg class="label-icon" viewBox="0 0 24 24"><rect x="3" y="4" width="8" height="6"/><rect x="13" y="4" width="8" height="6"/><rect x="7" y="14" width="8" height="6"/><path d="M3 14h2M17 14h4"/></svg>
+                                Alternate Offset
                             </label>
-                            <span id="v_ruggedness" class="value-display" contenteditable="true" oninput="updateFromText('ruggedness')" onblur="handleBlur('ruggedness', '%')">45%</span>
+                            <span id="v_alternateOffset" class="value-display" contenteditable="true" oninput="updateFromText('alternateOffset')" onblur="handleBlur('alternateOffset', '%')">50%</span>
                         </div>
-                        <input type="range" id="ruggedness" min="0" max="100" step="1" value="45" oninput="draw()">
+                        <input type="range" id="alternateOffset" min="0" max="100" step="1" value="50" oninput="draw()">
                     </div>
 
+                    <!-- EXPANDABLE COLOR AND SIZE SECTION -->
                     <details class="advanced-options">
-                        <summary>Color, Size & Cartography</summary>
+                        <summary>Color and Size</summary>
                         <div class="advanced-grid">
+                            <div class="control-row">
+                                <div class="control-header">
+                                    <label for="colorA" class="label-with-icon">
+                                        <svg class="label-icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+                                        Cell Color A
+                                    </label>
+                                </div>
+                                <div class="color-selector">
+                                    <input type="color" id="colorA" value="#121212" oninput="updateColorLabel('colorA', this.value)">
+                                    <span id="v_colorA" class="value-display" contenteditable="true" style="font-size: 0.75rem;" oninput="updateFromColorText('colorA')" onblur="handleColorBlur('colorA')">#121212</span>
+                                </div>
+                            </div>
+
+                            <div class="control-row">
+                                <div class="control-header">
+                                    <label for="colorB" class="label-with-icon">
+                                        <svg class="label-icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" stroke-dasharray="3 3"/></svg>
+                                        Cell Color B
+                                    </label>
+                                </div>
+                                <div class="color-selector">
+                                    <input type="color" id="colorB" value="#8C877E" oninput="updateColorLabel('colorB', this.value)">
+                                    <span id="v_colorB" class="value-display" contenteditable="true" style="font-size: 0.75rem;" oninput="updateFromColorText('colorB')" onblur="handleColorBlur('colorB')">#8C877E</span>
+                                </div>
+                            </div>
+
                             <div class="control-row">
                                 <div class="control-header">
                                     <label for="fontSize" class="label-with-icon">
                                         <svg class="label-icon" viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
                                         Size
                                     </label>
-                                    <span id="v_fontSize" class="value-display" contenteditable="true" oninput="updateFromText('fontSize')" onblur="handleBlur('fontSize')">140px</span>
+                                    <span id="v_fontSize" class="value-display" contenteditable="true" oninput="updateFromText('fontSize')" onblur="handleBlur('fontSize', 'px')">140px</span>
                                 </div>
                                 <input type="range" id="fontSize" min="30" max="250" value="140" oninput="draw()">
-                            </div>
-
-                            <div class="control-row">
-                                <div class="control-header">
-                                    <label for="textColor" class="label-with-icon">
-                                        <svg class="label-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z"/></svg>
-                                        Color
-                                    </label>
-                                </div>
-                                <div class="color-selector">
-                                    <input type="color" id="textColor" value="#000000" oninput="updateColorLabel(this.value)">
-                                    <span id="v_color" class="value-display" contenteditable="true" style="font-size: 0.75rem;" oninput="updateFromColorText()" onblur="handleColorBlur()">#000000</span>
-                                </div>
                             </div>
 
                             <div class="control-row">
@@ -493,35 +510,7 @@
                                 <input type="file" id="fontInput" accept=".ttf,.otf,.woff,.woff2" onchange="handleFontUpload(event)" style="display: none;">
                             </div>
 
-                            <div class="control-row">
-                                <div class="control-header">
-                                    <label for="topoStyle" class="label-with-icon">
-                                        <svg class="label-icon" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                                        Topo Style
-                                    </label>
-                                </div>
-                                <select id="topoStyle" class="export-dropdown" onchange="draw()">
-                                    <option value="solid" selected>Solid Ink + Contours</option>
-                                    <option value="hollow">Pure Contours (Wireframe)</option>
-                                    <option value="summits">Peaks & Valleys (Full SDF)</option>
-                                </select>
-                            </div>
-
-                            <div class="control-row">
-                                <div class="control-header">
-                                    <label for="indexAccents" class="label-with-icon">
-                                        <svg class="label-icon" viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h16M18 9l3 3-3 3"/></svg>
-                                        Index Accents
-                                    </label>
-                                </div>
-                                <select id="indexAccents" class="export-dropdown" onchange="draw()">
-                                    <option value="elevation" selected>Index Lines + Elevation (m)</option>
-                                    <option value="bold">Bold Index Lines Only</option>
-                                    <option value="uniform">Uniform Line Weights</option>
-                                </select>
-                            </div>
-
-                            <div class="control-row">
+                            <div class="control-row" style="grid-column: span 2;">
                                 <div class="control-header">
                                     <label for="exportScale" class="label-with-icon">
                                         <svg class="label-icon" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
@@ -552,136 +541,27 @@
     <footer role="contentinfo"></footer>
 
     <script>
-        // --- High-Performance Deterministic Perlin Noise ---
-        const Perlin = {
-            p: new Uint8Array(512),
-            init: function() {
-                const permutation = [
-                    151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,
-                    190,6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,88,237,149,56,87,174,20,
-                    125,136,171,168,68,175,74,165,71,134,139,48,27,166,77,146,158,231,83,111,229,122,60,211,133,230,220,
-                    105,92,41,55,46,245,40,244,102,143,54,65,25,63,161,1,216,80,73,209,76,132,187,208,89,18,169,200,196,
-                    135,130,116,188,159,86,164,100,109,198,173,186,3,64,52,217,226,250,124,123,5,202,38,147,118,126,255,
-                    82,85,212,207,206,59,227,47,16,58,17,182,189,28,42,223,183,170,213,119,248,152,2,44,145,31,179,228,
-                    165,55,110,178,224,183,225,40,242,172,239,249,14,236,97,21,50,45,127,4,150,254,138,209,204,184,218,
-                    61,84,121,98,223,34,39,176,155,51,193,113,70,213,9,144,3,180,243,108,181,241,251,114,238,205,107,
-                    177,157,167,115,195,192,67,69,215,128,1,214,141,93,246,24,185,199,147,22,66,129,222,61,191,101,43,
-                    210,106,41,253,153,112,149,154,156,127,152,78,162,171,81,21,120,207,11,104,221,58,18,24,206,24,242,123
-                ];
-                for (let i = 0; i < 256; i++) {
-                    this.p[256 + i] = this.p[i] = permutation[i % permutation.length];
-                }
-            },
-            fade: function(t) { return t * t * t * (t * (t * 6 - 15) + 10); },
-            lerp: function(t, a, b) { return a + t * (b - a); },
-            grad: function(hash, x, y) {
-                const h = hash & 7;
-                const u = h < 4 ? x : y;
-                const v = h < 4 ? y : x;
-                return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
-            },
-            noise: function(x, y) {
-                const X = Math.floor(x) & 255;
-                const Y = Math.floor(y) & 255;
-                x -= Math.floor(x);
-                y -= Math.floor(y);
-                const u = this.fade(x);
-                const v = this.fade(y);
-                const A = this.p[X] + Y, B = this.p[X + 1] + Y;
-                return this.lerp(
-                    v,
-                    this.lerp(u, this.grad(this.p[A], x, y), this.grad(this.p[B], x - 1, y)),
-                    this.lerp(u, this.grad(this.p[A + 1], x, y - 1), this.grad(this.p[B + 1], x - 1, y - 1))
-                );
-            }
-        };
-        Perlin.init();
-
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        let customFontFamily = '"Barlow Condensed", sans-serif';
-
-        const DESIGN_W = 800;
-        const DESIGN_H = 400;
-
-        // Euclidean Distance Transform (EDT) buffers & lookup tables
-        const GRID_STEP = 2;
-        const GRID_COLS = Math.floor(DESIGN_W / GRID_STEP) + 1; // 401
-        const GRID_ROWS = Math.floor(DESIGN_H / GRID_STEP) + 1; // 201
-        const GRID_SIZE = GRID_COLS * GRID_ROWS;
-
-        const fOut = new Float32Array(GRID_SIZE);
-        const fIn = new Float32Array(GRID_SIZE);
-        const tempOut = new Float32Array(GRID_SIZE);
-        const tempIn = new Float32Array(GRID_SIZE);
-        const distSqOut = new Float32Array(GRID_SIZE);
-        const distSqIn = new Float32Array(GRID_SIZE);
-        const field = new Float32Array(GRID_SIZE);
-
-        const MAX_DIM = Math.max(GRID_COLS, GRID_ROWS);
-        const colInBuff = new Float32Array(MAX_DIM);
-        const colOutBuff = new Float32Array(MAX_DIM);
-        const vBuff = new Int32Array(MAX_DIM);
-        const zBuff = new Float32Array(MAX_DIM + 1);
-
-        // Felzenszwalb-Huttenlocher 1D Squared Distance Transform
-        function edt1d(f, d, n) {
-            let k = 0;
-            vBuff[0] = 0;
-            zBuff[0] = -1e20;
-            zBuff[1] = 1e20;
-            for (let q = 1; q < n; q++) {
-                let s = ((f[q] + q * q) - (f[vBuff[k]] + vBuff[k] * vBuff[k])) / (2 * q - 2 * vBuff[k]);
-                while (s <= zBuff[k]) {
-                    k--;
-                    s = ((f[q] + q * q) - (f[vBuff[k]] + vBuff[k] * vBuff[k])) / (2 * q - 2 * vBuff[k]);
-                }
-                k++;
-                vBuff[k] = q;
-                zBuff[k] = s;
-                zBuff[k + 1] = 1e20;
-            }
-            k = 0;
-            for (let q = 0; q < n; q++) {
-                while (zBuff[k + 1] < q) k++;
-                const diff = q - vBuff[k];
-                d[q] = diff * diff + f[vBuff[k]];
-            }
-        }
-
-        // 2D Separable Distance Transform
-        function compute2DEDT(fGrid, distGrid, tempGrid) {
-            // Pass 1: Columns
-            for (let x = 0; x < GRID_COLS; x++) {
-                for (let y = 0; y < GRID_ROWS; y++) {
-                    colInBuff[y] = fGrid[y * GRID_COLS + x];
-                }
-                edt1d(colInBuff, colOutBuff, GRID_ROWS);
-                for (let y = 0; y < GRID_ROWS; y++) {
-                    tempGrid[y * GRID_COLS + x] = colOutBuff[y];
-                }
-            }
-            // Pass 2: Rows
-            for (let y = 0; y < GRID_ROWS; y++) {
-                const rowOffset = y * GRID_COLS;
-                for (let x = 0; x < GRID_COLS; x++) {
-                    colInBuff[x] = tempGrid[rowOffset + x];
-                }
-                edt1d(colInBuff, colOutBuff, GRID_COLS);
-                for (let x = 0; x < GRID_COLS; x++) {
-                    distGrid[rowOffset + x] = colOutBuff[x];
-                }
-            }
-        }
+        let customFontFamily = '"Barlow Semi Condensed", sans-serif';
 
         function initThemeColor() {
             const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const defaultColor = isDark ? '#FFFFFF' : '#000000';
-            const textColorInput = document.getElementById('textColor');
-            const colorSpan = document.getElementById('v_color');
-            if (textColorInput && colorSpan) {
-                textColorInput.value = defaultColor;
-                colorSpan.innerText = defaultColor;
+            const defaultColorA = isDark ? '#F0EEE9' : '#121212';
+            const defaultColorB = isDark ? '#736E65' : '#8C877E';
+
+            const inputA = document.getElementById('colorA');
+            const spanA = document.getElementById('v_colorA');
+            const inputB = document.getElementById('colorB');
+            const spanB = document.getElementById('v_colorB');
+
+            if (inputA && spanA) {
+                inputA.value = defaultColorA;
+                spanA.innerText = defaultColorA;
+            }
+            if (inputB && spanB) {
+                inputB.value = defaultColorB;
+                spanB.innerText = defaultColorB;
             }
         }
 
@@ -692,10 +572,15 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 const fontName = 'CustomFont_' + Date.now();
-                const font = new FontFace(fontName, e.target.result);
+                let font;
+                try {
+                    font = new FontFace(fontName, e.target.result, { weight: '100 900' });
+                } catch (err) {
+                    font = new FontFace(fontName, e.target.result);
+                }
                 font.load().then(function(loadedFont) {
                     document.fonts.add(loadedFont);
-                    customFontFamily = `"${fontName}", "Barlow Condensed", sans-serif`;
+                    customFontFamily = `"${fontName}", "Barlow Semi Condensed", sans-serif`;
                     const label = document.getElementById('fontLabel');
                     if (label) label.innerText = file.name;
                     draw();
@@ -707,17 +592,17 @@
             reader.readAsArrayBuffer(file);
         }
 
-        function updateColorLabel(colorVal) {
-            const span = document.getElementById('v_color');
+        function updateColorLabel(id, colorVal) {
+            const span = document.getElementById('v_' + id);
             if (document.activeElement !== span) {
                 span.innerText = colorVal.toUpperCase();
             }
             draw();
         }
 
-        function updateFromColorText() {
-            const span = document.getElementById('v_color');
-            const input = document.getElementById('textColor');
+        function updateFromColorText(id) {
+            const span = document.getElementById('v_' + id);
+            const input = document.getElementById(id);
             let val = span.innerText.trim();
             if (!val.startsWith('#')) {
                 val = '#' + val;
@@ -731,9 +616,9 @@
             }
         }
 
-        function handleColorBlur() {
-            const span = document.getElementById('v_color');
-            const input = document.getElementById('textColor');
+        function handleColorBlur(id) {
+            const span = document.getElementById('v_' + id);
+            const input = document.getElementById(id);
             span.innerText = input.value.toUpperCase();
         }
 
@@ -772,374 +657,142 @@
             renderToCanvas(ctx, canvas.width, canvas.height, 1);
         }
 
-        // Fast Marching Squares Segment Extractor
-        function traceContour(V, targetCtx, labelCandidates) {
-            for (let r = 0; r < GRID_ROWS - 1; r++) {
-                const rOffset = r * GRID_COLS;
-                const nextROffset = (r + 1) * GRID_COLS;
-                const y0 = r * GRID_STEP;
-                const y1 = (r + 1) * GRID_STEP;
-
-                for (let c = 0; c < GRID_COLS - 1; c++) {
-                    const v0 = field[rOffset + c];
-                    const v1 = field[rOffset + c + 1];
-                    const v2 = field[nextROffset + c + 1];
-                    const v3 = field[nextROffset + c];
-
-                    const b0 = v0 >= V ? 1 : 0;
-                    const b1 = v1 >= V ? 2 : 0;
-                    const b2 = v2 >= V ? 4 : 0;
-                    const b3 = v3 >= V ? 8 : 0;
-                    const caseIdx = b0 | b1 | b2 | b3;
-
-                    if (caseIdx === 0 || caseIdx === 15) continue;
-
-                    const x0 = c * GRID_STEP;
-                    const x1 = (c + 1) * GRID_STEP;
-
-                    // Interpolated edge points
-                    const tTop = (V - v0) / (v1 - v0);
-                    const pTopX = x0 + tTop * GRID_STEP;
-                    const pTopY = y0;
-
-                    const tRight = (V - v1) / (v2 - v1);
-                    const pRightX = x1;
-                    const pRightY = y0 + tRight * GRID_STEP;
-
-                    const tBottom = (V - v3) / (v2 - v3);
-                    const pBottomX = x0 + tBottom * GRID_STEP;
-                    const pBottomY = y1;
-
-                    const tLeft = (V - v0) / (v3 - v0);
-                    const pLeftX = x0;
-                    const pLeftY = y0 + tLeft * GRID_STEP;
-
-                    let segStartX, segStartY, segEndX, segEndY;
-
-                    switch (caseIdx) {
-                        case 1:
-                        case 14:
-                            segStartX = pLeftX; segStartY = pLeftY;
-                            segEndX = pTopX; segEndY = pTopY;
-                            targetCtx.moveTo(pLeftX, pLeftY);
-                            targetCtx.lineTo(pTopX, pTopY);
-                            break;
-                        case 2:
-                        case 13:
-                            segStartX = pTopX; segStartY = pTopY;
-                            segEndX = pRightX; segEndY = pRightY;
-                            targetCtx.moveTo(pTopX, pTopY);
-                            targetCtx.lineTo(pRightX, pRightY);
-                            break;
-                        case 3:
-                        case 12:
-                            segStartX = pLeftX; segStartY = pLeftY;
-                            segEndX = pRightX; segEndY = pRightY;
-                            targetCtx.moveTo(pLeftX, pLeftY);
-                            targetCtx.lineTo(pRightX, pRightY);
-                            break;
-                        case 4:
-                        case 11:
-                            segStartX = pRightX; segStartY = pRightY;
-                            segEndX = pBottomX; segEndY = pBottomY;
-                            targetCtx.moveTo(pRightX, pRightY);
-                            targetCtx.lineTo(pBottomX, pBottomY);
-                            break;
-                        case 5: {
-                            const center = (v0 + v1 + v2 + v3) * 0.25;
-                            if (center >= V) {
-                                targetCtx.moveTo(pLeftX, pLeftY);
-                                targetCtx.lineTo(pTopX, pTopY);
-                                targetCtx.moveTo(pBottomX, pBottomY);
-                                targetCtx.lineTo(pRightX, pRightY);
-                            } else {
-                                targetCtx.moveTo(pLeftX, pLeftY);
-                                targetCtx.lineTo(pBottomX, pBottomY);
-                                targetCtx.moveTo(pTopX, pTopY);
-                                targetCtx.lineTo(pRightX, pRightY);
-                            }
-                            segStartX = pLeftX; segStartY = pLeftY;
-                            segEndX = pTopX; segEndY = pTopY;
-                            break;
-                        }
-                        case 6:
-                        case 9:
-                            segStartX = pTopX; segStartY = pTopY;
-                            segEndX = pBottomX; segEndY = pBottomY;
-                            targetCtx.moveTo(pTopX, pTopY);
-                            targetCtx.lineTo(pBottomX, pBottomY);
-                            break;
-                        case 7:
-                        case 8:
-                            segStartX = pLeftX; segStartY = pLeftY;
-                            segEndX = pBottomX; segEndY = pBottomY;
-                            targetCtx.moveTo(pLeftX, pLeftY);
-                            targetCtx.lineTo(pBottomX, pBottomY);
-                            break;
-                        case 10: {
-                            const center = (v0 + v1 + v2 + v3) * 0.25;
-                            if (center >= V) {
-                                targetCtx.moveTo(pTopX, pTopY);
-                                targetCtx.lineTo(pRightX, pRightY);
-                                targetCtx.moveTo(pLeftX, pLeftY);
-                                targetCtx.lineTo(pBottomX, pBottomY);
-                            } else {
-                                targetCtx.moveTo(pTopX, pTopY);
-                                targetCtx.lineTo(pLeftX, pLeftY);
-                                targetCtx.moveTo(pRightX, pRightY);
-                                targetCtx.lineTo(pBottomX, pBottomY);
-                            }
-                            segStartX = pTopX; segStartY = pTopY;
-                            segEndX = pRightX; segEndY = pRightY;
-                            break;
-                        }
-                    }
-
-                    // Collect clean elevation tag candidates on index contours
-                    if (labelCandidates && segStartX !== undefined) {
-                        const midX = (segStartX + segEndX) * 0.5;
-                        const midY = (segStartY + segEndY) * 0.5;
-                        if (midX > 70 && midX < DESIGN_W - 70 && midY > 30 && midY < DESIGN_H - 30) {
-                            const dx = segEndX - segStartX;
-                            const dy = segEndY - segStartY;
-                            const angle = Math.atan2(dy, dx);
-                            // Prefer gently sloping segments for clean label readability
-                            if (Math.abs(Math.sin(angle)) < 0.65) {
-                                labelCandidates.push({ x: midX, y: midY, angle: angle, val: V });
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         function renderToCanvas(targetCtx, targetWidth, targetHeight, scale) {
             const text = document.getElementById('textInput').value;
+            
+            const origCellSize = parseInt(document.getElementById('cellSize').value) || 16;
+            const origSpacing = (parseInt(document.getElementById('gridSpacing').value) || 0) / 100;
+            const origOffset = (parseInt(document.getElementById('alternateOffset').value) || 0) / 100;
+            const origFontSize = parseInt(document.getElementById('fontSize').value) || 140;
 
-            let origInterval = parseInt(document.getElementById('contourInterval').value);
-            if (isNaN(origInterval) || origInterval < 4) origInterval = 4;
-
-            let origRange = parseInt(document.getElementById('surveyRange').value);
-            if (isNaN(origRange) || origRange < 10) origRange = 10;
-
-            const origRugged = parseInt(document.getElementById('ruggedness').value);
-            const origFontSize = parseInt(document.getElementById('fontSize').value);
-            const textColor = document.getElementById('textColor').value;
-            const topoStyle = document.getElementById('topoStyle').value;
-            const indexAccents = document.getElementById('indexAccents').value;
+            const colorA = document.getElementById('colorA').value;
+            const colorB = document.getElementById('colorB').value;
 
             if (scale === 1) {
-                if (document.activeElement !== document.getElementById('v_contourInterval')) {
-                    document.getElementById('v_contourInterval').innerText = origInterval + 'px';
+                if (document.activeElement !== document.getElementById('v_cellSize')) {
+                    document.getElementById('v_cellSize').innerText = origCellSize + 'px';
                 }
-                if (document.activeElement !== document.getElementById('v_surveyRange')) {
-                    document.getElementById('v_surveyRange').innerText = origRange + 'px';
+                if (document.activeElement !== document.getElementById('v_gridSpacing')) {
+                    document.getElementById('v_gridSpacing').innerText = Math.round(origSpacing * 100) + '%';
                 }
-                if (document.activeElement !== document.getElementById('v_ruggedness')) {
-                    document.getElementById('v_ruggedness').innerText = origRugged + '%';
+                if (document.activeElement !== document.getElementById('v_alternateOffset')) {
+                    document.getElementById('v_alternateOffset').innerText = Math.round(origOffset * 100) + '%';
                 }
                 if (document.activeElement !== document.getElementById('v_fontSize')) {
                     document.getElementById('v_fontSize').innerText = origFontSize + 'px';
                 }
-                if (document.activeElement !== document.getElementById('v_color')) {
-                    document.getElementById('v_color').innerText = textColor.toUpperCase();
+                if (document.activeElement !== document.getElementById('v_colorA')) {
+                    document.getElementById('v_colorA').innerText = colorA.toUpperCase();
+                }
+                if (document.activeElement !== document.getElementById('v_colorB')) {
+                    document.getElementById('v_colorB').innerText = colorB.toUpperCase();
                 }
             }
 
-            targetCtx.setTransform(1, 0, 0, 1, 0, 0);
             targetCtx.clearRect(0, 0, targetWidth, targetHeight);
-
             if (!text.trim()) return null;
 
-            // Render clean base typography mask into 800x400 design space
-            const offscreen = document.createElement('canvas');
-            offscreen.width = DESIGN_W;
-            offscreen.height = DESIGN_H;
-            const octx = offscreen.getContext('2d');
+            // Step 1: Render vector text mask into an offscreen canvas
+            const textCanvas = document.createElement('canvas');
+            textCanvas.width = targetWidth;
+            textCanvas.height = targetHeight;
+            const tctx = textCanvas.getContext('2d');
 
             const lines = text.split('\n');
-            const padding = (origRange * 2) + 36;
+            const padding = 40 * scale;
 
-            const refSize = 100;
-            octx.font = `900 ${refSize}px ${customFontFamily}`;
+            const refSize = 100 * scale;
+            tctx.font = `900 ${refSize}px ${customFontFamily}`;
             let maxRefWidth = 1;
             lines.forEach(line => {
-                const width = octx.measureText(line).width;
+                let width = tctx.measureText(line).width;
                 if (width > maxRefWidth) maxRefWidth = width;
             });
 
-            const refTotalHeight = lines.length * (refSize * 1.08);
-
-            const availWidth = Math.max(10, DESIGN_W - padding);
-            const availHeight = Math.max(10, DESIGN_H - padding);
+            const refTotalHeight = lines.length * (refSize * 1.1);
+            const availWidth = Math.max(10 * scale, targetWidth - padding);
+            const availHeight = Math.max(10 * scale, targetHeight - padding);
 
             const maxFontSizeW = (availWidth * refSize) / maxRefWidth;
             const maxFontSizeH = (availHeight * refSize) / refTotalHeight;
             const calculatedMaxFontSize = Math.min(maxFontSizeW, maxFontSizeH);
+            const scaledFontSize = Math.max(10 * scale, Math.min(origFontSize * scale, calculatedMaxFontSize));
 
-            const baseFontSize = Math.max(12, Math.min(origFontSize, calculatedMaxFontSize));
+            tctx.font = `900 ${scaledFontSize}px ${customFontFamily}`;
+            tctx.textAlign = 'center';
+            tctx.textBaseline = 'middle';
+            tctx.fillStyle = '#000000';
 
-            octx.font = `900 ${baseFontSize}px ${customFontFamily}`;
-            octx.textAlign = 'center';
-            octx.textBaseline = 'middle';
-            octx.fillStyle = textColor;
-
-            const lineHeight = baseFontSize * 1.08;
+            const lineHeight = scaledFontSize * 1.1;
             const totalHeight = lines.length * lineHeight;
-            const startY = (DESIGN_H / 2) - (totalHeight / 2) + (lineHeight / 2);
+            let startY = (targetHeight / 2) - (totalHeight / 2) + (lineHeight / 2);
 
             lines.forEach((line, index) => {
-                octx.fillText(line, (DESIGN_W / 2), startY + (index * lineHeight));
+                tctx.fillText(line, targetWidth / 2, startY + (index * lineHeight));
             });
 
-            // Sample text mask pixels at grid coordinates
-            const imgData = octx.getImageData(0, 0, DESIGN_W, DESIGN_H);
-            const textPixels = imgData.data;
+            // Step 2: Render continuous geometric checkerboard into offscreen grid canvas
+            const gridCanvas = document.createElement('canvas');
+            gridCanvas.width = targetWidth;
+            gridCanvas.height = targetHeight;
+            const gctx = gridCanvas.getContext('2d');
 
-            const INF = 1e10;
-            for (let r = 0; r < GRID_ROWS; r++) {
-                const py = Math.min(DESIGN_H - 1, r * GRID_STEP);
-                const rowOffset = py * DESIGN_W;
-                const gRowOffset = r * GRID_COLS;
-                for (let c = 0; c < GRID_COLS; c++) {
-                    const px = Math.min(DESIGN_W - 1, c * GRID_STEP);
-                    const isInk = textPixels[(rowOffset + px) * 4 + 3] > 128;
-                    if (isInk) {
-                        fOut[gRowOffset + c] = 0;
-                        fIn[gRowOffset + c] = INF;
+            const side = Math.max(2, origCellSize * scale);
+            const gap = side * origSpacing;
+            const pitch = side + gap;
+
+            const cx = targetWidth / 2;
+            const cy = targetHeight / 2;
+
+            const rStart = Math.floor((-cy) / pitch) - 2;
+            const rEnd = Math.ceil((targetHeight - cy) / pitch) + 2;
+
+            const rectsA = [];
+            const rectsB = [];
+
+            for (let r = rStart; r <= rEnd; r++) {
+                const isOddRow = ((r % 2 + 2) % 2) === 1;
+                const rowShift = isOddRow ? (origOffset * pitch) : 0;
+                const rowY = cy + (r * pitch) - (side / 2);
+
+                const cStart = Math.floor((-cx - rowShift) / pitch) - 2;
+                const cEnd = Math.ceil((targetWidth - cx - rowShift) / pitch) + 2;
+
+                for (let c = cStart; c <= cEnd; c++) {
+                    const colX = cx + rowShift + (c * pitch) - (side / 2);
+                    const parity = (((r % 2 + 2) % 2) + ((c % 2 + 2) % 2)) % 2;
+
+                    if (parity === 0) {
+                        rectsA.push(colX, rowY);
                     } else {
-                        fOut[gRowOffset + c] = INF;
-                        fIn[gRowOffset + c] = 0;
+                        rectsB.push(colX, rowY);
                     }
                 }
             }
 
-            // Compute exact Euclidean distance fields
-            compute2DEDT(fOut, distSqOut, tempOut);
-            compute2DEDT(fIn, distSqIn, tempIn);
-
-            // Synthesize signed distance field + cartographic geological noise
-            for (let r = 0; r < GRID_ROWS; r++) {
-                const gRowOffset = r * GRID_COLS;
-                const ny = r * GRID_STEP;
-                for (let c = 0; c < GRID_COLS; c++) {
-                    const idx = gRowOffset + c;
-                    const dOut = Math.sqrt(distSqOut[idx]) * GRID_STEP;
-                    const dIn = Math.sqrt(distSqIn[idx]) * GRID_STEP;
-                    const sdf = dOut - dIn;
-
-                    const nx = c * GRID_STEP;
-                    const n = Perlin.noise(nx * 0.0075, ny * 0.0075) * 0.72 +
-                              Perlin.noise(nx * 0.024, ny * 0.024) * 0.28;
-
-                    const absSdf = Math.abs(sdf);
-                    const noiseWeight = (origRugged / 100) * 16 * Math.min(1.0, 0.22 + absSdf * 0.035);
-                    field[idx] = sdf + n * noiseWeight;
-                }
+            // Draw Color A cells
+            gctx.fillStyle = colorA;
+            gctx.beginPath();
+            for (let i = 0; i < rectsA.length; i += 2) {
+                gctx.rect(rectsA[i], rectsA[i + 1], side, side);
             }
+            gctx.fill();
 
-            // Collect contour elevation levels
-            const regularLevels = [];
-            const indexLevels = [];
-
-            // Outer descending contours (valleys / plains)
-            for (let v = origInterval; v <= origRange; v += origInterval) {
-                const contourIdx = Math.round(v / origInterval);
-                const isIndex = (indexAccents !== 'uniform') && (contourIdx % 5 === 0);
-                if (isIndex) indexLevels.push(v);
-                else regularLevels.push(v);
+            // Draw Color B cells
+            gctx.fillStyle = colorB;
+            gctx.beginPath();
+            for (let i = 0; i < rectsB.length; i += 2) {
+                gctx.rect(rectsB[i], rectsB[i + 1], side, side);
             }
+            gctx.fill();
 
-            // Zero baseline contour (coastline)
-            if (topoStyle !== 'solid') {
-                indexLevels.push(0);
-            }
+            // Step 3: Mask the grid directly to the text silhouette and counters
+            gctx.globalCompositeOperation = 'destination-in';
+            gctx.drawImage(textCanvas, 0, 0);
 
-            // Inner ascending contours (mountain peak summits)
-            if (topoStyle === 'summits') {
-                for (let v = -origInterval; v >= -origRange * 0.65; v -= origInterval) {
-                    const contourIdx = Math.round(Math.abs(v) / origInterval);
-                    const isIndex = (indexAccents !== 'uniform') && (contourIdx % 5 === 0);
-                    if (isIndex) indexLevels.push(v);
-                    else regularLevels.push(v);
-                }
-            }
+            // Step 4: Transfer final masked output to target canvas
+            targetCtx.drawImage(gridCanvas, 0, 0);
 
-            targetCtx.save();
-            targetCtx.setTransform(scale, 0, 0, scale, 0, 0);
-
-            // Layer 1: Solid Typography Core
-            if (topoStyle === 'solid') {
-                targetCtx.drawImage(offscreen, 0, 0);
-            }
-
-            // Layer 2: Intermediate Elevation Contours (Hairline precision)
-            targetCtx.strokeStyle = textColor;
-            targetCtx.lineWidth = 0.75;
-            targetCtx.lineCap = 'round';
-            targetCtx.lineJoin = 'round';
-
-            targetCtx.beginPath();
-            regularLevels.forEach(v => traceContour(v, targetCtx, null));
-            targetCtx.stroke();
-
-            // Layer 3: Index Elevation Contours (Heavy cartographic lines)
-            const labelCandidates = [];
-            targetCtx.lineWidth = (indexAccents === 'uniform') ? 0.75 : 1.85;
-
-            targetCtx.beginPath();
-            indexLevels.forEach(v => traceContour(v, targetCtx, (indexAccents === 'elevation') ? labelCandidates : null));
-            targetCtx.stroke();
-
-            // Layer 4: Cartographic Elevation Tags along Index Lines
-            if (indexAccents === 'elevation' && labelCandidates.length > 0) {
-                const placedLabels = [];
-                const minLabelDistance = 140;
-
-                for (let i = 0; i < labelCandidates.length; i++) {
-                    const cand = labelCandidates[i];
-                    if (cand.val === 0) continue; // Keep shoreline clean
-
-                    // Ensure labels are well spaced
-                    let tooClose = false;
-                    for (let p = 0; p < placedLabels.length; p++) {
-                        const dist = Math.hypot(cand.x - placedLabels[p].x, cand.y - placedLabels[p].y);
-                        if (dist < minLabelDistance) {
-                            tooClose = true;
-                            break;
-                        }
-                    }
-                    if (tooClose) continue;
-
-                    let ang = cand.angle;
-                    if (ang > Math.PI / 2) ang -= Math.PI;
-                    if (ang < -Math.PI / 2) ang += Math.PI;
-
-                    const labelText = String(Math.abs(Math.round(cand.val * 8))) + 'm';
-                    const tagW = labelText.length * 5.2 + 6;
-
-                    targetCtx.save();
-                    targetCtx.translate(cand.x, cand.y);
-                    targetCtx.rotate(ang);
-
-                    // Clear contour line beneath badge for transparent export compatibility
-                    targetCtx.globalCompositeOperation = 'destination-out';
-                    targetCtx.fillRect(-tagW / 2, -5.5, tagW, 11);
-
-                    // Draw crisp elevation readout
-                    targetCtx.globalCompositeOperation = 'source-over';
-                    targetCtx.fillStyle = textColor;
-                    targetCtx.font = `600 7.5px ${getComputedStyle(document.body).getPropertyValue('--font-mono')}`;
-                    targetCtx.textAlign = 'center';
-                    targetCtx.textBaseline = 'middle';
-                    targetCtx.fillText(labelText, 0, 0.5);
-
-                    targetCtx.restore();
-                    placedLabels.push(cand);
-                }
-            }
-
-            targetCtx.restore();
             return targetCtx.getImageData(0, 0, targetWidth, targetHeight);
         }
 
@@ -1151,9 +804,9 @@
 
             setTimeout(() => {
                 try {
-                    const scale = parseInt(document.getElementById('exportScale').value) || 4; 
-                    const targetWidth = DESIGN_W * scale; 
-                    const targetHeight = DESIGN_H * scale; 
+                    const scale = parseInt(document.getElementById('exportScale').value) || 4;
+                    const targetWidth = 800 * scale;
+                    const targetHeight = 400 * scale;
 
                     const tempCanvas = document.createElement('canvas');
                     tempCanvas.width = targetWidth;
@@ -1163,6 +816,7 @@
                     const targetData = renderToCanvas(tempCtx, targetWidth, targetHeight, scale);
 
                     if (!targetData) {
+                        alert("No text to download.");
                         btn.innerHTML = origText;
                         btn.disabled = false;
                         return;
@@ -1199,10 +853,10 @@
                     cropCanvas.width = cropW;
                     cropCanvas.height = cropH;
                     const cropCtx = cropCanvas.getContext('2d');
-                    
+
                     const cropData = cropCtx.createImageData(cropW, cropH);
                     const cropBuffer = new Uint32Array(cropData.data.buffer);
-                    
+
                     for (let y = 0; y < cropH; y++) {
                         const srcRow = (y + minY) * targetWidth;
                         const dstRow = y * cropW;
@@ -1213,12 +867,12 @@
                     cropCtx.putImageData(cropData, 0, 0);
 
                     const link = document.createElement('a');
-                    link.download = `topo-contour-${scale}x.png`;
+                    link.download = 'gridfill.png';
                     link.href = cropCanvas.toDataURL('image/png');
                     link.click();
 
                 } catch (err) {
-                    console.error("Render failed:", err);
+                    console.error("Export failed:", err);
                     alert("An error occurred during export.");
                 } finally {
                     btn.innerHTML = origText;
@@ -1228,6 +882,7 @@
         }
 
         initThemeColor();
+        draw();
 
         if (window.matchMedia) {
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
@@ -1236,7 +891,13 @@
             });
         }
 
-        document.fonts.ready.then(() => {
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(() => {
+                draw();
+            });
+        }
+
+        window.addEventListener('load', () => {
             draw();
         });
     </script>
