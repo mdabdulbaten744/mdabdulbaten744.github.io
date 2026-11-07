@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Gridfill Text Effect Maker</title>
+    <title>Liquid Chrome Text Effect Maker</title>
     
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@900&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@900&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
 
     <style>
         /* Editorial Theme Palette with Automatic Light/Dark Mode */
@@ -26,7 +26,7 @@
             --checker-1: #efece6;
             --checker-2: #ffffff;
             --input-underline: #121212;
-            --font-editorial: 'Barlow Semi Condensed', sans-serif;
+            --font-editorial: 'Barlow Condensed', serif;
             --font-mono: 'JetBrains Mono', monospace;
         }
 
@@ -65,7 +65,7 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* Semantic Header Navigation */
+        /* Semantic Header */
         header {
             width: 100%;
             max-width: 1100px;
@@ -118,7 +118,7 @@
             }
         }
 
-        /* Canvas Container */
+        /* Canvas Container with Transparent Checkerboard Preview */
         .canvas-container {
             position: relative;
             width: 100%;
@@ -235,7 +235,7 @@
             border-bottom-color: var(--accent);
         }
 
-        /* Range Slider */
+        /* Minimalistic Range Slider */
         input[type="range"] {
             -webkit-appearance: none;
             appearance: none;
@@ -413,81 +413,62 @@
     <main role="main">
         <div class="app-layout">
             <div class="canvas-container">
-                <canvas id="canvas" width="800" height="400" aria-label="Typography preview canvas showcasing geometric gridfill text effects"></canvas>
+                <canvas id="canvas" width="800" height="400" aria-label="Typography preview canvas showcasing liquid chrome metallic effects"></canvas>
             </div>
 
             <div class="control-panel">
                 <div class="controls-group">
                     <div class="text-input-wrapper">
-                        <textarea id="textInput" class="text-input" placeholder="TYPE SOMETHING..." oninput="draw()" aria-label="Gridfill Text Input Source" rows="2">GRIDFILL</textarea>
+                        <textarea id="textInput" class="text-input" placeholder="TYPE SOMETHING..." oninput="draw()" aria-label="Chrome Text Input Source" rows="2">CHROME</textarea>
                     </div>
 
-                    <!-- SLIDER 01: CELL SIZE -->
                     <div class="control-row">
                         <div class="control-header">
-                            <label for="cellSize" class="label-with-icon">
-                                <svg class="label-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
-                                Cell Size
+                            <label for="bevelDepth" class="label-with-icon">
+                                <svg class="label-icon" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                                Bevel Depth
                             </label>
-                            <span id="v_cellSize" class="value-display" contenteditable="true" oninput="updateFromText('cellSize')" onblur="handleBlur('cellSize', 'px')">16px</span>
+                            <span id="v_bevelDepth" class="value-display" contenteditable="true" oninput="updateFromText('bevelDepth')" onblur="handleBlur('bevelDepth', 'px')">20px</span>
                         </div>
-                        <input type="range" id="cellSize" min="6" max="48" step="1" value="16" oninput="draw()">
+                        <input type="range" id="bevelDepth" min="4" max="40" step="1" value="20" oninput="draw()">
                     </div>
 
-                    <!-- SLIDER 02: GRID SPACING -->
                     <div class="control-row">
                         <div class="control-header">
-                            <label for="gridSpacing" class="label-with-icon">
-                                <svg class="label-icon" viewBox="0 0 24 24"><rect x="3" y="5" width="6" height="14"/><rect x="15" y="5" width="6" height="14"/><path d="M9 12h6M11 10l-2 2 2 2M13 10l2 2-2 2"/></svg>
-                                Grid Spacing
+                            <label for="liquidFlow" class="label-with-icon">
+                                <svg class="label-icon" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                Liquid Melt
                             </label>
-                            <span id="v_gridSpacing" class="value-display" contenteditable="true" oninput="updateFromText('gridSpacing')" onblur="handleBlur('gridSpacing', '%')">12%</span>
+                            <span id="v_liquidFlow" class="value-display" contenteditable="true" oninput="updateFromText('liquidFlow')" onblur="handleBlur('liquidFlow', '%')">50%</span>
                         </div>
-                        <input type="range" id="gridSpacing" min="0" max="40" step="1" value="12" oninput="draw()">
+                        <input type="range" id="liquidFlow" min="0" max="100" step="1" value="50" oninput="draw()">
                     </div>
 
-                    <!-- SLIDER 03: ALTERNATE OFFSET -->
                     <div class="control-row">
                         <div class="control-header">
-                            <label for="alternateOffset" class="label-with-icon">
-                                <svg class="label-icon" viewBox="0 0 24 24"><rect x="3" y="4" width="8" height="6"/><rect x="13" y="4" width="8" height="6"/><rect x="7" y="14" width="8" height="6"/><path d="M3 14h2M17 14h4"/></svg>
-                                Alternate Offset
+                            <label for="iridescence" class="label-with-icon">
+                                <svg class="label-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20M2 12h20"/></svg>
+                                Rainbow Sheen
                             </label>
-                            <span id="v_alternateOffset" class="value-display" contenteditable="true" oninput="updateFromText('alternateOffset')" onblur="handleBlur('alternateOffset', '%')">50%</span>
+                            <span id="v_iridescence" class="value-display" contenteditable="true" oninput="updateFromText('iridescence')" onblur="handleBlur('iridescence', '%')">65%</span>
                         </div>
-                        <input type="range" id="alternateOffset" min="0" max="100" step="1" value="50" oninput="draw()">
+                        <input type="range" id="iridescence" min="0" max="100" step="1" value="65" oninput="draw()">
                     </div>
 
-                    <!-- EXPANDABLE COLOR AND SIZE SECTION -->
+                    <div class="control-row">
+                        <div class="control-header">
+                            <label for="reflection" class="label-with-icon">
+                                <svg class="label-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                                Gloss & Contrast
+                            </label>
+                            <span id="v_reflection" class="value-display" contenteditable="true" oninput="updateFromText('reflection')" onblur="handleBlur('reflection', '%')">80%</span>
+                        </div>
+                        <input type="range" id="reflection" min="20" max="100" step="1" value="80" oninput="draw()">
+                    </div>
+
                     <details class="advanced-options">
                         <summary>Color and Size</summary>
                         <div class="advanced-grid">
-                            <div class="control-row">
-                                <div class="control-header">
-                                    <label for="colorA" class="label-with-icon">
-                                        <svg class="label-icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
-                                        Cell Color A
-                                    </label>
-                                </div>
-                                <div class="color-selector">
-                                    <input type="color" id="colorA" value="#121212" oninput="updateColorLabel('colorA', this.value)">
-                                    <span id="v_colorA" class="value-display" contenteditable="true" style="font-size: 0.75rem;" oninput="updateFromColorText('colorA')" onblur="handleColorBlur('colorA')">#121212</span>
-                                </div>
-                            </div>
-
-                            <div class="control-row">
-                                <div class="control-header">
-                                    <label for="colorB" class="label-with-icon">
-                                        <svg class="label-icon" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" stroke-dasharray="3 3"/></svg>
-                                        Cell Color B
-                                    </label>
-                                </div>
-                                <div class="color-selector">
-                                    <input type="color" id="colorB" value="#8C877E" oninput="updateColorLabel('colorB', this.value)">
-                                    <span id="v_colorB" class="value-display" contenteditable="true" style="font-size: 0.75rem;" oninput="updateFromColorText('colorB')" onblur="handleColorBlur('colorB')">#8C877E</span>
-                                </div>
-                            </div>
-
                             <div class="control-row">
                                 <div class="control-header">
                                     <label for="fontSize" class="label-with-icon">
@@ -501,6 +482,19 @@
 
                             <div class="control-row">
                                 <div class="control-header">
+                                    <label for="textColor" class="label-with-icon">
+                                        <svg class="label-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z"/></svg>
+                                        Color
+                                    </label>
+                                </div>
+                                <div class="color-selector">
+                                    <input type="color" id="textColor" value="#000000" oninput="updateColorLabel(this.value)">
+                                    <span id="v_color" class="value-display" contenteditable="true" style="font-size: 0.75rem;" oninput="updateFromColorText()" onblur="handleColorBlur()">#000000</span>
+                                </div>
+                            </div>
+
+                            <div class="control-row">
+                                <div class="control-header">
                                     <label class="label-with-icon">
                                         <svg class="label-icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
                                         Custom Font
@@ -510,7 +504,7 @@
                                 <input type="file" id="fontInput" accept=".ttf,.otf,.woff,.woff2" onchange="handleFontUpload(event)" style="display: none;">
                             </div>
 
-                            <div class="control-row" style="grid-column: span 2;">
+                            <div class="control-row">
                                 <div class="control-header">
                                     <label for="exportScale" class="label-with-icon">
                                         <svg class="label-icon" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
@@ -543,25 +537,16 @@
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        let customFontFamily = '"Barlow Semi Condensed", sans-serif';
+        let customFontFamily = '"Barlow Condensed", serif';
 
         function initThemeColor() {
             const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const defaultColorA = isDark ? '#F0EEE9' : '#121212';
-            const defaultColorB = isDark ? '#736E65' : '#8C877E';
-
-            const inputA = document.getElementById('colorA');
-            const spanA = document.getElementById('v_colorA');
-            const inputB = document.getElementById('colorB');
-            const spanB = document.getElementById('v_colorB');
-
-            if (inputA && spanA) {
-                inputA.value = defaultColorA;
-                spanA.innerText = defaultColorA;
-            }
-            if (inputB && spanB) {
-                inputB.value = defaultColorB;
-                spanB.innerText = defaultColorB;
+            const defaultColor = isDark ? '#FFFFFF' : '#000000';
+            const textColorInput = document.getElementById('textColor');
+            const colorSpan = document.getElementById('v_color');
+            if (textColorInput && colorSpan) {
+                textColorInput.value = defaultColor;
+                colorSpan.innerText = defaultColor;
             }
         }
 
@@ -572,15 +557,10 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 const fontName = 'CustomFont_' + Date.now();
-                let font;
-                try {
-                    font = new FontFace(fontName, e.target.result, { weight: '100 900' });
-                } catch (err) {
-                    font = new FontFace(fontName, e.target.result);
-                }
+                const font = new FontFace(fontName, e.target.result);
                 font.load().then(function(loadedFont) {
                     document.fonts.add(loadedFont);
-                    customFontFamily = `"${fontName}", "Barlow Semi Condensed", sans-serif`;
+                    customFontFamily = `"${fontName}", "Barlow Condensed", serif`;
                     const label = document.getElementById('fontLabel');
                     if (label) label.innerText = file.name;
                     draw();
@@ -592,17 +572,17 @@
             reader.readAsArrayBuffer(file);
         }
 
-        function updateColorLabel(id, colorVal) {
-            const span = document.getElementById('v_' + id);
+        function updateColorLabel(colorVal) {
+            const span = document.getElementById('v_color');
             if (document.activeElement !== span) {
                 span.innerText = colorVal.toUpperCase();
             }
             draw();
         }
 
-        function updateFromColorText(id) {
-            const span = document.getElementById('v_' + id);
-            const input = document.getElementById(id);
+        function updateFromColorText() {
+            const span = document.getElementById('v_color');
+            const input = document.getElementById('textColor');
             let val = span.innerText.trim();
             if (!val.startsWith('#')) {
                 val = '#' + val;
@@ -616,9 +596,9 @@
             }
         }
 
-        function handleColorBlur(id) {
-            const span = document.getElementById('v_' + id);
-            const input = document.getElementById(id);
+        function handleColorBlur() {
+            const span = document.getElementById('v_color');
+            const input = document.getElementById('textColor');
             span.innerText = input.value.toUpperCase();
         }
 
@@ -636,6 +616,151 @@
             const span = document.getElementById('v_' + id);
             const input = document.getElementById(id);
             span.innerText = input.value + suffix;
+        }
+
+        function hexToRgb(hex) {
+            let c = hex.replace('#', '');
+            if (c.length === 3) {
+                c = c.split('').map(x => x + x).join('');
+            }
+            const num = parseInt(c, 16);
+            return {
+                r: (num >> 16) & 255,
+                g: (num >> 8) & 255,
+                b: num & 255
+            };
+        }
+
+        function hsvToRgb(h, s, v) {
+            h = ((h % 1) + 1) % 1;
+            const i = Math.floor(h * 6), f = h * 6 - i;
+            const p = v * (1 - s), q = v * (1 - f * s), t = v * (1 - (1 - f) * s);
+            switch (i % 6) {
+                case 0: return [v, t, p];
+                case 1: return [q, v, p];
+                case 2: return [p, v, t];
+                case 3: return [p, q, v];
+                case 4: return [t, p, v];
+                default: return [v, p, q];
+            }
+        }
+
+        function rgbToHsv(r, g, b) {
+            r /= 255; g /= 255; b /= 255;
+            const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min;
+            let h = 0;
+            if (d > 0) {
+                if (max === r) h = ((g - b) / d) % 6;
+                else if (max === g) h = (b - r) / d + 2;
+                else h = (r - g) / d + 4;
+                h /= 6;
+                if (h < 0) h += 1;
+            }
+            return [h, max === 0 ? 0 : d / max, max];
+        }
+
+        // --- Multi-Octave Spatial Noise for Molten Undulation ---
+        function hash2D(x, y) {
+            let n = Math.sin(x * 127.1 + y * 311.7) * 43758.5453123;
+            return n - Math.floor(n);
+        }
+
+        function smoothNoise(x, y) {
+            const i = Math.floor(x);
+            const j = Math.floor(y);
+            const fx = x - i;
+            const fy = y - j;
+            const sx = fx * fx * (3 - 2 * fx);
+            const sy = fy * fy * (3 - 2 * fy);
+
+            const n00 = hash2D(i, j);
+            const n10 = hash2D(i + 1, j);
+            const n01 = hash2D(i, j + 1);
+            const n11 = hash2D(i + 1, j + 1);
+
+            const top = n00 + sx * (n10 - n00);
+            const bottom = n01 + sx * (n11 - n01);
+            return top + sy * (bottom - top);
+        }
+
+        function fbm(x, y) {
+            let total = 0;
+            let amp = 0.55;
+            let freq = 1.0;
+            for (let k = 0; k < 3; k++) {
+                total += smoothNoise(x * freq, y * freq) * amp;
+                freq *= 2.05;
+                amp *= 0.5;
+            }
+            return total;
+        }
+
+        // --- Exact Linear-Time 2D Euclidean Distance Transform ---
+        function computeEuclideanDistanceTransform(mask, W, H, maxDist) {
+            const INF = 1e8;
+            const distSq = new Float32Array(W * H);
+            
+            // Pass 1: Column-wise distance
+            for (let x = 0; x < W; x++) {
+                let d = INF;
+                for (let y = 0; y < H; y++) {
+                    const idx = y * W + x;
+                    d = mask[idx] ? 0 : d + 1;
+                    distSq[idx] = d * d;
+                }
+                d = INF;
+                for (let y = H - 1; y >= 0; y--) {
+                    const idx = y * W + x;
+                    d = mask[idx] ? 0 : d + 1;
+                    distSq[idx] = Math.min(distSq[idx], d * d);
+                }
+            }
+
+            // Pass 2: Row-wise parabolic envelope
+            const s = new Int32Array(W);
+            const t = new Int32Array(W);
+            const finalDist = new Float32Array(W * H);
+            const maxDSq = maxDist * maxDist;
+
+            for (let y = 0; y < H; y++) {
+                const rowOffset = y * W;
+                let q = 0;
+                s[0] = 0;
+                t[0] = 0;
+
+                for (let u = 1; u < W; u++) {
+                    while (q >= 0) {
+                        const v = s[q];
+                        const fv = distSq[rowOffset + v];
+                        const fu = distSq[rowOffset + u];
+                        const sep = Math.floor((fu - fv + u * u - v * v) / (2 * (u - v)));
+                        if (sep <= t[q]) {
+                            q--;
+                        } else {
+                            if (sep < W) {
+                                q++;
+                                s[q] = u;
+                                t[q] = sep;
+                            }
+                            break;
+                        }
+                    }
+                    if (q < 0) {
+                        q = 0;
+                        s[0] = u;
+                        t[0] = 0;
+                    }
+                }
+
+                for (let u = W - 1; u >= 0; u--) {
+                    const v = s[q];
+                    const d = (u - v) * (u - v) + distSq[rowOffset + v];
+                    finalDist[rowOffset + u] = Math.sqrt(Math.min(maxDSq, d));
+                    if (u === t[q] && q > 0) q--;
+                }
+            }
+
+            return finalDist;
         }
 
         let renderPending = false;
@@ -660,56 +785,59 @@
         function renderToCanvas(targetCtx, targetWidth, targetHeight, scale) {
             const text = document.getElementById('textInput').value;
             
-            const origCellSize = parseInt(document.getElementById('cellSize').value) || 16;
-            const origSpacing = (parseInt(document.getElementById('gridSpacing').value) || 0) / 100;
-            const origOffset = (parseInt(document.getElementById('alternateOffset').value) || 0) / 100;
-            const origFontSize = parseInt(document.getElementById('fontSize').value) || 140;
+            let origBevelDepth = parseInt(document.getElementById('bevelDepth').value);
+            if (isNaN(origBevelDepth) || origBevelDepth < 2) origBevelDepth = 2;
 
-            const colorA = document.getElementById('colorA').value;
-            const colorB = document.getElementById('colorB').value;
+            const origLiquidFlow = parseInt(document.getElementById('liquidFlow').value) / 100;
+            const origIridescence = parseInt(document.getElementById('iridescence').value) / 100;
+            const origReflection = parseInt(document.getElementById('reflection').value) / 100;
+            const origFontSize = parseInt(document.getElementById('fontSize').value);
+            const textColor = document.getElementById('textColor').value;
 
             if (scale === 1) {
-                if (document.activeElement !== document.getElementById('v_cellSize')) {
-                    document.getElementById('v_cellSize').innerText = origCellSize + 'px';
+                if (document.activeElement !== document.getElementById('v_bevelDepth')) {
+                    document.getElementById('v_bevelDepth').innerText = origBevelDepth + 'px';
                 }
-                if (document.activeElement !== document.getElementById('v_gridSpacing')) {
-                    document.getElementById('v_gridSpacing').innerText = Math.round(origSpacing * 100) + '%';
+                if (document.activeElement !== document.getElementById('v_liquidFlow')) {
+                    document.getElementById('v_liquidFlow').innerText = Math.round(origLiquidFlow * 100) + '%';
                 }
-                if (document.activeElement !== document.getElementById('v_alternateOffset')) {
-                    document.getElementById('v_alternateOffset').innerText = Math.round(origOffset * 100) + '%';
+                if (document.activeElement !== document.getElementById('v_iridescence')) {
+                    document.getElementById('v_iridescence').innerText = Math.round(origIridescence * 100) + '%';
+                }
+                if (document.activeElement !== document.getElementById('v_reflection')) {
+                    document.getElementById('v_reflection').innerText = Math.round(origReflection * 100) + '%';
                 }
                 if (document.activeElement !== document.getElementById('v_fontSize')) {
                     document.getElementById('v_fontSize').innerText = origFontSize + 'px';
                 }
-                if (document.activeElement !== document.getElementById('v_colorA')) {
-                    document.getElementById('v_colorA').innerText = colorA.toUpperCase();
-                }
-                if (document.activeElement !== document.getElementById('v_colorB')) {
-                    document.getElementById('v_colorB').innerText = colorB.toUpperCase();
+                if (document.activeElement !== document.getElementById('v_color')) {
+                    document.getElementById('v_color').innerText = textColor.toUpperCase();
                 }
             }
 
+            // Always maintain a strictly transparent background for the canvas
             targetCtx.clearRect(0, 0, targetWidth, targetHeight);
+            
             if (!text.trim()) return null;
 
-            // Step 1: Render vector text mask into an offscreen canvas
-            const textCanvas = document.createElement('canvas');
-            textCanvas.width = targetWidth;
-            textCanvas.height = targetHeight;
-            const tctx = textCanvas.getContext('2d');
+            // Render crisp typography mask offscreen
+            const offscreen = document.createElement('canvas');
+            offscreen.width = targetWidth;
+            offscreen.height = targetHeight;
+            const octx = offscreen.getContext('2d');
 
             const lines = text.split('\n');
-            const padding = 40 * scale;
+            const padding = 45 * scale;
 
             const refSize = 100 * scale;
-            tctx.font = `900 ${refSize}px ${customFontFamily}`;
+            octx.font = `900 ${refSize}px ${customFontFamily}`;
             let maxRefWidth = 1;
             lines.forEach(line => {
-                let width = tctx.measureText(line).width;
+                let width = octx.measureText(line).width;
                 if (width > maxRefWidth) maxRefWidth = width;
             });
 
-            const refTotalHeight = lines.length * (refSize * 1.1);
+            const refTotalHeight = lines.length * (refSize * 1.05);
             const availWidth = Math.max(10 * scale, targetWidth - padding);
             const availHeight = Math.max(10 * scale, targetHeight - padding);
 
@@ -718,84 +846,182 @@
             const calculatedMaxFontSize = Math.min(maxFontSizeW, maxFontSizeH);
             const scaledFontSize = Math.max(10 * scale, Math.min(origFontSize * scale, calculatedMaxFontSize));
 
-            tctx.font = `900 ${scaledFontSize}px ${customFontFamily}`;
-            tctx.textAlign = 'center';
-            tctx.textBaseline = 'middle';
-            tctx.fillStyle = '#000000';
+            octx.font = `900 ${scaledFontSize}px ${customFontFamily}`;
+            octx.textAlign = 'center';
+            octx.textBaseline = 'middle';
+            octx.fillStyle = '#FFFFFF';
 
-            const lineHeight = scaledFontSize * 1.1;
+            const lineHeight = scaledFontSize * 1.05;
             const totalHeight = lines.length * lineHeight;
             let startY = (targetHeight / 2) - (totalHeight / 2) + (lineHeight / 2);
 
             lines.forEach((line, index) => {
-                tctx.fillText(line, targetWidth / 2, startY + (index * lineHeight));
+                octx.fillText(line, targetWidth / 2, startY + (index * lineHeight));
             });
 
-            // Step 2: Render continuous geometric checkerboard into offscreen grid canvas
-            const gridCanvas = document.createElement('canvas');
-            gridCanvas.width = targetWidth;
-            gridCanvas.height = targetHeight;
-            const gctx = gridCanvas.getContext('2d');
+            // Extract binary text silhouette mask
+            const maskImg = octx.getImageData(0, 0, targetWidth, targetHeight);
+            const maskData = maskImg.data;
+            const mask = new Uint8Array(targetWidth * targetHeight);
+            for (let i = 0, p = 3; i < mask.length; i++, p += 4) {
+                mask[i] = maskData[p] > 110 ? 1 : 0;
+            }
 
-            const side = Math.max(2, origCellSize * scale);
-            const gap = side * origSpacing;
-            const pitch = side + gap;
+            // Calculate Euclidean distance transform to inflate the 3D chrome dome
+            const maxRadius = Math.max(4, origBevelDepth * scale);
+            const distMap = computeEuclideanDistanceTransform(mask, targetWidth, targetHeight, maxRadius);
 
-            const cx = targetWidth / 2;
-            const cy = targetHeight / 2;
+            // Compute Heightmap with Molten Ripples & Curvature
+            const heightMap = new Float32Array(targetWidth * targetHeight);
+            const noiseScale = 0.016 / scale;
+            const meltDistortion = origLiquidFlow * (14.0 * scale);
 
-            const rStart = Math.floor((-cy) / pitch) - 2;
-            const rEnd = Math.ceil((targetHeight - cy) / pitch) + 2;
+            for (let y = 0; y < targetHeight; y++) {
+                const row = y * targetWidth;
+                for (let x = 0; x < targetWidth; x++) {
+                    const idx = row + x;
+                    const d = distMap[idx];
 
-            const rectsA = [];
-            const rectsB = [];
+                    if (d > 0) {
+                        const normD = Math.min(1.0, d / maxRadius);
+                        let elevation = Math.sqrt(Math.max(0, 1.0 - Math.pow(1.0 - normD, 2.0)));
 
-            for (let r = rStart; r <= rEnd; r++) {
-                const isOddRow = ((r % 2 + 2) % 2) === 1;
-                const rowShift = isOddRow ? (origOffset * pitch) : 0;
-                const rowY = cy + (r * pitch) - (side / 2);
+                        if (meltDistortion > 0) {
+                            const wave = fbm(x * noiseScale, y * noiseScale);
+                            const ripple = Math.sin(wave * Math.PI * 4 + normD * 3.0) * 0.18;
+                            elevation = Math.max(0.05, Math.min(1.0, elevation + ripple * origLiquidFlow));
+                        }
 
-                const cStart = Math.floor((-cx - rowShift) / pitch) - 2;
-                const cEnd = Math.ceil((targetWidth - cx - rowShift) / pitch) + 2;
-
-                for (let c = cStart; c <= cEnd; c++) {
-                    const colX = cx + rowShift + (c * pitch) - (side / 2);
-                    const parity = (((r % 2 + 2) % 2) + ((c % 2 + 2) % 2)) % 2;
-
-                    if (parity === 0) {
-                        rectsA.push(colX, rowY);
-                    } else {
-                        rectsB.push(colX, rowY);
+                        heightMap[idx] = elevation;
                     }
                 }
             }
 
-            // Draw Color A cells
-            gctx.fillStyle = colorA;
-            gctx.beginPath();
-            for (let i = 0; i < rectsA.length; i += 2) {
-                gctx.rect(rectsA[i], rectsA[i + 1], side, side);
+            // User-Chosen Color Attributes
+            const userRgb = hexToRgb(textColor);
+            const userHsv = rgbToHsv(userRgb.r, userRgb.g, userRgb.b);
+            const isDark = userHsv[2] < 0.12;
+            const isWhite = userHsv[1] < 0.08 && userHsv[2] > 0.92;
+            const isNeutral = isDark || isWhite || userHsv[1] < 0.08;
+            const baseHue = userHsv[0];
+            const vividSat = Math.max(userHsv[1], 0.75);
+
+            // Shading & Environment Ray-Reflection Mapping
+            const targetData = targetCtx.createImageData(targetWidth, targetHeight);
+            const outPixels = targetData.data;
+
+            for (let y = 1; y < targetHeight - 1; y++) {
+                const row = y * targetWidth;
+                for (let x = 1; x < targetWidth - 1; x++) {
+                    const idx = row + x;
+
+                    if (mask[idx]) {
+                        // Central difference gradient for surface normal
+                        const dzdx = (heightMap[idx + 1] - heightMap[idx - 1]) * 1.8;
+                        const dzdy = (heightMap[idx + targetWidth] - heightMap[idx - targetWidth]) * 1.8;
+                        const nz = 0.45;
+
+                        const len = Math.sqrt(dzdx * dzdx + dzdy * dzdy + nz * nz) || 1.0;
+                        const nx = -dzdx / len;
+                        const ny = -dzdy / len;
+                        const normZ = nz / len;
+
+                        // Ray reflection vector components: R = 2*(N.V)*N - V
+                        const refX = 2 * nx * normZ;
+                        const refY = 2 * ny * normZ;
+                        const theta = Math.atan2(refY, refX);
+                        const rho = Math.min(1.0, Math.sqrt(refX * refX + refY * refY));
+                        const normAngle = (theta + Math.PI) / (Math.PI * 2);
+
+                        // High contrast studio chrome horizon & light lobes
+                        const horizon = Math.sin(refY * Math.PI * 3.2 + Math.cos(refX * Math.PI * 2.2));
+                        const chromeLobe = Math.pow(Math.max(0, 0.5 + 0.5 * horizon), 2.2);
+                        const topLight = Math.pow(Math.max(0, refY * 0.65 + refX * 0.35 + 0.5), 2.5);
+
+                        // Base metallic core luminance
+                        let coreLuminance = 45 + chromeLobe * 160 + topLight * 150;
+                        coreLuminance = Math.min(255, coreLuminance * origReflection);
+
+                        // Normalised luminance of the lighting (0..1)
+                        const L = coreLuminance / 255;
+                        const edgeMask = 0.45 + (1.0 - normZ) * 0.55;
+
+                        // Rainbow parameter (same field as before)
+                        const wave1 = Math.sin(normAngle * Math.PI * 4 + refY * 2.8);
+                        const wave2 = Math.cos(rho * Math.PI * 3.2 - refX * 1.6);
+                        const t = 0.5 + 0.5 * (wave1 * 0.6 + wave2 * 0.4);
+
+                        let r, g, b;
+                        if (isNeutral) {
+                            // White / black / gray picks: polished metal + VIVID spectral sheen
+                            if (isWhite) {
+                                r = coreLuminance; g = coreLuminance * 0.98; b = coreLuminance * 1.02;
+                            } else {
+                                const darkBody = 25 + chromeLobe * 60 + topLight * 180;
+                                r = darkBody * 0.95; g = darkBody * 0.98; b = darkBody * 1.05;
+                            }
+                            if (origIridescence > 0) {
+                                const spec = hsvToRgb(t * 1.2, 0.9, 0.4 + 0.6 * Math.min(1, L + 0.2));
+                                const k = Math.min(1, origIridescence * edgeMask * 1.15);
+                                r = r * (1 - k) + spec[0] * 255 * k;
+                                g = g * (1 - k) + spec[1] * 255 * k;
+                                b = b * (1 - k) + spec[2] * 255 * k;
+                            }
+                        } else {
+                            // Coloured chrome: keep the chosen hue fully saturated.
+                            // Shadows go toward deep colour (never gray), highlights toward white.
+                            const hue = baseHue + (t - 0.5) * (300 / 360) * origIridescence * edgeMask;
+                            const pure = hsvToRgb(hue, vividSat, 1.0);
+                            let k;
+                            if (L < 0.5) {
+                                k = 0.12 + 0.88 * (L / 0.5);
+                                r = pure[0] * k * 255; g = pure[1] * k * 255; b = pure[2] * k * 255;
+                            } else {
+                                const w = Math.min(1, (L - 0.5) / 0.5);
+                                const mixW = w * w * 0.7;
+                                r = (pure[0] * (1 - mixW) + mixW) * 255;
+                                g = (pure[1] * (1 - mixW) + mixW) * 255;
+                                b = (pure[2] * (1 - mixW) + mixW) * 255;
+                            }
+                            // Tinted fresnel rim (adds colour, not gray)
+                            const fres = Math.pow(Math.max(0, 1.0 - normZ), 2.2);
+                            const rim = fres * 0.45 * origReflection;
+                            r += pure[0] * 255 * rim; g += pure[1] * 255 * rim; b += pure[2] * 255 * rim;
+                        }
+
+                        // Specular glint (blend toward white, narrow so colour stays vivid)
+                        const specLobe = Math.min(1, Math.pow(Math.max(0, -refX * 0.45 - refY * 0.7 + 0.6), 8.0) * (origReflection * 1.4));
+                        r += (255 - r) * specLobe;
+                        g += (255 - g) * specLobe;
+                        b += (255 - b) * specLobe;
+
+                        if (isNeutral) {
+                            const fresnel = Math.pow(Math.max(0, 1.0 - normZ), 2.2);
+                            const rimGlow = fresnel * 120 * origReflection;
+                            r += rimGlow; g += rimGlow * 1.05; b += rimGlow * 1.15;
+                        }
+
+                        // Edge Alpha Anti-Aliasing (seamless anti-aliased edge over transparent background)
+                        const d = distMap[idx];
+                        let alpha = 255;
+                        if (d < 1.4) {
+                            alpha = Math.floor(Math.max(0, Math.min(255, (d / 1.4) * 255)));
+                        }
+
+                        const p = idx * 4;
+                        outPixels[p] = Math.min(255, Math.max(0, r));
+                        outPixels[p + 1] = Math.min(255, Math.max(0, g));
+                        outPixels[p + 2] = Math.min(255, Math.max(0, b));
+                        outPixels[p + 3] = alpha;
+                    }
+                }
             }
-            gctx.fill();
 
-            // Draw Color B cells
-            gctx.fillStyle = colorB;
-            gctx.beginPath();
-            for (let i = 0; i < rectsB.length; i += 2) {
-                gctx.rect(rectsB[i], rectsB[i + 1], side, side);
-            }
-            gctx.fill();
-
-            // Step 3: Mask the grid directly to the text silhouette and counters
-            gctx.globalCompositeOperation = 'destination-in';
-            gctx.drawImage(textCanvas, 0, 0);
-
-            // Step 4: Transfer final masked output to target canvas
-            targetCtx.drawImage(gridCanvas, 0, 0);
-
-            return targetCtx.getImageData(0, 0, targetWidth, targetHeight);
+            targetCtx.putImageData(targetData, 0, 0);
+            return targetData;
         }
 
+        // --- Exact Pixel-Bounding-Box Export to Transparent PNG ---
         function downloadPNG() {
             const btn = document.querySelector('.btn-download');
             const origText = btn.innerHTML;
@@ -804,9 +1030,9 @@
 
             setTimeout(() => {
                 try {
-                    const scale = parseInt(document.getElementById('exportScale').value) || 4;
-                    const targetWidth = 800 * scale;
-                    const targetHeight = 400 * scale;
+                    const scale = parseInt(document.getElementById('exportScale').value) || 4; 
+                    const targetWidth = 800 * scale; 
+                    const targetHeight = 400 * scale; 
 
                     const tempCanvas = document.createElement('canvas');
                     tempCanvas.width = targetWidth;
@@ -816,7 +1042,6 @@
                     const targetData = renderToCanvas(tempCtx, targetWidth, targetHeight, scale);
 
                     if (!targetData) {
-                        alert("No text to download.");
                         btn.innerHTML = origText;
                         btn.disabled = false;
                         return;
@@ -853,10 +1078,10 @@
                     cropCanvas.width = cropW;
                     cropCanvas.height = cropH;
                     const cropCtx = cropCanvas.getContext('2d');
-
+                    
                     const cropData = cropCtx.createImageData(cropW, cropH);
                     const cropBuffer = new Uint32Array(cropData.data.buffer);
-
+                    
                     for (let y = 0; y < cropH; y++) {
                         const srcRow = (y + minY) * targetWidth;
                         const dstRow = y * cropW;
@@ -867,12 +1092,12 @@
                     cropCtx.putImageData(cropData, 0, 0);
 
                     const link = document.createElement('a');
-                    link.download = 'gridfill.png';
+                    link.download = `liquid-chrome-${scale}x.png`;
                     link.href = cropCanvas.toDataURL('image/png');
                     link.click();
 
                 } catch (err) {
-                    console.error("Export failed:", err);
+                    console.error("Render failed:", err);
                     alert("An error occurred during export.");
                 } finally {
                     btn.innerHTML = origText;
@@ -882,7 +1107,6 @@
         }
 
         initThemeColor();
-        draw();
 
         if (window.matchMedia) {
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
@@ -891,13 +1115,7 @@
             });
         }
 
-        if (document.fonts && document.fonts.ready) {
-            document.fonts.ready.then(() => {
-                draw();
-            });
-        }
-
-        window.addEventListener('load', () => {
+        document.fonts.ready.then(() => {
             draw();
         });
     </script>
